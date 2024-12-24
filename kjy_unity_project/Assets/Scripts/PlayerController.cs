@@ -12,22 +12,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerInput input;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform _playerTransform;
-    
-    [Range(1,20)]
+
     [SerializeField] private float _playerMoveSpeed;
+    [field: SerializeField] public float _playerCurSpeed { get; private set; }
+
+
+    [Range(1,20)]
     [SerializeField] private float _rotateInterpolation;
+    [Range(0,2)]
     [SerializeField] private float _dashMultiplier;
     
-    private void Update()
+    private void FixedUpdate()
     { 
         float tempSpeed = _playerMoveSpeed;
+        Vector3 dir;
 
         if (input.actions["Dash"].IsPressed())
         {
             _playerMoveSpeed *= _dashMultiplier;
         }
         Vector2 move = input.actions["Move"].ReadValue<Vector2>();
-        Vector3 dir = new Vector3(move.x, 0, move.y);
+        dir = new Vector3(move.x, 0, move.y);
         rb.AddForce(dir*_playerMoveSpeed, ForceMode.Force);
         if (dir != Vector3.zero)
         {
@@ -38,6 +43,7 @@ public class PlayerController : MonoBehaviour
             );
         }
 
+        _playerCurSpeed = dir.magnitude*_playerMoveSpeed;
         _playerMoveSpeed = tempSpeed;
     }
 }
