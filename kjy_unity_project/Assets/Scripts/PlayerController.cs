@@ -15,35 +15,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private Animator _animator;
     
-    private StateBase _currentState;
     [SerializeField] public float _playerMoveSpeed;
     [field : SerializeField] public float _rotateInterpolation{get; private set;} 
     [field : SerializeField] public float _dashMultiplier{get; private set;}
    
     public bool _isMoving = false;
     public bool _isDashing = false;
-
-    public void Start()
-    {
-        SetState(new PlayerIdle(this, _animator, new StateMachine()));
-    }
+    
 
     public void Update()
     {
-        _currentState?.OnStateUpdate();
         GetInputBool();
     }
 
     public void LateUpdate()
     {
         ResetInputBool();
-    }
-
-    public void SetState(StateBase newState)
-    {
-        _currentState?.OnStateExit();
-        _currentState = newState;
-        _currentState.OnStateEnter();
     }
 
     public void GetInputBool()
@@ -69,6 +56,7 @@ public class PlayerController : MonoBehaviour
         if (input.actions["Move"].WasReleasedThisFrame())
         {
             _isMoving = false;
+            _isDashing = false;
         }
     }
     
@@ -78,6 +66,8 @@ public class PlayerController : MonoBehaviour
     
          Vector2 move = input.actions["Move"].ReadValue<Vector2>();
     
+         Debug.Log(move);
+         
          dir = new Vector3(move.x, 0, move.y);
    
          rb.velocity = dir * _playerMoveSpeed;

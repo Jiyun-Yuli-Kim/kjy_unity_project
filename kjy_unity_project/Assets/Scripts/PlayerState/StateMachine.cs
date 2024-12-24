@@ -9,20 +9,25 @@ public class StateMachine : MonoBehaviour
         PIdle, PWalk, PRun
     }
     
-    protected PlayerController _controller;
-    protected Animator _animator;
-    protected StateMachine _stateMachine;
-    
-    private List<StateBase> _states = new();
     public StateBase CurrentState;
     
+    private List<StateBase> _states = new();
+    
+    private void Awake()
+    {
+        CurrentState._controller = FindObjectOfType<PlayerController> ();
+        CurrentState._animator = FindObjectOfType<Animator>();
+        CurrentState._stateMachine = this;
+    }
+
     private void Start()
     {
-        var idle = new PlayerIdle(_controller, _animator, this);
-        var walk = new PlayerWalk(_controller, _animator, this);
-        var run = new PlayerRun(_controller, _animator, this);
-
-        AddState(idle, walk, run);
+        PlayerIdle playerIdle = new PlayerIdle(CurrentState._controller, CurrentState._animator, CurrentState._stateMachine);
+        PlayerWalk playerWalk = new PlayerWalk(CurrentState._controller, CurrentState._animator, CurrentState._stateMachine);
+        PlayerRun playerRun = new PlayerRun(CurrentState._controller, CurrentState._animator, CurrentState._stateMachine);
+        AddState(playerIdle, playerWalk, playerRun);
+        
+        OnChangeState(StateType.PIdle);
     }
 
     private void Update()
