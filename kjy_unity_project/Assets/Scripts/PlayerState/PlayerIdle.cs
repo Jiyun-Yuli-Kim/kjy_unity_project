@@ -10,13 +10,13 @@ public class PlayerIdle : StateBase
         
     }
 
-    void OnStateEnter()
+    public override void OnStateEnter()
     {
         _animator.SetBool("isMoving", false);
         _animator.SetBool("isDashing", false);
     }
 
-    void OnStateUpdate()
+    public override void OnStateUpdate()
     {
         if (_controller._isMoving)
         {
@@ -24,8 +24,8 @@ public class PlayerIdle : StateBase
         }
     }
 
-    void OnStateExit()
+    public override void OnStateExit()
     {
-        
+
     }
 }

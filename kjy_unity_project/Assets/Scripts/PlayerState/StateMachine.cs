@@ -9,8 +9,21 @@ public class StateMachine : MonoBehaviour
         PIdle, PWalk, PRun
     }
     
+    protected PlayerController _controller;
+    protected Animator _animator;
+    protected StateMachine _stateMachine;
+    
     private List<StateBase> _states = new();
-    public StateBase CurrentState { get; private set; }
+    public StateBase CurrentState;
+    
+    private void Start()
+    {
+        var idle = new PlayerIdle(_controller, _animator, this);
+        var walk = new PlayerWalk(_controller, _animator, this);
+        var run = new PlayerRun(_controller, _animator, this);
+
+        AddState(idle, walk, run);
+    }
 
     private void Update()
     {
@@ -27,9 +40,11 @@ public class StateMachine : MonoBehaviour
 
     public void OnChangeState(StateType type)
     {
-        CurrentState.OnStateExit();
-        CurrentState = _states[(int)type];
-        CurrentState.OnStateEnter();
+        if (0 < (int)type && (int)type < _states.Count)
+        {
+            CurrentState?.OnStateExit();
+            CurrentState = _states[(int)type];
+            CurrentState.OnStateEnter();
+        }
     }
-
 }

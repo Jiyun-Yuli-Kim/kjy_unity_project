@@ -9,12 +9,12 @@ public class PlayerWalk : StateBase
         
     }
 
-    void OnStateEnter()
+    public override void OnStateEnter()
     {
         _animator.SetBool("isMoving", true);
     }
 
-    void OnStateUpdate()
+    public override void OnStateUpdate()
     {
         _controller.PlayerMove();
         
@@ -25,11 +25,11 @@ public class PlayerWalk : StateBase
 
         if (!_controller._isMoving)
         {
-            OnStateExit();
+            _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
         }
     }
 
-    void OnStateExit()
+    public override void OnStateExit()
     {
         _animator.SetBool("isMoving", false);
     }

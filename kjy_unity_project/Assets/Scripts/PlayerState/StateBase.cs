@@ -4,9 +4,9 @@ using UnityEngine;
 
 public abstract class StateBase
 {
-    [SerializeField] protected PlayerController _controller;
-    [SerializeField] protected Animator _animator;
-    [SerializeField] protected StateMachine _stateMachine;
+    protected PlayerController _controller;
+    protected Animator _animator;
+    protected StateMachine _stateMachine;
     
     // 생성자를 통해 PlayerController, Animator를 가질 것을 강제함.
     public StateBase(PlayerController controller, Animator animator, StateMachine stateMachine)

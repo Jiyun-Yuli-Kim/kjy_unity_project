@@ -11,25 +11,25 @@ public class PlayerRun : StateBase
 
     private float tempSpeed;
 
-    void OnStateEnter()
+    public override void OnStateEnter()
     {
+        tempSpeed = _controller._playerMoveSpeed;
+        _controller._playerMoveSpeed *= _controller._dashMultiplier;
+        _animator.SetBool("isMoving", true);
         _animator.SetBool("isDashing", true);
     }
 
-    void OnStateUpdate()
+    public override void OnStateUpdate()
     {
         if (!_controller._isDashing)
         {
-            OnStateExit();        
+            _stateMachine.OnChangeState(StateMachine.StateType.PWalk);
         }
-
-        tempSpeed = _controller._playerMoveSpeed;
-        _controller._playerMoveSpeed *= _controller._dashMultiplier;
         
         _controller.PlayerMove();
     }
 
-    void OnStateExit()
+    public override void OnStateExit()
     {
         _controller._playerMoveSpeed = tempSpeed;
         _animator.SetBool("isDashing", false);
