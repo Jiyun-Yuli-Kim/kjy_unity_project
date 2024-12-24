@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-// 플레이어의 기본적인 이동과 그에따른 애니메이션을 관리합니다.
+// 플레이어의 기본적인 이동을 관리합니다.
 // 일단 키보드로 구현
 public class PlayerController : MonoBehaviour
 {
@@ -33,7 +33,9 @@ public class PlayerController : MonoBehaviour
         }
         Vector2 move = input.actions["Move"].ReadValue<Vector2>();
         dir = new Vector3(move.x, 0, move.y);
-        rb.AddForce(dir*_playerMoveSpeed, ForceMode.Force);
+        Debug.Log(dir);
+        // rb.AddForce(dir*_playerMoveSpeed, ForceMode.Force);
+        rb.velocity = dir * _playerCurSpeed;
         if (dir != Vector3.zero)
         {
             _playerTransform.rotation = Quaternion.Lerp(
