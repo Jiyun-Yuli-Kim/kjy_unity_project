@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -12,62 +13,83 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerInput input;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform _playerTransform;
-
-    [SerializeField] private float _playerMoveSpeed;
-    // [field: SerializeField] public float _playerCurSpeed { get; private set; }
-    [Range(1,20)]
-    [SerializeField] private float _rotateInterpolation;
-    [Range(0,2)]
-    [SerializeField] private float _dashMultiplier;
-
-    private bool _isMoving = false;
-    private bool _isDashing = false;
+    [SerializeField] private Animator _animator;
     
-    private void FixedUpdate()
-    { 
-        float tempSpeed = _playerMoveSpeed;
-        Vector3 dir;
+    private StateBase _currentState;
+    [SerializeField] public float _playerMoveSpeed;
+    [field : SerializeField] public float _rotateInterpolation{get; private set;} 
+    [field : SerializeField] public float _dashMultiplier{get; private set;}
+   
+    public bool _isMoving = false;
+    public bool _isDashing = false;
 
-        if (input.actions["Dash"].IsPressed())
-        {
-            _isDashing = true;
-            _playerMoveSpeed *= _dashMultiplier;
-        }
-        
-        Vector2 move = input.actions["Move"].ReadValue<Vector2>();
-        if (move != Vector2.zero)
+    public void Start()
+    {
+        SetState(new PlayerIdle(this, _animator, new StateMachine()));
+    }
+
+    public void Update()
+    {
+        _currentState?.OnStateUpdate();
+        GetInputBool();
+    }
+
+    public void LateUpdate()
+    {
+        ResetInputBool();
+    }
+
+    public void SetState(StateBase newState)
+    {
+        _currentState?.OnStateExit();
+        _currentState = newState;
+        _currentState.OnStateEnter();
+    }
+
+    public void GetInputBool()
+    {
+        if (input.actions["Move"].IsPressed())
         {
             _isMoving = true;
         }
 
-        dir = new Vector3(move.x, 0, move.y);
-        
-        // rb.AddForce(dir*_playerMoveSpeed, ForceMode.Force);
-        
-        rb.velocity = dir * _playerMoveSpeed;
-        
-        if (dir != Vector3.zero)
+        if (input.actions["Dash"].IsPressed())
         {
-            _playerTransform.rotation = Quaternion.Lerp(
-                _playerTransform.rotation,
-                Quaternion.LookRotation(dir),
-                _rotateInterpolation * Time.deltaTime
-            );
+            _isDashing = true;
         }
+    }
 
+    public void ResetInputBool()
+    {
         if (input.actions["Dash"].WasReleasedThisFrame())
         {
             _isDashing = false;
         }
-
+        
         if (input.actions["Move"].WasReleasedThisFrame())
         {
             _isMoving = false;
         }
-        
-        Debug.Log($"move? : {_isMoving}, dash? : {_isDashing}");
-        
-        // _playerCurSpeed = dir.magnitude*_playerMoveSpeed;
-        _playerMoveSpeed = tempSpeed;
     }
+    
+     public void PlayerMove()
+     { 
+         Vector3 dir;
+    
+         Vector2 move = input.actions["Move"].ReadValue<Vector2>();
+    
+         dir = new Vector3(move.x, 0, move.y);
+   
+         rb.velocity = dir * _playerMoveSpeed;
+         
+         if (dir != Vector3.zero)
+         {
+             _playerTransform.rotation = Quaternion.Lerp(
+                 _playerTransform.rotation,
+                 Quaternion.LookRotation(dir),
+                 _rotateInterpolation * Time.deltaTime
+             );
+         }
+    }
+
 }
