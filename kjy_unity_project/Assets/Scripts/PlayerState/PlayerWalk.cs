@@ -9,6 +9,8 @@ public class PlayerWalk : StateBase
         
     }
 
+    private float tempSpeed;
+
     public override void OnStateEnter()
     {
         _animator.SetBool("isMoving", true);
@@ -16,11 +18,19 @@ public class PlayerWalk : StateBase
 
     public override void OnStateUpdate()
     {
-        _controller.PlayerMove();
-        
-        if (_controller._isDashing)
+        // move 눌렸을 때 이동, move&dash 눌렸을 때 달리기 
+        if (_controller._isMoving)
         {
-            _stateMachine.OnChangeState(StateMachine.StateType.PRun);
+
+            if (_controller._isDashing)
+            {
+                _animator.SetBool("isDashing", true);
+                tempSpeed = _controller._playerMoveSpeed;
+                _controller._playerMoveSpeed *= _controller._dashMultiplier;
+            }
+            _controller.PlayerMove();
+            _controller._playerMoveSpeed = tempSpeed;
+            _animator.SetBool("isDashing", false);
         }
 
         if (!_controller._isMoving)
