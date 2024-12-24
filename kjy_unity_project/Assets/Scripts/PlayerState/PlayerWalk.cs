@@ -10,6 +10,7 @@ public class PlayerWalk : StateBase
     }
 
     private float tempSpeed;
+    private bool isCurDashing = false;
 
     public override void OnStateEnter()
     {
@@ -22,15 +23,22 @@ public class PlayerWalk : StateBase
         if (_controller._isMoving)
         {
 
-            if (_controller._isDashing)
-            {
+            if (_controller._isDashing && !isCurDashing)
+            {   
+                isCurDashing = true;
                 _animator.SetBool("isDashing", true);
                 tempSpeed = _controller._playerMoveSpeed;
                 _controller._playerMoveSpeed *= _controller._dashMultiplier;
             }
+
+            if(!_controller._isDashing && isCurDashing)
+            {
+                isCurDashing = false;
+                _controller._playerMoveSpeed = tempSpeed;
+                _animator.SetBool("isDashing", false);
+            }
+
             _controller.PlayerMove();
-            _controller._playerMoveSpeed = tempSpeed;
-            _animator.SetBool("isDashing", false);
         }
 
         if (!_controller._isMoving)

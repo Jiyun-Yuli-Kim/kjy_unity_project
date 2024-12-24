@@ -65,11 +65,9 @@ public class PlayerController : MonoBehaviour
          Vector3 dir;
     
          Vector2 move = input.actions["Move"].ReadValue<Vector2>();
-    
-         Debug.Log(move);
          
          dir = new Vector3(move.x, 0, move.y);
-   
+         Debug.Log(dir);
          rb.velocity = dir * _playerMoveSpeed;
          
          if (dir != Vector3.zero)

@@ -6,7 +6,7 @@ public class StateMachine : MonoBehaviour
 {
     public enum StateType
     {
-        PIdle, PWalk, PRun
+        PIdle, PWalk
     }
     
     public StateBase CurrentState;
