@@ -18,7 +18,7 @@ public class PlayerIdle : StateBase
 
     public override void OnStateUpdate()
     {
-        if (_controller._isMoving)
+        if (_controller.isMoving)
         {
             _stateMachine.OnChangeState(StateMachine.StateType.PWalk);
         }
