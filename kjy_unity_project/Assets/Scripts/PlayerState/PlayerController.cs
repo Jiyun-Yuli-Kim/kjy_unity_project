@@ -145,7 +145,6 @@ public class PlayerController : MonoBehaviour
          {
              _isInteracting = true;
              Debug.Log("친절함 유형 주민과 대화");
-             WaitForSeconds(3f);
              _isInteracting = false;
          }
 
@@ -153,27 +152,7 @@ public class PlayerController : MonoBehaviour
          {
              _isInteracting = true;
              Debug.Log("아이돌 유형 주민과 대화");
-             WaitForSeconds(3f);
              _isInteracting = false;
          }
      }
-     
-     
-    #region 디버그전용     
-     private bool isWaiting = false;
-
-     public void WaitForSeconds(float seconds)
-     {
-         isWaiting = true;
-         float startTime = Time.time;
-
-         while (Time.time < startTime + seconds)
-         {
-             // 대기 중
-         }
-
-         isWaiting = false;
-         Debug.Log("대기 완료");
-     }
-     #endregion
 }
