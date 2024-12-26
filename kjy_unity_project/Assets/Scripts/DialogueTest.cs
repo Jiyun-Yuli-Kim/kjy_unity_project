@@ -3,27 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueTest : MonoBehaviour
-{
-    private Collider _collider;
-    private PlayerController _player;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Kind" && _player.isInteracting)
-        {
-            // Kind 유형 주민의 대화를 로드한다
-        }
-    }
-}
+// public class DialogueTest : MonoBehaviour
+// {
+//     private PlayerController _player;
+//     private Collider _collider;
+//
+//     private void Awake()
+//     {
+//         _player = GetComponent<PlayerController>();
+//         _collider = _player.GetComponent<Collider>();
+//     }
+//
+//     private void OnTriggerStay(Collider other)
+//     {
+//         if (other.gameObject.tag == "Kind" && _player.isTriggered)
+//         {
+//             // Kind 유형 주민의 대화를 로드한다
+//         }
+//         
+//         if (other.gameObject.tag == "Idol" && _player.isTriggered)
+//         {
+//             // Idol 유형 주민의 대화를 로드한다
+//         }
+//     }
+// }
