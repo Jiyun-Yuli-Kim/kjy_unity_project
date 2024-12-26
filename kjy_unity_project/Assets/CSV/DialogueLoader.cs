@@ -18,7 +18,7 @@ public class DialogueLoader : MonoBehaviour
     private void Awake()
     {
         StartCoroutine(DownLoadRoutine(KindDialogue));
-
+        ShowCSVData(DialogueData);
     }
 
     IEnumerator DownLoadRoutine(string urlPath)
@@ -29,7 +29,7 @@ public class DialogueLoader : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             string recievedData = request.downloadHandler.text;
-            ProcessCSV(recievedData);
+            DialogueData = ProcessCSV(recievedData);
         }
 
         else
@@ -58,15 +58,13 @@ public class DialogueLoader : MonoBehaviour
         return DialogueTable;
     }
 
-    private void ShowCSVData()
+    private void ShowCSVData(string[,] dataTable)
     {
-        DialogueData = ProcessCSV();
-        
-        for (int i = 1; i < DialogueData.GetLength(0); i++)
+        for (int i = 1; i < dataTable.GetLength(0); i++)
         {
-            for (int j = 0; j < DialogueData.GetLength(1); j++)
+            for (int j = 0; j < dataTable.GetLength(1); j++)
             {
-                Debug.Log(DialogueData[i, j]);
+                Debug.Log(dataTable[i, j]);
             }
         }
     }
