@@ -18,7 +18,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float _playerMoveSpeed;
     [field : SerializeField] public float _rotateInterpolation{get; private set;} 
     [field : SerializeField] public float _dashMultiplier{get; private set;}
-   
+    [field: SerializeField] public float _angularDrag { get; private set; } = 3f;
+    
     public bool _isMoving = false;
     public bool _isDashing = false;
     
@@ -78,6 +79,11 @@ public class PlayerController : MonoBehaviour
                  _rotateInterpolation * Time.deltaTime
              );
          }
+
+         // else
+         // {
+         //     rb.angularDrag = _angularDrag;
+         // }
     }
 
 }
