@@ -96,7 +96,7 @@ public class DialogueSystem : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         _uICanvas.SetActive(true);
 
-        int randIndex = Random.Range(1, 4);
+        int randIndex = Random.Range(1, 5);
         string firstLine = _kindData[randIndex, 1];
         _dialogueText.text = firstLine.Replace("\\n", "\n");
         yield return new WaitForSeconds(1f);

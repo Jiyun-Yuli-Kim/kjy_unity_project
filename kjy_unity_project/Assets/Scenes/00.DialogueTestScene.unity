@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8910fcef86bf8f245b9a5c7aa8ef9faa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 1906586505}
   dialogueURL: 
   OnKindLoaded:
     m_PersistentCalls:
@@ -230,7 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b835d4a45fa91046b2c6d615b3147fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scriptableObject: {fileID: 11400000, guid: a86cc923962015b4a82930663ad4616f, type: 2}
+  _npcData: {fileID: 11400000, guid: a86cc923962015b4a82930663ad4616f, type: 2}
 --- !u!1 &287015461
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,8 +310,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 287015461}
-  m_LocalRotation: {x: 0.093833715, y: -0.07066012, z: 0.006676673, w: 0.9930548}
-  m_LocalPosition: {x: 4.6378503, y: 2.2159765, z: 1.4109001}
+  m_LocalRotation: {x: -0.029008871, y: -0.00000009280451, z: -0.0000000026932878, w: 0.9995792}
+  m_LocalPosition: {x: 3.748, y: 1.9449525, z: 1.1259999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1936,6 +1937,10 @@ PrefabInstance:
       propertyPath: _input
       value: 
       objectReference: {fileID: 1309056288}
+    - target: {fileID: 344767464, guid: 925885b22e738c442beafb4944df6f1c, type: 3}
+      propertyPath: _playerData
+      value: 
+      objectReference: {fileID: 11400000, guid: 09a31abcb793d7744bc2f8cbabaf4ff4, type: 2}
     - target: {fileID: 344767464, guid: 925885b22e738c442beafb4944df6f1c, type: 3}
       propertyPath: _dialogueSystem
       value: 
