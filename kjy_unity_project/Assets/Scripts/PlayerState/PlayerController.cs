@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
    
-    [SerializeField] private PlayerInput _input;
+    [SerializeField] public PlayerInput _input;
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private Animator _animator;
@@ -24,7 +24,8 @@ public class PlayerController : MonoBehaviour
     public bool isMoving = false;
     public bool isDashing = false;
     public bool isTriggered = false;
-
+    public bool isReverted = false;
+    
     // 플레이어가 트리거 범위 내에 있는지만을 확인하기 위한 변수
     public bool _metKind { get; private set; } = false;
     public bool _metIdol { get; private set; } = false;
@@ -90,19 +91,24 @@ public class PlayerController : MonoBehaviour
     
     public void GetInputBool()
     {
-        if (_input.actions["Move"].IsPressed())
+        if (_input.actions["Move"].IsPressed()) // WASD, 십자방향키, 좌측 조이스틱
         {
             isMoving = true;
         }
 
-        if (_input.actions["Dash"].IsPressed())
+        if (_input.actions["Dash"].IsPressed()) // shift, 우측 south
         {
             isDashing = true;
         }
         
-        if (_input.actions["Trigger"].WasPressedThisFrame())
+        if (_input.actions["Trigger"].WasPressedThisFrame()) // 엔터, 우측 east
         {
             isTriggered = true;
+        }
+        
+        if (_input.actions["Revert"].WasPressedThisFrame()) // 백스페이스, 우측 south
+        {
+            isReverted = true;
         }
     }
 
@@ -119,10 +125,18 @@ public class PlayerController : MonoBehaviour
             isDashing = false;
         }
         
-        isTriggered = false;
+        isReverted = false;
     }
-    
-     public void PlayerMove()
+
+    public bool GetInputAB()
+    {
+        if (_input.actions["Trigger"].WasPressedThisFrame() || _input.actions["Revert"].WasPressedThisFrame())
+        {
+            return true;
+        }
+        return false;
+    }
+    public void PlayerMove()
      { 
          Vector3 dir;
     
@@ -155,7 +169,6 @@ public class PlayerController : MonoBehaviour
              _isInteracting = true;
              //_dialogueSystem.대화시행코루틴
              StartCoroutine(_dialogueSystem.TalkToKindVillager());
-             Debug.Log("친절함 유형 주민과 대화");
              _isInteracting = false; // 이벤트에 연결해서 대화 완료시 바뀌도록
          }
      
