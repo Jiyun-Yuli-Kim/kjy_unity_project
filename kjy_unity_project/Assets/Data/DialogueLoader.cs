@@ -3,24 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Networking;
 
 public class DialogueLoader : MonoBehaviour
 {
-    private const string KindDialogue =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=0&single=true&output=csv";
+    public string dialogueURL;
+    public UnityEvent OnKindLoaded;
+    public UnityEvent OnIdolLoaded;
+    public UnityEvent OnCrankyLoaded;
 
-    private const string IdolDialogue =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vT14RTV0DSuTbon86CiecSde7DullmFy3g9reMeRJCoyhvakMuQgtfVwagq8N47fMl1neSdooXMpNsK/pub?gid=0&single=true&output=csv";
-        
+    public const string KindDialogue =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=0&single=true&output=csv";
+    public const string IdolDialogue =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=565515136&single=true&output=csv";
+
+    public const string CrankyDialogue =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=104577247&single=true&output=csv";
+   
     public string[,] DialogueData { get; private set; }
 
     private void Awake()
     {
-        StartCoroutine(DownLoadRoutine(KindDialogue));
+        // StartLoad(KindDialogue);
     }
 
-    IEnumerator DownLoadRoutine(string urlPath)
+    public void StartLoad(string dialogueURL)
+    {
+        StartCoroutine(DownLoadRoutine(dialogueURL));
+    }
+
+    public IEnumerator DownLoadRoutine(string urlPath)
     {
         UnityWebRequest request = UnityWebRequest.Get(urlPath);
         yield return request.SendWebRequest();
@@ -30,8 +43,20 @@ public class DialogueLoader : MonoBehaviour
             string recievedData = request.downloadHandler.text;
             Debug.Log(recievedData);
             DialogueData = ProcessCSV(recievedData);
+            if (urlPath == KindDialogue)
+            {
+                OnKindLoaded.Invoke();
+            }
+            if (urlPath == IdolDialogue)
+            {
+                OnIdolLoaded.Invoke();
+            }
+            if (urlPath == CrankyDialogue)
+            {
+                OnIdolLoaded.Invoke();
+            }
             
-            ShowCSVData(DialogueData);
+            // ShowCSVData(DialogueData);
         }
 
         else
@@ -41,7 +66,7 @@ public class DialogueLoader : MonoBehaviour
         
     }
 
-    private string[,] ProcessCSV(string data)
+    public string[,] ProcessCSV(string data)
     {
         // 행별로 나눔
         string[] lines = data.Split('\n');
@@ -58,10 +83,11 @@ public class DialogueLoader : MonoBehaviour
             }
         }
     
+        // 여기서 처리된 2차원배열
         return DialogueTable;
     }
 
-    private void ShowCSVData(string[,] dataTable)
+    public void ShowCSVData(string[,] dataTable)
     {
         for (int i = 1; i < dataTable.GetLength(0); i++)
         {

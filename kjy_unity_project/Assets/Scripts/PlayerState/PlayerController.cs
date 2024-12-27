@@ -25,11 +25,11 @@ public class PlayerController : MonoBehaviour
     public bool isTriggered = false;
 
     // 플레이어가 트리거 범위 내에 있는지만을 확인하기 위한 변수
-    private bool _metKind = false;
-    private bool _metIdol = false;
+    public bool _metKind { get; private set; } = false;
+    public bool _metIdol { get; private set; } = false;
     
     // 로직 실행중 다른 입력을 받지 않기 위한 플래그 변수
-    private bool _isInteracting = false;
+    public bool _isInteracting = false;
     
     private void Awake()
     {
