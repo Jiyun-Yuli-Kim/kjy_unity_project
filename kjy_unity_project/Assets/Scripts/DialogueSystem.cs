@@ -92,6 +92,9 @@ public class DialogueSystem : MonoBehaviour
         yield return new WaitWhile(() => !_player.GetInputAB());
         Debug.Log(_player.GetInputAB());
         _dialogueText.text = "다음에 로드할 텍스트입니다";
+        yield return new WaitForSeconds(1f);
+
+        yield return new WaitWhile(() => !_player.GetInputAB());
         OnTalkEnded.Invoke();
 
     }
@@ -119,6 +122,7 @@ public class DialogueSystem : MonoBehaviour
     public void ResetInteraction()
     {
         _player._isInteracting = false;
+        _uICanvas.SetActive(false);
     }
 
 }

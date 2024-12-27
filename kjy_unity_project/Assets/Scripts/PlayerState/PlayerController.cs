@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     public bool isMoving = false;
     public bool isDashing = false;
     public bool isTriggered = false;
+    public bool isReverted = false;
+
 
     // 플레이어가 트리거 범위 내에 있는지만을 확인하기 위한 변수
     public bool _metKind { get; private set; } = false;
@@ -110,6 +112,12 @@ public class PlayerController : MonoBehaviour
         {
             isTriggered = true;
         }
+        
+        if (_input.actions["Revert"].WasPressedThisFrame())
+        {
+            isTriggered = true;
+        }
+        
     }
 
     public void ResetInputBool()
