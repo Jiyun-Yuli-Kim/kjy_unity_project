@@ -1713,6 +1713,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1309056288}
     - target: {fileID: 344767464, guid: 925885b22e738c442beafb4944df6f1c, type: 3}
+      propertyPath: _dialogueSystem
+      value: 
+      objectReference: {fileID: 119543400}
+    - target: {fileID: 344767464, guid: 925885b22e738c442beafb4944df6f1c, type: 3}
       propertyPath: playerMoveSpeed
       value: 1.7
       objectReference: {fileID: 0}

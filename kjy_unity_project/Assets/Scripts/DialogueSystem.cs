@@ -72,12 +72,14 @@ public class DialogueSystem : MonoBehaviour
         {
             Debug.Log("_player.partnerName is null");
         }
-        Debug.Log(_player.partnerName);
 
         _uICanvas.SetActive(true);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.5f);
 
-        _dialogueText.text = "안농나는농어야"; 
+        int randIndex = Random.Range(1, 4);
+        string firstLine = _kindData[randIndex, 1]; 
+        
+        _dialogueText.text = firstLine.Replace("\\n", "\n"); 
     }
 
     // 현재 _dialogueData[0,i] : index,
