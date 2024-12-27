@@ -10,6 +10,7 @@ using UnityEngine.InputSystem;
 // 키보드, 게임패드 모두 대응하도록 구현
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] public PlayerData _playerData;  
    
     [SerializeField] private PlayerInput _input;
     [SerializeField] private Rigidbody _rb;

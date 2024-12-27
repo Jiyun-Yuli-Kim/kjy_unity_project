@@ -8,6 +8,8 @@ using UnityEngine.Networking;
 
 public class DialogueLoader : MonoBehaviour
 {
+    [SerializeField] private PlayerController _player;
+    
     public string dialogueURL;
     public UnityEvent OnKindLoaded;
     public UnityEvent OnIdolLoaded;
@@ -71,14 +73,19 @@ public class DialogueLoader : MonoBehaviour
         // 행별로 나눔
         string[] lines = data.Split('\n');
     
+        // 2차원 배열 생성
         string[,] DialogueTable = new string[lines.Length, lines[0].Split(',').Length];
     
+        // 행 바꾸기
         for (int i = 1; i < lines.Length; i++)
         {
             string[] values = lines[i].Split(',');
+            
+            // 해당 행의 열마다 데이터 넣기
             for (int j = 0; j < values.Length; j++)
             {
-                values[j] = values[j].Replace("\\c", ",");
+                //values[j] = values[j].Replace("\\c", ",");
+                values[j] = Decode(values[j]);
                 DialogueTable[i, j] = values[j];
             }
         }
@@ -96,6 +103,15 @@ public class DialogueLoader : MonoBehaviour
                 Debug.Log(dataTable[i, j]);
             }
         }
+    }
+    
+    private string Decode(string input)
+    {
+        string result1 = input.Replace("\\n", "\n");
+        string result2 = result1.Replace("\\c", ",");
+        string result3 = result2.Replace("!PN!", _player._playerData.PlayerName);
+        string result4 = result3.Replace("!CP!", _player.partnerCp);
+        return result4;
     }
 }
 

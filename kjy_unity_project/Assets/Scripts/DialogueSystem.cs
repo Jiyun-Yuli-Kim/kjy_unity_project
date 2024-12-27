@@ -136,6 +136,8 @@ public class DialogueSystem : MonoBehaviour
     // _dialogueData[2,i] : 플레이어 대답
     // _dialogueData[3,i] : 다음 인덱스
 
+
+
     public void ResetInteraction()
     {
         _player._isInteracting = false;
