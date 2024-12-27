@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float playerMoveSpeed;
     [field : SerializeField] public float rotateInterpolation{get; private set;} 
     [field : SerializeField] public float dashMultiplier{get; private set;}
-    [field: SerializeField] public float angularDrag { get; private set; } = 3f;
+    [field: SerializeField] public float angularDrag { get; private set; } = 6f;
     
     public bool isMoving = false;
     public bool isDashing = false;
@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
     public void LateUpdate()
     {
         ResetInputBool();
+        _rb.angularDrag = 3;
     }
     
     private void OnTriggerEnter(Collider other)
@@ -115,7 +116,7 @@ public class PlayerController : MonoBehaviour
         
         if (_input.actions["Revert"].WasPressedThisFrame())
         {
-            isTriggered = true;
+            isReverted = true;
         }
         
     }
@@ -164,11 +165,11 @@ public class PlayerController : MonoBehaviour
              );
          }
          
-         // 폴리싱) 
-         // else
-         // {
-         //     rb.angularDrag = _angularDrag;
-         // }
+         // 폴리싱 
+         else
+         {
+             _rb.angularDrag = angularDrag;
+         }
     }
 
      private void DialogueCheck()

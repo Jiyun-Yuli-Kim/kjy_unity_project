@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
+using Cinemachine;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.EventSystems;
@@ -13,6 +14,8 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private PlayerController _player;
     [SerializeField] private DialogueLoader _dialogueLoader;
     
+    [SerializeField] private CinemachineVirtualCamera[] cameras;
+    
     [SerializeField] private GameObject _uICanvas;
     [SerializeField] private TextMeshProUGUI _npcName;
     [SerializeField] private TextMeshProUGUI _dialogueText;
@@ -23,9 +26,9 @@ public class DialogueSystem : MonoBehaviour
     string[,] _idolData;
     string[,] _crankyData;
     
-    public UnityEvent OnTalkEnded;
-
-
+    public UnityEvent OnTalkStart;
+    public UnityEvent OnTalkEnd;
+    public UnityEvent OnLineEnd;
     
     private void Awake()
     {
@@ -34,6 +37,10 @@ public class DialogueSystem : MonoBehaviour
         {
             Debug.LogError("Player is null");
         }
+        
+        _uICanvas.SetActive(false);
+        _blinker.SetActive(false);
+
     }
 
     private void Start()
@@ -47,7 +54,11 @@ public class DialogueSystem : MonoBehaviour
         _dialogueLoader.OnCrankyLoaded.AddListener(OnCrankyDataLoaded);
         _dialogueLoader.StartLoad(DialogueLoader.CrankyDialogue);
         
-        OnTalkEnded.AddListener(ResetInteraction);
+        OnTalkStart.AddListener(TalkCamOn);
+        OnLineEnd.AddListener(StartBlinking);
+        OnTalkEnd.AddListener(ResetInteraction);
+        OnTalkEnd.AddListener(TalkCamOff);
+        
     }
 
     private void OnKindDataLoaded()
@@ -80,7 +91,9 @@ public class DialogueSystem : MonoBehaviour
         {
             Debug.Log("_player.partnerName is null");
         }
-
+        
+        OnTalkStart.Invoke();
+        
         yield return new WaitForSeconds(0.5f);
         _uICanvas.SetActive(true);
 
@@ -88,14 +101,19 @@ public class DialogueSystem : MonoBehaviour
         string firstLine = _kindData[randIndex, 1];
         _dialogueText.text = firstLine.Replace("\\n", "\n");
         yield return new WaitForSeconds(1f);
+        OnLineEnd.Invoke();
+
 
         yield return new WaitWhile(() => !_player.GetInputAB());
+        _blinker.SetActive(false);
+
         Debug.Log(_player.GetInputAB());
         _dialogueText.text = "다음에 로드할 텍스트입니다";
         yield return new WaitForSeconds(1f);
-
+        OnLineEnd.Invoke();
+        
         yield return new WaitWhile(() => !_player.GetInputAB());
-        OnTalkEnded.Invoke();
+        OnTalkEnd.Invoke();
 
     }
 
@@ -125,5 +143,20 @@ public class DialogueSystem : MonoBehaviour
         _uICanvas.SetActive(false);
     }
 
+    public void StartBlinking()
+    {
+        _blinker.SetActive(true);
+    }
+
+    public void TalkCamOn()
+    {
+        cameras[1].Priority = 11;
+    }
+    
+    public void TalkCamOff()
+    {
+        cameras[1].Priority = 9;
+    }
+    
 }
     
