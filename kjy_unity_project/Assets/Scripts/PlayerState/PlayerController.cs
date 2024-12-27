@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 // 플레이어의 기본적인 이동을 관리합니다.
@@ -34,6 +35,8 @@ public class PlayerController : MonoBehaviour
     public bool _isInteracting = false;
 
     public string partnerName;
+    
+
     
     private void Awake()
     {
@@ -91,6 +94,11 @@ public class PlayerController : MonoBehaviour
     
     public void GetInputBool()
     {
+        if (_isInteracting)
+        {
+            return;
+        }
+
         if (_input.actions["Move"].IsPressed()) // WASD, 십자방향키, 좌측 조이스틱
         {
             isMoving = true;
@@ -131,7 +139,7 @@ public class PlayerController : MonoBehaviour
 
     public bool GetInputAB()
     {
-        if (_input.actions["Trigger"].WasPressedThisFrame() || _input.actions["Revert"].WasPressedThisFrame())
+        if (_input.actions["Trigger"].IsPressed() || _input.actions["Revert"].IsPressed())
         {
             return true;
         }
@@ -170,14 +178,12 @@ public class PlayerController : MonoBehaviour
              _isInteracting = true;
              //_dialogueSystem.대화시행코루틴
              StartCoroutine(_dialogueSystem.TalkToKindVillager());
-             _isInteracting = false; // 이벤트에 연결해서 대화 완료시 바뀌도록
          }
      
          if (_metIdol && isTriggered)
          {
              _isInteracting = true;
              Debug.Log("아이돌 유형 주민과 대화");
-             _isInteracting = false;
          }
      }
 }

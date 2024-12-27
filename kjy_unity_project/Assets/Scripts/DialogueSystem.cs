@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +22,9 @@ public class DialogueSystem : MonoBehaviour
     string[,] _kindData;
     string[,] _idolData;
     string[,] _crankyData;
+    
+    public UnityEvent OnTalkEnded;
+
 
     
     private void Awake()
@@ -40,6 +46,8 @@ public class DialogueSystem : MonoBehaviour
         
         _dialogueLoader.OnCrankyLoaded.AddListener(OnCrankyDataLoaded);
         _dialogueLoader.StartLoad(DialogueLoader.CrankyDialogue);
+        
+        OnTalkEnded.AddListener(ResetInteraction);
     }
 
     private void OnKindDataLoaded()
@@ -63,8 +71,8 @@ public class DialogueSystem : MonoBehaviour
     private void Update()
     {
     }
-    
-    public IEnumerator TalkToKindVillager() 
+
+    public IEnumerator TalkToKindVillager()
     {
         Debug.Log("코루틴 정상 시행");
         _npcName.text = _player.partnerName;
@@ -73,16 +81,21 @@ public class DialogueSystem : MonoBehaviour
             Debug.Log("_player.partnerName is null");
         }
 
-        _uICanvas.SetActive(true);
         yield return new WaitForSeconds(0.5f);
+        _uICanvas.SetActive(true);
 
         int randIndex = Random.Range(1, 4);
-        string firstLine = _kindData[randIndex, 1]; 
+        string firstLine = _kindData[randIndex, 1];
         _dialogueText.text = firstLine.Replace("\\n", "\n");
-        yield return new WaitWhile(() => _player.GetInputAB());
+        yield return new WaitForSeconds(1f);
+
+        yield return new WaitWhile(() => !_player.GetInputAB());
+        Debug.Log(_player.GetInputAB());
         _dialogueText.text = "다음에 로드할 텍스트입니다";
+        OnTalkEnded.Invoke();
+
     }
-    
+
     /*
      *경우의 수[1] 선택창이 없는 대화
      *이니시에이팅은 1열의 인덱스(_dialogueData[0,i]) 이걸 랜덤으로 불러온다
@@ -97,14 +110,16 @@ public class DialogueSystem : MonoBehaviour
      * a[0]을 선택한 경우, (_dialogueData[0, int(p[0])])에 해당하는 데이터 다시 로드
      *
      */
-    
-    
-    
-    
-    
 
     // 현재 _dialogueData[0,i] : index,
     // _dialogueData[1,i] : NPC 대사
     // _dialogueData[2,i] : 플레이어 대답
     // _dialogueData[3,i] : 다음 인덱스
+
+    public void ResetInteraction()
+    {
+        _player._isInteracting = false;
+    }
+
 }
+    
