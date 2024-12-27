@@ -85,7 +85,6 @@ public class DialogueSystem : MonoBehaviour
     
     public IEnumerator TalkToKindVillager() 
     {
-        Debug.Log("코루틴 정상 시행");
         _npcName.text = _player.partnerName;
         if (_player.partnerName == null)
         {

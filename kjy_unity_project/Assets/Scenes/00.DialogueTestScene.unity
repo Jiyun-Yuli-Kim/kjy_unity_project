@@ -191,22 +191,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 1906586505}
   _dialogueLoader: {fileID: 119543398}
+  cameras:
+  - {fileID: 1307913602}
+  - {fileID: 411470806}
   _uICanvas: {fileID: 425200108}
   _npcName: {fileID: 1352150491}
   _dialogueText: {fileID: 523037799}
   _blinker: {fileID: 1749309420}
   _uiAnimator: {fileID: 0}
-  OnTalkEnded:
+  OnTalkStart:
     m_PersistentCalls:
       m_Calls: []
-  OnLineEnded:
+  OnTalkEnd:
     m_PersistentCalls:
       m_Calls: []
+  OnLineEnd:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1 &155179961 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5649367757853659239, guid: 34f5fa44053433748b4ce53a93815e87, type: 3}
+  m_PrefabInstance: {fileID: 5648173694350915351}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &155179964 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5652915648388175503, guid: 34f5fa44053433748b4ce53a93815e87, type: 3}
   m_PrefabInstance: {fileID: 5648173694350915351}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &155179965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155179961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b835d4a45fa91046b2c6d615b3147fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObject: {fileID: 11400000, guid: a86cc923962015b4a82930663ad4616f, type: 2}
 --- !u!1 &287015461
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,8 +336,8 @@ MonoBehaviour:
   m_UpdateMethod: 2
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
-    m_Style: 1
-    m_Time: 2
+    m_Style: 4
+    m_Time: 1
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -393,7 +417,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 11
+  m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 1378980182}
   m_Follow: {fileID: 1378980182}
@@ -1685,21 +1709,33 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.306
       objectReference: {fileID: 0}
+    - target: {fileID: 4687642769752976, guid: e5bacbaae5774db4ea38a568329c8e69, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687642769752976, guid: e5bacbaae5774db4ea38a568329c8e69, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687642769752976, guid: e5bacbaae5774db4ea38a568329c8e69, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 4974634722159190, guid: e5bacbaae5774db4ea38a568329c8e69, type: 3}
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4974634722159190, guid: e5bacbaae5774db4ea38a568329c8e69, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4974634722159190, guid: e5bacbaae5774db4ea38a568329c8e69, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4974634722159190, guid: e5bacbaae5774db4ea38a568329c8e69, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4974634722159190, guid: e5bacbaae5774db4ea38a568329c8e69, type: 3}
       propertyPath: m_LocalPosition.x

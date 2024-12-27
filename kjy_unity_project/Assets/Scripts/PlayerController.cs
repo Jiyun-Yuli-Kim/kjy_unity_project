@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public bool _isInteracting = false;
 
     public string partnerName;
+    public string partnerCp; // 상대방 말버릇
     
     private void Awake()
     {
@@ -65,15 +66,26 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Kind")
         {
             _metKind = true;
-            partnerName = other.gameObject.name;
-            
-            // 추후 스크립터블 오브젝트에서 데이터 로드하는 방식으로 변경
+            var npcComp = other.GetComponent<NPCController>();
+            if (npcComp != null)
+            {
+                partnerName = npcComp._npcData.NPCName;
+                partnerCp = npcComp._npcData.CatchPhrase;
+                Debug.Log($"{partnerName}, {partnerCp}");
+            }
+            return;
         }
         
         if (other.gameObject.tag == "Idol")
         {
             _metIdol = true;
-            partnerName = other.gameObject.name;
+            var npcComp = other.GetComponent<NPCController>();
+            if (npcComp != null)
+            {
+                partnerName = npcComp._npcData.NPCName;
+                Debug.Log(partnerName);
+            }
+            return;
         }
     }
     
@@ -117,6 +129,7 @@ public class PlayerController : MonoBehaviour
         if (_input.actions["Revert"].WasPressedThisFrame())
         {
             isReverted = true;
+            Debug.Log("B버튼 눌림");
         }
         
     }

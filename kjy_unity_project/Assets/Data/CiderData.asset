@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NPCName: "\uC0AC\uC774\uB2E4"
   personality: 1
+  CatchPhrase: "\uD401\uD401"
