@@ -14,7 +14,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private Animator _animator;
-    
+    [SerializeField] private DialogueSystem _dialogueSystem;
+     
     [SerializeField] public float playerMoveSpeed;
     [field : SerializeField] public float rotateInterpolation{get; private set;} 
     [field : SerializeField] public float dashMultiplier{get; private set;}
@@ -30,6 +31,8 @@ public class PlayerController : MonoBehaviour
     
     // 로직 실행중 다른 입력을 받지 않기 위한 플래그 변수
     public bool _isInteracting = false;
+
+    public string partnerName;
     
     private void Awake()
     {
@@ -58,11 +61,15 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Kind")
         {
             _metKind = true;
+            partnerName = other.gameObject.name;
+            
+            // 추후 스크립터블 오브젝트에서 데이터 로드하는 방식으로 변경
         }
         
         if (other.gameObject.tag == "Idol")
         {
             _metIdol = true;
+            partnerName = other.gameObject.name;
         }
     }
     
@@ -71,11 +78,13 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Kind")
         {
             _metKind = false;
+            partnerName = null;
         }
         
         if (other.gameObject.tag == "Idol")
         {
             _metIdol = false;
+            partnerName = null;
         }
     }
     
@@ -144,10 +153,12 @@ public class PlayerController : MonoBehaviour
          if (_metKind && isTriggered)
          {
              _isInteracting = true;
+             //_dialogueSystem.대화시행코루틴
+             StartCoroutine(_dialogueSystem.TalkToKindVillager());
              Debug.Log("친절함 유형 주민과 대화");
-             _isInteracting = false;
+             _isInteracting = false; // 이벤트에 연결해서 대화 완료시 바뀌도록
          }
-
+     
          if (_metIdol && isTriggered)
          {
              _isInteracting = true;
