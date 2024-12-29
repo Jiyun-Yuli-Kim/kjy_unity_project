@@ -17,6 +17,9 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera[] cameras;
     
     [SerializeField] private GameObject _uICanvas;
+    [SerializeField] private GameObject _2opsPopup;
+    [SerializeField] private GameObject _3opsPopup;
+
     [SerializeField] private TextMeshProUGUI _npcName;
     [SerializeField] private TextMeshProUGUI _dialogueText;
     [SerializeField] private TextMeshProUGUI _choice1;
@@ -116,6 +119,9 @@ public class DialogueSystem : MonoBehaviour
         // 먼저 선택들을 파싱해 배열에 넣고
         // 배열크기에 따라 다른 팝업을 띄운다
         
+        // UI 연동 계획
+        // 디폴트는 첫번째 선택지이다
+        // 키보드나 게임패드 왼쪽 조이스틱의 south를 누르면 아래 옵션으로 포인터 이동
         
         _dialogueText.text = "다음에 로드할 텍스트입니다";
         yield return new WaitForSeconds(1f);
