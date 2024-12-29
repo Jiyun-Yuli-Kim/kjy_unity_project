@@ -19,6 +19,10 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private GameObject _uICanvas;
     [SerializeField] private TextMeshProUGUI _npcName;
     [SerializeField] private TextMeshProUGUI _dialogueText;
+    [SerializeField] private TextMeshProUGUI _choice1;
+    [SerializeField] private TextMeshProUGUI _choice2;
+    [SerializeField] private TextMeshProUGUI _choice3;
+
     [SerializeField] private GameObject _blinker;
     [SerializeField] private Animator _uiAnimator;
     
@@ -29,6 +33,9 @@ public class DialogueSystem : MonoBehaviour
     public UnityEvent OnTalkStart;
     public UnityEvent OnTalkEnd;
     public UnityEvent OnLineEnd;
+
+    // 첫 대사의 개수
+    private int _kindMaxRange = 5;
     
     private void Awake()
     {
@@ -48,11 +55,11 @@ public class DialogueSystem : MonoBehaviour
         _dialogueLoader.OnKindLoaded.AddListener(OnKindDataLoaded);
         _dialogueLoader.StartLoad(DialogueLoader.KindDialogue);
         
-        _dialogueLoader.OnIdolLoaded.AddListener(OnIdolDataLoaded);
-        _dialogueLoader.StartLoad(DialogueLoader.IdolDialogue);
-        
-        _dialogueLoader.OnCrankyLoaded.AddListener(OnCrankyDataLoaded);
-        _dialogueLoader.StartLoad(DialogueLoader.CrankyDialogue);
+        // _dialogueLoader.OnIdolLoaded.AddListener(OnIdolDataLoaded);
+        // _dialogueLoader.StartLoad(DialogueLoader.IdolDialogue);
+        //
+        // _dialogueLoader.OnCrankyLoaded.AddListener(OnCrankyDataLoaded);
+        // _dialogueLoader.StartLoad(DialogueLoader.CrankyDialogue);
         
         OnTalkStart.AddListener(TalkCamOn);
         OnLineEnd.AddListener(StartBlinking);
@@ -96,17 +103,20 @@ public class DialogueSystem : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         _uICanvas.SetActive(true);
 
-        int randIndex = Random.Range(1, 5);
+        int randIndex = Random.Range(1, _kindMaxRange);
+        Debug.Log(_kindData);
         string firstLine = _kindData[randIndex, 1];
-        _dialogueText.text = firstLine.Replace("\\n", "\n");
+        _dialogueText.text = firstLine;
         yield return new WaitForSeconds(1f);
         OnLineEnd.Invoke();
-
-
+        
         yield return new WaitWhile(() => !_player.GetInputAB());
         _blinker.SetActive(false);
 
-        Debug.Log(_player.GetInputAB());
+        // 먼저 선택들을 파싱해 배열에 넣고
+        // 배열크기에 따라 다른 팝업을 띄운다
+        
+        
         _dialogueText.text = "다음에 로드할 텍스트입니다";
         yield return new WaitForSeconds(1f);
         OnLineEnd.Invoke();
