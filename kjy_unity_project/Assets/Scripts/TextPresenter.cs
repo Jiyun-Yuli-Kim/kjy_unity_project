@@ -18,7 +18,7 @@ public class TextPresenter : MonoBehaviour
 
     [SerializeField] private GameObject _uICanvas;
     [SerializeField] private GameObject _2opsPopup;
-    [SerializeField] private GameObject _3opsPopup;
+    // [SerializeField] private GameObject _3opsPopup;
 
     [SerializeField] private TextMeshProUGUI _npcName;
     [SerializeField] private TextMeshProUGUI _dialogueText;

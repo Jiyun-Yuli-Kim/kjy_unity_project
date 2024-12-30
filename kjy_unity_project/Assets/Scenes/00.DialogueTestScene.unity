@@ -322,37 +322,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 119543397}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4457e0358fd75f84b86bb349ae3c8e9e, type: 3}
+  m_Script: {fileID: 11500000, guid: 32f2829aee1685a47a183b4fb27eab14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 1906586505}
   _dialogueLoader: {fileID: 119543398}
+  _textPresenter: {fileID: 425200113}
   cameras:
   - {fileID: 1307913602}
   - {fileID: 411470806}
-  _uICanvas: {fileID: 425200108}
-  _2opsPopup: {fileID: 363289547}
-  _3opsPopup: {fileID: 0}
-  _npcName: {fileID: 1352150491}
-  _dialogueText: {fileID: 523037799}
-  _choice1: {fileID: 49209145}
-  _choice2: {fileID: 1006502643}
-  _highlighter1: {fileID: 1068150025}
-  _highlighter2: {fileID: 1101315969}
-  _blinker: {fileID: 1749309420}
-  _uiAnimator: {fileID: 0}
   OnTalkStart:
     m_PersistentCalls:
       m_Calls: []
   OnTalkEnd:
     m_PersistentCalls:
       m_Calls: []
-  OnLineStart:
-    m_PersistentCalls:
-      m_Calls: []
-  OnLineEnd:
-    m_PersistentCalls:
-      m_Calls: []
+  textToPrint: 
 --- !u!1 &155179961 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5649367757853659239, guid: 34f5fa44053433748b4ce53a93815e87, type: 3}
@@ -790,6 +775,7 @@ GameObject:
   - component: {fileID: 425200111}
   - component: {fileID: 425200110}
   - component: {fileID: 425200109}
+  - component: {fileID: 425200113}
   m_Layer: 5
   m_Name: DialogueCanvas
   m_TagString: Untagged
@@ -880,6 +866,30 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &425200113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425200108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 484ed8de71b2a6f42a61d0823f17e842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 1906586505}
+  _dialogueSystem: {fileID: 119543400}
+  _uICanvas: {fileID: 425200108}
+  _2opsPopup: {fileID: 363289547}
+  _npcName: {fileID: 1352150491}
+  _dialogueText: {fileID: 523037799}
+  _choice1: {fileID: 49209145}
+  _choice2: {fileID: 1006502643}
+  _highlighter1: {fileID: 1068150025}
+  _highlighter2: {fileID: 1101315969}
+  _blinker: {fileID: 1749309420}
+  choice: 0
 --- !u!1 &523037797
 GameObject:
   m_ObjectHideFlags: 0

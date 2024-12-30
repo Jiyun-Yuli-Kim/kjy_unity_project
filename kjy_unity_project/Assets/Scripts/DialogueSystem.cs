@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 public class DialogueSystem : MonoBehaviour
 {
@@ -99,9 +100,11 @@ public class DialogueSystem : MonoBehaviour
 
         // 랜덤으로 대사를 출력함
         textToPrint = _kindData[_randIndex, 1];
+        Debug.Log("첫 대사" + textToPrint);
         StartCoroutine(_textPresenter.StartDialogue());
         
         string[] firstchoices = _kindData[_randIndex, 2].Split("|");
+        Debug.Log("첫 선택지들"+ firstchoices[0] + firstchoices[1]);
         CheckChoicesCount(_kindData, firstchoices, _randIndex);
         
         OnTalkEnd.Invoke();
@@ -117,9 +120,11 @@ public class DialogueSystem : MonoBehaviour
             {
                 // 대화 끝내기 로직
                 OnTalkEnd.Invoke();
+                return;
             }
            
-            textToPrint = data[j = int.Parse(data[index, 3])-_indexOffset, 1];
+            Debug.Log($"파싱 및 오프셋 처리 완료 데이터 {int.Parse(data[index, 3])-_indexOffset}");
+            textToPrint = data[int.Parse(data[index, 3])-_indexOffset, 1];
             StartCoroutine(_textPresenter.LoadNextLine());
             
             string[] nextchoices = data[int.Parse(data[index, 3]) - _indexOffset, 2].Split("|");
