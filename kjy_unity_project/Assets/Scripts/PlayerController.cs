@@ -163,15 +163,15 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    public bool GetInputAB()
-    {
-        if (_input.actions["Trigger"].IsPressed() || _input.actions["Revert"].IsPressed())
-        {
-            return true;
-        }
-
-        return false;
-    }
+    // public bool GetInputAB()
+    // {
+    //     if (_input.actions["Trigger"].IsPressed() || _input.actions["Revert"].IsPressed())
+    //     {
+    //         return true;
+    //     }
+    //
+    //     return false;
+    // }
 
     public void PlayerMove()
     {

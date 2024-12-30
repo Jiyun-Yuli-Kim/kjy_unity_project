@@ -64,7 +64,6 @@ public class DialogueSystem : MonoBehaviour
         _highlighter1.SetActive(false);
         _highlighter2.SetActive(false);
         _blinker.SetActive(false);
-
     }
 
     private void Start()
@@ -82,7 +81,6 @@ public class DialogueSystem : MonoBehaviour
         OnLineStart.AddListener(EndBlink);
         OnLineEnd.AddListener(StartBlink);
         OnTalkEnd.AddListener(ResetInteraction);
-        
     }
 
     private void OnKindDataLoaded()
@@ -102,10 +100,6 @@ public class DialogueSystem : MonoBehaviour
         _crankyData = _dialogueLoader.DialogueData; 
         // _dialogueLoader.ShowCSVData(_crankyData);
     }
-
-    private void Update()
-    {
-    }
     
     public IEnumerator TalkToKindVillager() 
     {
@@ -117,45 +111,50 @@ public class DialogueSystem : MonoBehaviour
         
         // yield return new WaitForSeconds(0.5f);
 
+        // 대화 시작에 따른 각종 초기화. 줌인 + 팝업활성화 + interacting = true 
         OnTalkStart.Invoke();
-
-        _randIndex = Random.Range(1, _kindMaxRange);
-
-        LoadLine(_kindData, _randIndex);
         
-        yield return new WaitWhile(() => !_player.GetInputAB());
-        _blinker.SetActive(false);
-
-        // 먼저 선택들을 파싱해 배열에 넣고
-        // 배열크기에 따라 다른 팝업을 띄운다
-        // firstchoices-플레이어가 선택할 수 있는 답변들의 배열 ["이야기하자!", "다음에 봐"]
-        string[] firstchoices = _kindData[_randIndex, 2].Split("|");
-        if (firstchoices.Length == 1)
+        // 대화 종료시 빠져나올 수 있도록 루프 설정
+        while (_player.isInteracting)
         {
-            Debug.Log("선택지가 한개인 경우");
-            yield break;
-            // 다음 대사 로드
-            // LoadLine(_kindData, int.Parse(_kindData[randIndex,3]));
-        }
-        else if (firstchoices.Length == 2)
-        {
-            ShowChoices(firstchoices);
-            StartCoroutine(GetChoice());
-            yield return new WaitWhile(() => !_onChoiceEnd);
-            LoadNextLine(_kindData, _choice);
-        }
+            _randIndex = Random.Range(1, _kindMaxRange);
 
-        // UI 연동 계획
-        // 디폴트는 첫번째 선택지이다
-        // 키보드나 게임패드 왼쪽 조이스틱의 south를 누르면 아래 옵션으로 포인터 이동
-        
-        _dialogueText.text = "다음에 로드할 텍스트입니다";
-        yield return new WaitForSeconds(1f);
-        OnLineEnd.Invoke();
-        
-        yield return new WaitWhile(() => !_player.GetInputAB());
-        OnTalkEnd.Invoke();
+            // 랜덤으로 대사를 출력함
+            LoadLine(_kindData, _randIndex);
+            yield return new WaitWhile(() => !_input.actions["Trigger"].WasPressedThisFrame());
+            _blinker.SetActive(false);
 
+            // 먼저 선택들을 파싱해 배열에 넣고
+            // 배열크기에 따라 다른 팝업을 띄운다
+            // firstchoices-플레이어가 선택할 수 있는 답변들의 배열 ["이야기하자!", "다음에 봐"]
+            string[] firstchoices = _kindData[_randIndex, 2].Split("|");
+            
+            // 선택지 배열이 한개인 경우 즉 선택지가 따로 없는 경우
+            if (firstchoices.Length == 1)
+            {
+                Debug.Log("선택지가 한개인 경우");
+                // 다음 대사 로드
+                LoadLine(_kindData, int.Parse(_kindData[_randIndex, 3])-95);
+                yield return new WaitWhile(() => !_input.actions["Trigger"].WasPressedThisFrame());
+                _blinker.SetActive(false);
+                // LoadNextLine(_kindData, int.Parse(_kindData[_randIndex, 3]));
+
+            }
+            else if (firstchoices.Length == 2)
+            {
+                ShowChoices(firstchoices);
+                StartCoroutine(GetChoice());
+                yield return new WaitWhile(() => !_onChoiceEnd);
+                LoadNextLine(_kindData, _randIndex);
+            }
+
+            // _dialogueText.text = "다음에 로드할 텍스트입니다";
+            // yield return new WaitForSeconds(1f);
+            // OnLineEnd.Invoke();
+
+            yield return new WaitWhile(() => !_input.actions["Trigger"].WasPressedThisFrame());
+            OnTalkEnd.Invoke();
+        }
     }
 
     // 인덱스를 매개변수로 받아 해당하는 인덱스의 대사를 띄움
@@ -180,16 +179,16 @@ public class DialogueSystem : MonoBehaviour
     {
         _player.isChoosing = true;
         Debug.Log("선택 코루틴 정상시행");
-        while (!_player.GetInputAB())
+        while (!_input.actions["Trigger"].WasPressedThisFrame())
         {
-            if (_choice == 0 && _player._input.actions["South"].WasPressedThisFrame())
+            if (_choice == 0 && _input.actions["South"].WasPressedThisFrame())
             { 
                 _highlighter1.SetActive(false);
                 _highlighter2.SetActive(true);
                 _choice=1;
             }
 
-            if (_choice == 1 && _player._input.actions["North"].WasPressedThisFrame())
+            if (_choice == 1 && _input.actions["North"].WasPressedThisFrame())
             {
                 _highlighter2.SetActive(false);
                 _highlighter1.SetActive(true);
@@ -198,24 +197,28 @@ public class DialogueSystem : MonoBehaviour
             
             yield return null;
         }
-
+            _highlighter2.SetActive(false);
             _2opsPopup.SetActive(false);
             _onChoiceEnd = true;
             _player.isChoosing = false;
     }
 
+    // 전체 데이터셋과 인덱스를 매개변수로 받아 다음 대사의 인덱스를 찾고 해당 대사를 로드한다.
     private void LoadNextLine(string[,] data, int i)
     {
-        string[] nextIndex = data[_randIndex, 3].Split("|");
+        string[] nextIndex = data[i, 3].Split("|");
         if (nextIndex.Length == 1)
         {
             if (nextIndex[0] == "9999")
             {
                 Debug.Log("대화종료 로직 시행");
+                _player.isInteracting = false;
+                OnTalkEnd.Invoke();
+                return;
                 // 대화종료로직
             }
             
-            LoadLine( _kindData , int.Parse(nextIndex[0]));
+            LoadLine( _kindData , int.Parse(nextIndex[0])-95);
         }
 
         if (nextIndex.Length == 2)
@@ -223,13 +226,13 @@ public class DialogueSystem : MonoBehaviour
             if (_choice == 0)
             {
                 Debug.Log("1번 선택에 따른 로직 시행");
-                // LoadLine( _kindData , int.Parse(nextIndex[0]));
+                LoadLine( _kindData , int.Parse(nextIndex[0])-95);
             }
 
             if (_choice == 1)
             {
                 Debug.Log("2번 선택에 따른 로직 시행");
-                // LoadLine( _kindData , int.Parse(nextIndex[1]));
+                // LoadLine( _kindData , int.Parse(nextIndex[1])-95);
             }
         }
     }
@@ -253,9 +256,7 @@ public class DialogueSystem : MonoBehaviour
     // _dialogueData[1,i] : NPC 대사
     // _dialogueData[2,i] : 플레이어 대답
     // _dialogueData[3,i] : 다음 인덱스
-
-
-
+    
     public void StartInteraction()
     {
         TalkCamOn();
