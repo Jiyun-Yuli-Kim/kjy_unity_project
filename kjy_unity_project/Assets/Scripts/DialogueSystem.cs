@@ -48,6 +48,7 @@ public class DialogueSystem : MonoBehaviour
     private int _kindMaxRange = 5;
     private int _randIndex;
     private int _choice = 0;
+    private int _indexOffset;
     
     private void Awake()
     {
@@ -100,60 +101,113 @@ public class DialogueSystem : MonoBehaviour
         _crankyData = _dialogueLoader.DialogueData; 
         // _dialogueLoader.ShowCSVData(_crankyData);
     }
-    
-    public IEnumerator TalkToKindVillager() 
+
+    public IEnumerator TalkToKindVillager()
     {
         _npcName.text = _player.partnerName;
         if (_player.partnerName == null)
         {
             Debug.Log("_player.partnerName is null");
         }
-        
+
         // yield return new WaitForSeconds(0.5f);
 
         // 대화 시작에 따른 각종 초기화. 줌인 + 팝업활성화 + interacting = true 
         OnTalkStart.Invoke();
-        
-        // 대화 종료시 빠져나올 수 있도록 루프 설정
-        while (_player.isInteracting)
-        {
-            _randIndex = Random.Range(1, _kindMaxRange);
 
-            // 랜덤으로 대사를 출력함
-            LoadLine(_kindData, _randIndex);
-            yield return new WaitWhile(() => !_input.actions["Trigger"].WasPressedThisFrame());
+        _randIndex = Random.Range(1, _kindMaxRange);
+
+        // 랜덤으로 대사를 출력함
+        LoadLine(_kindData, _randIndex);
+        yield return new WaitWhile(() => !_input.actions["Trigger"].WasPressedThisFrame());
+        _blinker.SetActive(false);
+        
+        string[] firstchoices = _kindData[_randIndex, 2].Split("|");
+        CheckChoicesCount(_kindData, firstchoices, _randIndex);
+        
+        // 먼저 선택들을 파싱해 배열에 넣고
+        // 배열크기에 따라 다른 팝업을 띄운다
+        // firstchoices-플레이어가 선택할 수 있는 답변들의 배열 ["이야기하자!", "다음에 봐"]
+        // string[] firstchoices = _kindData[_randIndex, 2].Split("|");
+
+        // 선택지 배열이 한개인 경우 즉 선택지가 따로 없는 경우
+        // if (firstchoices.Length == 1)
+        // {
+        //     Debug.Log("선택지가 한개인 경우");
+        //     // 다음 대사 로드
+        //     LoadLine(_kindData, int.Parse(_kindData[_randIndex, 3]) - _indexOffset);
+        //     yield return new WaitWhile(() => !_input.actions["Trigger"].WasPressedThisFrame());
+        //     _blinker.SetActive(false);
+        //     LoadNextLine(_kindData, int.Parse(_kindData[_randIndex, 3])-_indexOffset);
+        // }
+        // else if (firstchoices.Length == 2)
+        // {
+        //     ShowChoices(firstchoices);
+        //     StartCoroutine(GetChoice());
+        //     yield return new WaitWhile(() => !_onChoiceEnd);
+        //     LoadNextLine(_kindData, _randIndex);
+        // }
+
+        // OnLineEnd.Invoke();
+
+
+        yield return new WaitWhile(() => !_input.actions["Trigger"].WasPressedThisFrame());
+        OnTalkEnd.Invoke();
+    }
+
+    private void CheckChoicesCount(string[,] data, string[] choices, int index)
+    {
+        int i = 0;
+        // 선택지 배열이 한개인 경우 즉 선택지가 따로 없는 경우
+        if (choices.Length == 1)
+        {
+            Debug.Log("선택지가 한개인 경우");
+            while (!_input.actions["Trigger"].WasPressedThisFrame()){ }
             _blinker.SetActive(false);
 
-            // 먼저 선택들을 파싱해 배열에 넣고
-            // 배열크기에 따라 다른 팝업을 띄운다
-            // firstchoices-플레이어가 선택할 수 있는 답변들의 배열 ["이야기하자!", "다음에 봐"]
-            string[] firstchoices = _kindData[_randIndex, 2].Split("|");
+            // 다음 대사 로드
+            if (data[_randIndex, 3] == "9999")
+            {
+                // 대화 끝내기 로직
+                OnTalkEnd.Invoke();
+                return;
+            }
             
-            // 선택지 배열이 한개인 경우 즉 선택지가 따로 없는 경우
-            if (firstchoices.Length == 1)
+            // 다음 대사 바로 로드
+            LoadLine(_kindData, int.Parse(data[index, 3]) - _indexOffset);
+            string[] nextchoices = data[int.Parse(data[index, 3]) - _indexOffset, 2].Split("|");
+            CheckChoicesCount(data, nextchoices, int.Parse(data[index, 3]) - _indexOffset);
+        }
+        else if (choices.Length == 2)
+        {
+            Debug.Log("선택지가 두개인 경우");
+            while (!_input.actions["Trigger"].WasPressedThisFrame()){ }
+            ShowChoices(choices);
+            StartCoroutine(GetChoice());
+            while (!_onChoiceEnd)
+            { }
+            if(_choice == 0)
             {
-                Debug.Log("선택지가 한개인 경우");
-                // 다음 대사 로드
-                LoadLine(_kindData, int.Parse(_kindData[_randIndex, 3])-95);
-                yield return new WaitWhile(() => !_input.actions["Trigger"].WasPressedThisFrame());
-                _blinker.SetActive(false);
-                // LoadNextLine(_kindData, int.Parse(_kindData[_randIndex, 3]));
-
+                i = int.Parse(choices[0]);
+                if (i == 9999)
+                {
+                    OnTalkEnd.Invoke();
+                    return;
+                }
             }
-            else if (firstchoices.Length == 2)
+
+            if (_choice == 1)
             {
-                ShowChoices(firstchoices);
-                StartCoroutine(GetChoice());
-                yield return new WaitWhile(() => !_onChoiceEnd);
-                LoadNextLine(_kindData, _randIndex);
+                i = int.Parse(choices[1]);
+                if (i == 9999)
+                {
+                    OnTalkEnd.Invoke();
+                    return;
+                }
             }
-
-            // _dialogueText.text = "다음에 로드할 텍스트입니다";
-            // yield return new WaitForSeconds(1f);
-            // OnLineEnd.Invoke();
-
-            yield return new WaitWhile(() => !_input.actions["Trigger"].WasPressedThisFrame());
-            OnTalkEnd.Invoke();
+            LoadLine(data, i - _indexOffset);
+            string[] nextchoices = data[i - _indexOffset, 2].Split("|");
+            CheckChoicesCount(data, nextchoices, i - _indexOffset);
         }
     }
 
@@ -204,38 +258,38 @@ public class DialogueSystem : MonoBehaviour
     }
 
     // 전체 데이터셋과 인덱스를 매개변수로 받아 다음 대사의 인덱스를 찾고 해당 대사를 로드한다.
-    private void LoadNextLine(string[,] data, int i)
-    {
-        string[] nextIndex = data[i, 3].Split("|");
-        if (nextIndex.Length == 1)
-        {
-            if (nextIndex[0] == "9999")
-            {
-                Debug.Log("대화종료 로직 시행");
-                _player.isInteracting = false;
-                OnTalkEnd.Invoke();
-                return;
-                // 대화종료로직
-            }
-            
-            LoadLine( _kindData , int.Parse(nextIndex[0])-95);
-        }
-
-        if (nextIndex.Length == 2)
-        {
-            if (_choice == 0)
-            {
-                Debug.Log("1번 선택에 따른 로직 시행");
-                LoadLine( _kindData , int.Parse(nextIndex[0])-95);
-            }
-
-            if (_choice == 1)
-            {
-                Debug.Log("2번 선택에 따른 로직 시행");
-                // LoadLine( _kindData , int.Parse(nextIndex[1])-95);
-            }
-        }
-    }
+    // private void LoadNextLine(string[,] data, int i)
+    // {
+    //     string[] nextIndex = data[i, 3].Split("|");
+    //     if (nextIndex.Length == 1)
+    //     {
+    //         if (nextIndex[0] == "9999")
+    //         {
+    //             Debug.Log("대화종료 로직 시행");
+    //             _player.isInteracting = false;
+    //             OnTalkEnd.Invoke();
+    //             return;
+    //             // 대화종료로직
+    //         }
+    //         
+    //         LoadLine( _kindData , int.Parse(nextIndex[0])-_indexOffset);
+    //     }
+    //
+    //     if (nextIndex.Length == 2)
+    //     {
+    //         if (_choice == 0)
+    //         {
+    //             Debug.Log("1번 선택에 따른 로직 시행");
+    //             LoadLine( _kindData , int.Parse(nextIndex[0])-_indexOffset);
+    //         }
+    //
+    //         if (_choice == 1)
+    //         {
+    //             Debug.Log("2번 선택에 따른 로직 시행");
+    //             LoadLine( _kindData , int.Parse(nextIndex[1])-_indexOffset);
+    //         }
+    //     }
+    // }
 
     /*
      *경우의 수[1] 선택창이 없는 대화
