@@ -30,6 +30,8 @@ public class TextPresenter : MonoBehaviour
     [SerializeField] private GameObject _highlighter2;
 
     [SerializeField] private GameObject _blinker;
+    
+    public int choice=0;
 
     // Start is called before the first frame update
     void Awake()
@@ -84,29 +86,26 @@ public class TextPresenter : MonoBehaviour
     
     public IEnumerator GetChoice()
     {
-        // _player.isChoosing = true;
         Debug.Log("선택 코루틴 정상시행");
         while (!_input.actions["Trigger"].WasPressedThisFrame())
         {
-            if (_choice == 0 && _input.actions["South"].WasPressedThisFrame())
+            if (choice == 0 && _input.actions["South"].WasPressedThisFrame())
             { 
                 _highlighter1.SetActive(false);
                 _highlighter2.SetActive(true);
-                _choice=1;
+                choice=1;
             }
 
-            if (_choice == 1 && _input.actions["North"].WasPressedThisFrame())
+            if (choice == 1 && _input.actions["North"].WasPressedThisFrame())
             {
                 _highlighter2.SetActive(false);
                 _highlighter1.SetActive(true);
-                _choice=0;
+                choice=0;
             }
             
             yield return null;
         }
         _highlighter2.SetActive(false);
         _2opsPopup.SetActive(false);
-        _onChoiceEnd = true;
-        // _player.isChoosing = false;
     }
 }

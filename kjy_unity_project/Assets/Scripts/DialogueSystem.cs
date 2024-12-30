@@ -27,9 +27,6 @@ public class DialogueSystem : MonoBehaviour
     public UnityEvent OnTalkStart; // 대화시작
     public UnityEvent OnTalkEnd; // 대화종료
     
-    private bool _onChoiceEnd = false;
-    private bool _onChoicesDisplayEnd = false;
-    
     // 첫 대사의 개수
     private int _kindMaxRange = 5;
     private int _randIndex;
@@ -101,7 +98,7 @@ public class DialogueSystem : MonoBehaviour
         _randIndex = Random.Range(1, _kindMaxRange);
 
         // 랜덤으로 대사를 출력함
-        textToPrint = LoadLine(_kindData, _randIndex);
+        textToPrint = _kindData[_randIndex, 1];
         StartCoroutine(_textPresenter.StartDialogue());
         
         string[] firstchoices = _kindData[_randIndex, 2].Split("|");
@@ -133,46 +130,41 @@ public class DialogueSystem : MonoBehaviour
         {
             Debug.Log("선택지가 두개인 경우");
 
+            int i = 0;
+            
             _textPresenter.SetChoices(choices);
 
-            _onChoicesDisplayEnd = false;
-            StartCoroutine(GetChoice()); //여기까지 정상시행
-
+            StartCoroutine(_textPresenter.GetChoice());
+            _choice = _textPresenter.choice;
             string[] ss = data[index, 3].Split("|");
             
             if(_choice == 0)
             {
-                i = int.Parse(ss[0]);
-                if (i == 9999)
+                if (ss[0] == "9999")
                 {
                     OnTalkEnd.Invoke();
                     return;
                 }
+                i = int.Parse(ss[0]);
             }
 
             if (_choice == 1)
             {
-                i = int.Parse(ss[1]);
-                if (i == 9999)
+                if (ss[1] == "9999")
                 {
                     OnTalkEnd.Invoke();
                     return;
                 }
+                i = int.Parse(ss[1]);
             }
 
-            LoadLine(data, i - _indexOffset);
+            textToPrint = data[i - _indexOffset, 1];
+            StartCoroutine(_textPresenter.LoadNextLine());
+            
             string[] nextchoices = data[i - _indexOffset, 2].Split("|");
-            StartCoroutine(CheckChoicesCount(data, nextchoices, i - _indexOffset));
+            CheckChoicesCount(data, nextchoices, i - _indexOffset);
         }
     }
-
-    // 두개의 옵션중 플레이어의 선택을 받아 int값으로 반환함
-    
-
-    // 현재 _dialogueData[0,i] : index,
-    // _dialogueData[1,i] : NPC 대사
-    // _dialogueData[2,i] : 플레이어 대답
-    // _dialogueData[3,i] : 다음 인덱스
     
     public void StartInteraction()
     {
@@ -196,6 +188,5 @@ public class DialogueSystem : MonoBehaviour
     {
         cameras[1].Priority = 9;
     }
-    
 }
     
