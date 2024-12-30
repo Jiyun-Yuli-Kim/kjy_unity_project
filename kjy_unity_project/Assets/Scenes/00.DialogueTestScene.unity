@@ -331,19 +331,26 @@ MonoBehaviour:
   - {fileID: 1307913602}
   - {fileID: 411470806}
   _uICanvas: {fileID: 425200108}
-  _2opsPopup: {fileID: 0}
+  _2opsPopup: {fileID: 363289547}
   _3opsPopup: {fileID: 0}
   _npcName: {fileID: 1352150491}
   _dialogueText: {fileID: 523037799}
-  _choice1: {fileID: 0}
-  _choice2: {fileID: 0}
+  _choice1: {fileID: 49209145}
+  _choice2: {fileID: 1006502643}
   _choice3: {fileID: 0}
+  _pos1: {fileID: 2131715015}
+  _pos2: {fileID: 1295134156}
+  _pos3: {fileID: 0}
+  _pointer: {fileID: 1068150025}
   _blinker: {fileID: 1749309420}
   _uiAnimator: {fileID: 0}
   OnTalkStart:
     m_PersistentCalls:
       m_Calls: []
   OnTalkEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLineStart:
     m_PersistentCalls:
       m_Calls: []
   OnLineEnd:

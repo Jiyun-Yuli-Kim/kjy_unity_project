@@ -26,13 +26,10 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _dialogueText;
     [SerializeField] private TextMeshProUGUI _choice1;
     [SerializeField] private TextMeshProUGUI _choice2;
-    [SerializeField] private TextMeshProUGUI _choice3;
-
-    [SerializeField] private Transform _pos1;
-    [SerializeField] private Transform _pos2;
-    [SerializeField] private Transform _pos3;
+    // [SerializeField] private TextMeshProUGUI _choice3;
     
-    [SerializeField] private GameObject _pointer;
+    [SerializeField] private GameObject _highlighter1;
+    [SerializeField] private GameObject _highlighter2;
     [SerializeField] private GameObject _blinker;
     [SerializeField] private Animator _uiAnimator;
     
@@ -45,8 +42,12 @@ public class DialogueSystem : MonoBehaviour
     public UnityEvent OnLineStart; // 대사시작
     public UnityEvent OnLineEnd; // 대사종료
 
+    private bool _onChoiceEnd = false;
+    
     // 첫 대사의 개수
     private int _kindMaxRange = 5;
+    private int _randIndex;
+    private int _choice = 0;
     
     private void Awake()
     {
@@ -60,6 +61,8 @@ public class DialogueSystem : MonoBehaviour
         
         _uICanvas.SetActive(false);
         _2opsPopup.SetActive(false);
+        _highlighter1.SetActive(false);
+        _highlighter2.SetActive(false);
         _blinker.SetActive(false);
 
     }
@@ -118,26 +121,30 @@ public class DialogueSystem : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         _uICanvas.SetActive(true);
 
-        int randIndex = Random.Range(1, _kindMaxRange);
+        _randIndex = Random.Range(1, _kindMaxRange);
 
-        LoadLine(_kindData, randIndex);
+        LoadLine(_kindData, _randIndex);
         
         yield return new WaitWhile(() => !_player.GetInputAB());
         _blinker.SetActive(false);
 
         // 먼저 선택들을 파싱해 배열에 넣고
         // 배열크기에 따라 다른 팝업을 띄운다
-        string[] firstchoices = _kindData[randIndex, 2].Split("|");
+        // firstchoices-플레이어가 선택할 수 있는 답변들의 배열 ["이야기하자!", "다음에 봐"]
+        string[] firstchoices = _kindData[_randIndex, 2].Split("|");
         if (firstchoices.Length == 1)
         {
+            Debug.Log("선택지가 한개인 경우");
+            yield break;
             // 다음 대사 로드
-            LoadLine(_kindData, int.Parse(_kindData[randIndex,3]));
+            // LoadLine(_kindData, int.Parse(_kindData[randIndex,3]));
         }
         else if (firstchoices.Length == 2)
         {
             ShowChoices(firstchoices);
-            int c = GetChoice();
-            LoadNextLine(firstchoices, c);
+            StartCoroutine(GetChoice());
+            yield return new WaitWhile(() => !_onChoiceEnd);
+            LoadNextLine(_kindData, _choice);
         }
 
         // UI 연동 계획
@@ -166,50 +173,65 @@ public class DialogueSystem : MonoBehaviour
     {
         _choice1.text = choices[0];
         _choice2.text = choices[1];
-        _pointer.transform.position = _pos1.position;
+        _highlighter1.SetActive(true);
         _2opsPopup.SetActive(true);
     }
 
     // 두개의 옵션중 플레이어의 선택을 받아 int값으로 반환함
-    private int GetChoice()
+    IEnumerator GetChoice()
     {
-        int c = 0;
-        
-        while (true)
+        Debug.Log("선택 코루틴 정상시행");
+        while (!_player.isTriggered)
         {
-            if (c == 0 && _player.isSouth)
-            {
-                _pointer.transform.position = _pos2.position;
-                c++;
+            if (_choice == 0 && _player.isSouth)
+            { 
+                _highlighter2.SetActive(false);
+                _highlighter1.SetActive(true);
+                _choice++;
             }
 
-            if (c == 1 && _player.isNorth)
+            if (_choice == 1 && _player.isNorth)
             {
-                _pointer.transform.position = _pos1.position;
-                c--;
+                _highlighter1.SetActive(false);
+                _highlighter2.SetActive(true);
+                _choice--;
             }
-
-            if (_player.isTriggered)
-            {
-                _2opsPopup.SetActive(false);
-                return c;
-            }
-
+            
+            yield return null;
         }
+
+            _2opsPopup.SetActive(false);
+            _onChoiceEnd = true;
+            yield break; 
     }
 
-    private void LoadNextLine(string[] choices, int i)
+    private void LoadNextLine(string[,] data, int i)
     {
-        string[] nextIndex = choices[3].Split("|");
+        string[] nextIndex = data[_randIndex, 3].Split("|");
         if (nextIndex.Length == 1)
         {
             if (nextIndex[0] == "9999")
             {
+                Debug.Log("대화종료 로직 시행");
                 // 대화종료로직
             }
             
             LoadLine( _kindData , int.Parse(nextIndex[0]));
-            
+        }
+
+        if (nextIndex.Length == 2)
+        {
+            if (_choice == 0)
+            {
+                Debug.Log("1번 선택에 따른 로직 시행");
+                // LoadLine( _kindData , int.Parse(nextIndex[0]));
+            }
+
+            if (_choice == 1)
+            {
+                Debug.Log("2번 선택에 따른 로직 시행");
+                // LoadLine( _kindData , int.Parse(nextIndex[1]));
+            }
         }
     }
 

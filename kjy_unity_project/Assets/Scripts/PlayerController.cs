@@ -148,21 +148,24 @@ public class PlayerController : MonoBehaviour
 
     public void ResetInputBool()
     {
-        if (_input.actions["Dash"].WasReleasedThisFrame())
+        if (!_isInteracting)
         {
-            isDashing = false;
+            if (_input.actions["Dash"].WasReleasedThisFrame())
+            {
+                isDashing = false;
+            }
+
+            if (_input.actions["Move"].WasReleasedThisFrame())
+            {
+                isMoving = false;
+                isDashing = false;
+            }
+
+            isTriggered = false;
+            isReverted = false;
+            isSouth = false;
+            isNorth = false;
         }
-        
-        if (_input.actions["Move"].WasReleasedThisFrame())
-        {
-            isMoving = false;
-            isDashing = false;
-        }
-        
-        isTriggered = false;
-        isReverted = false;
-        isSouth = false;
-        isNorth = false;
     }
 
     public bool GetInputAB()
@@ -201,6 +204,11 @@ public class PlayerController : MonoBehaviour
 
      private void DialogueCheck()
      {
+         if (_isInteracting)
+         {
+             return;
+         }
+
          if (_metKind && isTriggered)
          {
              _isInteracting = true;
