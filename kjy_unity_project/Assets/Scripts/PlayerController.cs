@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] public PlayerData _playerData;  
    
-    [SerializeField] private PlayerInput _input;
+    [SerializeField] public PlayerInput _input;
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private Animator _animator;
@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour
     public bool isDashing = false;
     public bool isTriggered = false;
     public bool isReverted = false;
-
+    public bool isSouth = false;
+    public bool isNorth= false;
 
     // 플레이어가 트리거 범위 내에 있는지만을 확인하기 위한 변수
     public bool _metKind { get; private set; } = false;
@@ -130,9 +131,19 @@ public class PlayerController : MonoBehaviour
         if (_input.actions["Revert"].WasPressedThisFrame())
         {
             isReverted = true;
-            Debug.Log("B버튼 눌림");
+            // Debug.Log("B버튼 눌림");
         }
         
+        if (_input.actions["South"].WasPressedThisFrame())
+        {
+            isSouth = true;
+        }
+        
+        if (_input.actions["North"].WasPressedThisFrame())
+        {
+            isNorth = true;
+            // Debug.Log("B버튼 눌림");
+        }
     }
 
     public void ResetInputBool()
@@ -150,6 +161,8 @@ public class PlayerController : MonoBehaviour
         
         isTriggered = false;
         isReverted = false;
+        isSouth = false;
+        isNorth = false;
     }
 
     public bool GetInputAB()

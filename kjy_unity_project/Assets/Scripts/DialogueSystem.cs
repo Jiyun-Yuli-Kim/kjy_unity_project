@@ -8,11 +8,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class DialogueSystem : MonoBehaviour
 {
     [SerializeField] private PlayerController _player;
     [SerializeField] private DialogueLoader _dialogueLoader;
+    private PlayerInput _input;
     
     [SerializeField] private CinemachineVirtualCamera[] cameras;
     
@@ -26,6 +28,11 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _choice2;
     [SerializeField] private TextMeshProUGUI _choice3;
 
+    [SerializeField] private Transform _pos1;
+    [SerializeField] private Transform _pos2;
+    [SerializeField] private Transform _pos3;
+    
+    [SerializeField] private GameObject _pointer;
     [SerializeField] private GameObject _blinker;
     [SerializeField] private Animator _uiAnimator;
     
@@ -33,9 +40,10 @@ public class DialogueSystem : MonoBehaviour
     string[,] _idolData;
     string[,] _crankyData;
     
-    public UnityEvent OnTalkStart;
-    public UnityEvent OnTalkEnd;
-    public UnityEvent OnLineEnd;
+    public UnityEvent OnTalkStart; // 대화시작
+    public UnityEvent OnTalkEnd; // 대화종료
+    public UnityEvent OnLineStart; // 대사시작
+    public UnityEvent OnLineEnd; // 대사종료
 
     // 첫 대사의 개수
     private int _kindMaxRange = 5;
@@ -48,7 +56,10 @@ public class DialogueSystem : MonoBehaviour
             Debug.LogError("Player is null");
         }
         
+        _input = _player.GetComponent<PlayerInput>();
+        
         _uICanvas.SetActive(false);
+        _2opsPopup.SetActive(false);
         _blinker.SetActive(false);
 
     }
@@ -65,7 +76,8 @@ public class DialogueSystem : MonoBehaviour
         // _dialogueLoader.StartLoad(DialogueLoader.CrankyDialogue);
         
         OnTalkStart.AddListener(TalkCamOn);
-        OnLineEnd.AddListener(StartBlinking);
+        OnLineStart.AddListener(EndBlink);
+        OnLineEnd.AddListener(StartBlink);
         OnTalkEnd.AddListener(ResetInteraction);
         OnTalkEnd.AddListener(TalkCamOff);
         
@@ -107,18 +119,27 @@ public class DialogueSystem : MonoBehaviour
         _uICanvas.SetActive(true);
 
         int randIndex = Random.Range(1, _kindMaxRange);
-        Debug.Log(_kindData);
-        string firstLine = _kindData[randIndex, 1];
-        _dialogueText.text = firstLine;
-        yield return new WaitForSeconds(1f);
-        OnLineEnd.Invoke();
+
+        LoadLine(_kindData, randIndex);
         
         yield return new WaitWhile(() => !_player.GetInputAB());
         _blinker.SetActive(false);
 
         // 먼저 선택들을 파싱해 배열에 넣고
         // 배열크기에 따라 다른 팝업을 띄운다
-        
+        string[] firstchoices = _kindData[randIndex, 2].Split("|");
+        if (firstchoices.Length == 1)
+        {
+            // 다음 대사 로드
+            LoadLine(_kindData, int.Parse(_kindData[randIndex,3]));
+        }
+        else if (firstchoices.Length == 2)
+        {
+            ShowChoices(firstchoices);
+            int c = GetChoice();
+            LoadNextLine(firstchoices, c);
+        }
+
         // UI 연동 계획
         // 디폴트는 첫번째 선택지이다
         // 키보드나 게임패드 왼쪽 조이스틱의 south를 누르면 아래 옵션으로 포인터 이동
@@ -130,6 +151,66 @@ public class DialogueSystem : MonoBehaviour
         yield return new WaitWhile(() => !_player.GetInputAB());
         OnTalkEnd.Invoke();
 
+    }
+
+    // 인덱스를 매개변수로 받아 해당하는 인덱스의 대사를 띄움
+    private void LoadLine(string[,] data, int i)
+    {
+        string line = data[i, 1];
+        _dialogueText.text = line;
+        OnLineEnd.Invoke();
+    }
+
+    // 선택지 배열을 매개변수로 받아 선택지를 팝업에 띄움
+    private void ShowChoices(string[] choices)
+    {
+        _choice1.text = choices[0];
+        _choice2.text = choices[1];
+        _pointer.transform.position = _pos1.position;
+        _2opsPopup.SetActive(true);
+    }
+
+    // 두개의 옵션중 플레이어의 선택을 받아 int값으로 반환함
+    private int GetChoice()
+    {
+        int c = 0;
+        
+        while (true)
+        {
+            if (c == 0 && _player.isSouth)
+            {
+                _pointer.transform.position = _pos2.position;
+                c++;
+            }
+
+            if (c == 1 && _player.isNorth)
+            {
+                _pointer.transform.position = _pos1.position;
+                c--;
+            }
+
+            if (_player.isTriggered)
+            {
+                _2opsPopup.SetActive(false);
+                return c;
+            }
+
+        }
+    }
+
+    private void LoadNextLine(string[] choices, int i)
+    {
+        string[] nextIndex = choices[3].Split("|");
+        if (nextIndex.Length == 1)
+        {
+            if (nextIndex[0] == "9999")
+            {
+                // 대화종료로직
+            }
+            
+            LoadLine( _kindData , int.Parse(nextIndex[0]));
+            
+        }
     }
 
     /*
@@ -160,7 +241,12 @@ public class DialogueSystem : MonoBehaviour
         _uICanvas.SetActive(false);
     }
 
-    public void StartBlinking()
+    public void StartBlink()
+    {
+        _blinker.SetActive(true);
+    }
+    
+    public void EndBlink()
     {
         _blinker.SetActive(true);
     }
