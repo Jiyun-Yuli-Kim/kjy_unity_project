@@ -101,34 +101,37 @@ public class DialogueSystem : MonoBehaviour
         // 랜덤으로 대사를 출력함
         textToPrint = _kindData[_randIndex, 1];
         Debug.Log("첫 대사" + textToPrint);
-        StartCoroutine(_textPresenter.StartDialogue());
+        yield return StartCoroutine(_textPresenter.StartDialogue());
         
         string[] firstchoices = _kindData[_randIndex, 2].Split("|");
-        Debug.Log("첫 선택지들"+ firstchoices[0] + firstchoices[1]);
-        CheckChoicesCount(_kindData, firstchoices, _randIndex);
+        Debug.Log("첫 선택지"+ firstchoices[0]);
+        yield return StartCoroutine(CheckChoicesCount(_kindData, firstchoices, _randIndex));
         
         OnTalkEnd.Invoke();
     }
 
-    private void CheckChoicesCount(string[,] data, string[] choices, int index)
+    private IEnumerator CheckChoicesCount(string[,] data, string[] choices, int index)
     {
         // 선택지 배열이 한개인 경우 즉 선택지가 따로 없는 경우
         if (choices.Length == 1)
         {
             // 다음 대사 로드
-            if (data[index, 3] == "9999")
+            if (data[index, 3] == "END")
             {
                 // 대화 끝내기 로직
                 OnTalkEnd.Invoke();
-                return;
+                yield break;
             }
-           
-            Debug.Log($"파싱 및 오프셋 처리 완료 데이터 {int.Parse(data[index, 3])-_indexOffset}");
-            textToPrint = data[int.Parse(data[index, 3])-_indexOffset, 1];
-            StartCoroutine(_textPresenter.LoadNextLine());
-            
-            string[] nextchoices = data[int.Parse(data[index, 3]) - _indexOffset, 2].Split("|");
-            CheckChoicesCount(data, nextchoices, int.Parse(data[index, 3]) - _indexOffset);
+
+            else
+            {
+                Debug.Log($"파싱 완료 데이터 {int.Parse(data[index, 3])}");
+                textToPrint = data[int.Parse(data[index, 3]) - _indexOffset, 1];
+                yield return StartCoroutine(_textPresenter.LoadNextLine());
+
+                string[] nextchoices = data[int.Parse(data[index, 3]) - _indexOffset, 2].Split("|");
+                yield return CheckChoicesCount(data, nextchoices, int.Parse(data[index, 3]) - _indexOffset);
+            }
         }
         
         else if (choices.Length == 2)
@@ -139,35 +142,35 @@ public class DialogueSystem : MonoBehaviour
             
             _textPresenter.SetChoices(choices);
 
-            StartCoroutine(_textPresenter.GetChoice());
+            yield return StartCoroutine(_textPresenter.GetChoice());
             _choice = _textPresenter.choice;
             string[] ss = data[index, 3].Split("|");
             
             if(_choice == 0)
             {
-                if (ss[0] == "9999")
+                if (ss[0] == "END")
                 {
                     OnTalkEnd.Invoke();
-                    return;
+                    yield break;
                 }
                 i = int.Parse(ss[0]);
             }
 
             if (_choice == 1)
             {
-                if (ss[1] == "9999")
+                if (ss[1] == "END")
                 {
                     OnTalkEnd.Invoke();
-                    return;
+                    yield break;
                 }
                 i = int.Parse(ss[1]);
             }
 
             textToPrint = data[i - _indexOffset, 1];
-            StartCoroutine(_textPresenter.LoadNextLine());
+           yield return StartCoroutine(_textPresenter.LoadNextLine());
             
             string[] nextchoices = data[i - _indexOffset, 2].Split("|");
-            CheckChoicesCount(data, nextchoices, i - _indexOffset);
+            yield return CheckChoicesCount(data, nextchoices, i - _indexOffset);
         }
     }
     
