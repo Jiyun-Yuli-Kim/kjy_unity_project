@@ -78,11 +78,10 @@ public class DialogueSystem : MonoBehaviour
         // _dialogueLoader.OnCrankyLoaded.AddListener(OnCrankyDataLoaded);
         // _dialogueLoader.StartLoad(DialogueLoader.CrankyDialogue);
         
-        OnTalkStart.AddListener(TalkCamOn);
+        OnTalkStart.AddListener(StartInteraction);
         OnLineStart.AddListener(EndBlink);
         OnLineEnd.AddListener(StartBlink);
         OnTalkEnd.AddListener(ResetInteraction);
-        OnTalkEnd.AddListener(TalkCamOff);
         
     }
 
@@ -116,10 +115,9 @@ public class DialogueSystem : MonoBehaviour
             Debug.Log("_player.partnerName is null");
         }
         
+        // yield return new WaitForSeconds(0.5f);
+
         OnTalkStart.Invoke();
-        
-        yield return new WaitForSeconds(0.5f);
-        _uICanvas.SetActive(true);
 
         _randIndex = Random.Range(1, _kindMaxRange);
 
@@ -180,21 +178,22 @@ public class DialogueSystem : MonoBehaviour
     // 두개의 옵션중 플레이어의 선택을 받아 int값으로 반환함
     IEnumerator GetChoice()
     {
+        _player.isChoosing = true;
         Debug.Log("선택 코루틴 정상시행");
-        while (!_player.isTriggered)
+        while (!_player.GetInputAB())
         {
-            if (_choice == 0 && _player.isSouth)
+            if (_choice == 0 && _player._input.actions["South"].WasPressedThisFrame())
             { 
-                _highlighter2.SetActive(false);
-                _highlighter1.SetActive(true);
-                _choice++;
-            }
-
-            if (_choice == 1 && _player.isNorth)
-            {
                 _highlighter1.SetActive(false);
                 _highlighter2.SetActive(true);
-                _choice--;
+                _choice=1;
+            }
+
+            if (_choice == 1 && _player._input.actions["North"].WasPressedThisFrame())
+            {
+                _highlighter2.SetActive(false);
+                _highlighter1.SetActive(true);
+                _choice=0;
             }
             
             yield return null;
@@ -202,7 +201,7 @@ public class DialogueSystem : MonoBehaviour
 
             _2opsPopup.SetActive(false);
             _onChoiceEnd = true;
-            yield break; 
+            _player.isChoosing = false;
     }
 
     private void LoadNextLine(string[,] data, int i)
@@ -257,9 +256,17 @@ public class DialogueSystem : MonoBehaviour
 
 
 
+    public void StartInteraction()
+    {
+        TalkCamOn();
+        _player.isInteracting = true;
+        _uICanvas.SetActive(true);
+    }
+    
     public void ResetInteraction()
     {
-        _player._isInteracting = false;
+        TalkCamOff();
+        _player.isInteracting = false;
         _uICanvas.SetActive(false);
     }
 
