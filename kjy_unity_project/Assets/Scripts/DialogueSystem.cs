@@ -116,9 +116,10 @@ public class DialogueSystem : MonoBehaviour
         if (choices.Length == 1)
         {
             // 다음 대사 로드
-            if (data[index, 3] == "END")
+            if (data[index, 3].Trim() == "END")
             {
                 // 대화 끝내기 로직
+                Debug.Log("끝내기 로직 정상시행1");
                 OnTalkEnd.Invoke();
                 yield break;
             }
@@ -140,16 +141,16 @@ public class DialogueSystem : MonoBehaviour
 
             int i = 0;
             
-            _textPresenter.SetChoices(choices);
-
-            yield return StartCoroutine(_textPresenter.GetChoice());
+            yield return StartCoroutine(_textPresenter.GetChoice(choices));
             _choice = _textPresenter.choice;
             string[] ss = data[index, 3].Split("|");
             
             if(_choice == 0)
             {
-                if (ss[0] == "END")
+                if (ss[0].Trim() == "END")
                 {
+                    Debug.Log("끝내기 로직 정상시행2");
+
                     OnTalkEnd.Invoke();
                     yield break;
                 }
@@ -158,8 +159,10 @@ public class DialogueSystem : MonoBehaviour
 
             if (_choice == 1)
             {
-                if (ss[1] == "END")
+                if (ss[1].Trim() == "END")
                 {
+                    Debug.Log("끝내기 로직 정상시행3");
+
                     OnTalkEnd.Invoke();
                     yield break;
                 }
