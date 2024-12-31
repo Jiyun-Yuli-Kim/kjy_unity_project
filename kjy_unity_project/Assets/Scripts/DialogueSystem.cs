@@ -175,6 +175,61 @@ public class DialogueSystem : MonoBehaviour
             string[] nextchoices = data[i - _indexOffset, 2].Split("|");
             yield return CheckChoicesCount(data, nextchoices, i - _indexOffset);
         }
+        
+        else if (choices.Length == 3)
+        {
+            Debug.Log("선택지가 세개인 경우");
+
+            int i = 0;
+            
+            yield return StartCoroutine(_textPresenter.GetChoice(choices));
+            _choice = _textPresenter.choice;
+            string[] ss = data[index, 3].Split("|");
+            
+            if(_choice == 0)
+            {
+                if (ss[0].Trim() == "END")
+                {
+                    Debug.Log("끝내기 로직 정상시행2");
+
+                    OnTalkEnd.Invoke();
+                    yield break;
+                }
+                i = int.Parse(ss[0]);
+            }
+
+            if (_choice == 1)
+            {
+                // 여기서 뭔가 문제 발생
+                if (ss[1].Trim() == "END")
+                {
+                    Debug.Log("끝내기 로직 정상시행3");
+
+                    OnTalkEnd.Invoke();
+                    yield break;
+                }
+                i = int.Parse(ss[1]);
+            }
+            
+            if (_choice == 2)
+            {
+                // 여기서 뭔가 문제 발생
+                if (ss[2].Trim() == "END")
+                {
+                    Debug.Log("끝내기 로직 정상시행3");
+
+                    OnTalkEnd.Invoke();
+                    yield break;
+                }
+                i = int.Parse(ss[2]);
+            }
+
+            textToPrint = data[i - _indexOffset, 1];
+            yield return StartCoroutine(_textPresenter.LoadNextLine());
+            
+            string[] nextchoices = data[i - _indexOffset, 2].Split("|");
+            yield return CheckChoicesCount(data, nextchoices, i - _indexOffset);
+        }
     }
     
     public void StartInteraction()
