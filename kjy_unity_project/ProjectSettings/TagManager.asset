@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Idol
   - Kind
+  - Ground
   layers:
   - Default
   - TransparentFX
