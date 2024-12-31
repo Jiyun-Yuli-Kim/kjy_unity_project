@@ -168,9 +168,9 @@ public class DialogueSystem : MonoBehaviour
                 }
                 i = int.Parse(ss[1]);
             }
-
+            Debug.Log($"{i}, {_choice}");
             textToPrint = data[i - _indexOffset, 1];
-           yield return StartCoroutine(_textPresenter.LoadNextLine());
+            yield return StartCoroutine(_textPresenter.LoadNextLine());
             
             string[] nextchoices = data[i - _indexOffset, 2].Split("|");
             yield return CheckChoicesCount(data, nextchoices, i - _indexOffset);

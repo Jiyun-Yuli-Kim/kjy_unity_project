@@ -112,6 +112,7 @@ public class TextPresenter : MonoBehaviour
         
         if (choices.Length == 2)
         {
+            choice = 0;
             while (!_input.actions["Trigger"].WasPressedThisFrame())
             {
                 Debug.Log("선택 루프 정상시행");
@@ -139,6 +140,7 @@ public class TextPresenter : MonoBehaviour
         
         if (choices.Length == 3)
         {
+            choice = 0;
             while (!_input.actions["Trigger"].WasPressedThisFrame())
             {
                 Debug.Log($"선택 루프 정상시행, {choice}");
