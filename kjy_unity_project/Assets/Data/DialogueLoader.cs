@@ -117,13 +117,8 @@ public class DialogueLoader : MonoBehaviour
     {
         if (input.Contains("@"))
         {
-            string result1 = input.Replace("\\n", "\n");
-            string result2 = result1.Replace("\\c", ",");
-            string result3 = result2.Replace("!PN!", _player._playerData.PlayerName);
-            Debug.Log($"문자열 디코딩중 : {_player.partnerCp}");
-            string result4 = result3.Replace("!CP!", _player.partnerCp);
-            string result5 = result4.Replace("@", "");
-            return result5;
+            string result = input.Replace("@", "").Replace("\\n", "\n").Replace("\\c", ",").Replace("!PN!", _player._playerData.PlayerName);
+            return result;
         }
         
         else return input;
