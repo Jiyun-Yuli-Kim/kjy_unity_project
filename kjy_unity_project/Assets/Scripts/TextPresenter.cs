@@ -132,6 +132,8 @@ public class TextPresenter : MonoBehaviour
 
                 yield return null;
             }
+            _highlighter1.SetActive(false);
+            _highlighter2.SetActive(false);
             _2opsPopup.SetActive(false);
         }
         
@@ -175,6 +177,9 @@ public class TextPresenter : MonoBehaviour
 
                 yield return null;
             }
+            _highlighterA.SetActive(false);
+            _highlighterB.SetActive(false);
+            _highlighterC.SetActive(false);
             _3opsPopup.SetActive(false);
         }
     }
