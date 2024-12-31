@@ -59,6 +59,7 @@ public class TextPresenter : MonoBehaviour
 
     public IEnumerator StartDialogue()
     {
+        yield return new WaitForSeconds(1f);
         _npcName.text = _player.partnerName;
         _dialogueText.text = _dialogueSystem.textToPrint.Replace("!CP!", _player.partnerCp);
         _uICanvas.SetActive(true);
