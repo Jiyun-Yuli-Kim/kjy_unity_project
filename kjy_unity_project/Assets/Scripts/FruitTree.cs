@@ -63,13 +63,15 @@ public class FruitTree : MonoBehaviour
         if (_input.actions["Trigger"].WasPressedThisFrame())
         {
             _isFalling = true;
-            _animator.SetBool("isShaking", true);
             _stateMachine.OnChangeState(StateMachine.StateType.PShake);
+            _animator.SetBool("isShaking", true);
             yield return new WaitForSeconds(0.3f);
+            
             _fruit1.FruitFall();
             _fruit2.FruitFall();
             _fruit3.FruitFall();
             yield return new WaitForSeconds(_fallTime);
+            
             _animator.SetBool("isShaking", false);
             _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
             _isFalling = false;
