@@ -13,6 +13,7 @@ public class Fruit : MonoBehaviour
     private PlayerInput _input;
     
     private bool _isPickupable = false;
+    private bool _isGrounded = false;
 
     void Awake()
     {
@@ -40,6 +41,18 @@ public class Fruit : MonoBehaviour
         if (other.gameObject.tag == "Ground" && _rb.velocity.magnitude < 0.1f)
         {
             _rb.constraints = RigidbodyConstraints.FreezeAll;
+            _rb.mass = 100;
+            _isGrounded = true;
+        }
+    }
+    
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.tag == "Ground")
+        {
+            _rb.constraints = RigidbodyConstraints.None;
+            _rb.mass = 10;
+            _isGrounded = false;
         }
     }
 
@@ -54,7 +67,7 @@ public class Fruit : MonoBehaviour
         {
             if (_input.actions["Trigger"].WasPressedThisFrame())
             {
-                PickUpFruit();
+                // StartCoroutine(PickUpFruit());
             }
         }
     }
@@ -64,9 +77,12 @@ public class Fruit : MonoBehaviour
         _rb.constraints = RigidbodyConstraints.None;
     }
 
-    public void PickUpFruit()
-    {
+    // public IEnumerator PickUpFruit()
+    // {
         // 직접적으로 과일을 줍는 로직
-    }
+        // 플레이어 : 줍기 애니메이션 실행
+        // WaitUntil 줍기완료
+        // 인벤토리 : Inventory.Instance.AddItem(주운거)
+    // }
 
 }

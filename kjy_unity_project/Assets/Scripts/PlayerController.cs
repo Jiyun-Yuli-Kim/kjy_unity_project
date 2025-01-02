@@ -36,7 +36,6 @@ public class PlayerController : MonoBehaviour
 
     // 로직 실행중 다른 입력을 받지 않기 위한 플래그 변수
     public bool isInteracting = false;
-    public bool isChoosing = false;
 
     public string partnerName;
     public string partnerCp; // 상대방 말버릇

@@ -436,6 +436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8910fcef86bf8f245b9a5c7aa8ef9faa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 0}
   dialogueURL: 
   OnKindLoaded:
     m_PersistentCalls:
