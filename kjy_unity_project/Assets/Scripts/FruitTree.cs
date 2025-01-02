@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class FruitTree : MonoBehaviour
@@ -23,6 +24,8 @@ public class FruitTree : MonoBehaviour
     private bool _isTriggered = false;
     private bool _isFalling = false;
 
+    public UnityEvent OnInteraction;
+
     void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -30,29 +33,9 @@ public class FruitTree : MonoBehaviour
 
     private void Update()
     {
-        StartCoroutine(CheckInteraction());
+        // StartCoroutine(CheckInteraction());
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            _isTriggered = true;
-            _player = other.gameObject.GetComponent<PlayerController>();
-            _stateMachine = _player.GetComponent<StateMachine>();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            _isTriggered = false;
-            _player = null;
-            _stateMachine = null;
-        }
-    }
-
+    
     private IEnumerator CheckInteraction()
     {
         if (_isTriggered == false || _isFalling == true)

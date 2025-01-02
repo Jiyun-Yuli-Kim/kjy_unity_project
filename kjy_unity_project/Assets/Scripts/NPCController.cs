@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class NPCController : MonoBehaviour
 {
-    [SerializeField] public NPCData _npcData;  
+    [SerializeField] public NPCData _npcData;
+    [SerializeField] public GameObject NPCHead;
+    [SerializeField] private PlayerController _player;
+    
+    
+    
 }

@@ -14,6 +14,7 @@ using UnityEngine.Rendering.Universal;
 public class DialogueSystem : MonoBehaviour
 {
     [SerializeField] private PlayerController _player;
+    private NPCController _npc;
     [SerializeField] private DialogueLoader _dialogueLoader;
     [SerializeField] private TextPresenter _textPresenter;
     
@@ -235,6 +236,7 @@ public class DialogueSystem : MonoBehaviour
     public void StartInteraction()
     {
         TalkCamOn();
+        NPCLooksPlayer();
         _player.isInteracting = true;
     }
     
@@ -253,6 +255,16 @@ public class DialogueSystem : MonoBehaviour
     public void TalkCamOff()
     {
         cameras[1].Priority = 9;
+    }
+
+    public void NPCLooksPlayer()
+    {
+        // 지금 이것도 왜이닞 모르게 
+        _player.NPC.transform.rotation = Quaternion.Lerp(
+            _player.NPC.transform.rotation, 
+            Quaternion.LookRotation(_player.gameObject.transform.position - _player.NPC.transform.position),
+            10*Time.deltaTime);
+        // _player.NPC.transform.rotation = Quaternion.LookRotation(_player.gameObject.transform.position - _player.NPC.transform.position);
     }
 }
     

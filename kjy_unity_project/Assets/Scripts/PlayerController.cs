@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -12,12 +13,14 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] public PlayerData _playerData;
 
-    [SerializeField] public PlayerInput _input;
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private Animator _animator;
     [SerializeField] private DialogueSystem _dialogueSystem;
+    private StateMachine _stateMachine;
+    public PlayerInput Input;
 
+    
     [SerializeField] public float playerMoveSpeed;
     [field: SerializeField] public float rotateInterpolation { get; private set; }
     [field: SerializeField] public float dashMultiplier { get; private set; }
@@ -37,8 +40,15 @@ public class PlayerController : MonoBehaviour
     // 로직 실행중 다른 입력을 받지 않기 위한 플래그 변수
     public bool isInteracting = false;
 
+    public NPCController NPC;
     public string partnerName;
     public string partnerCp; // 상대방 말버릇
+
+    public void Awake()
+    {
+        _stateMachine = GetComponent<StateMachine>();
+        Input = GetComponent<PlayerInput>();
+    }
 
     public void Update()
     {
@@ -62,11 +72,11 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Kind")
         {
             _metKind = true;
-            var npcComp = other.GetComponent<NPCController>();
-            if (npcComp != null)
+            NPC = other.GetComponent<NPCController>();
+            if (NPC != null)
             {
-                partnerName = npcComp._npcData.NPCName;
-                partnerCp = npcComp._npcData.CatchPhrase;
+                partnerName = NPC._npcData.NPCName;
+                partnerCp = NPC._npcData.CatchPhrase;
                 Debug.Log($"{partnerName}, {partnerCp}");
             }
 
@@ -76,14 +86,29 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Idol")
         {
             _metIdol = true;
-            var npcComp = other.GetComponent<NPCController>();
-            if (npcComp != null)
+            NPC = other.GetComponent<NPCController>();
+            if (NPC != null)
             {
-                partnerName = npcComp._npcData.NPCName;
+                partnerName = NPC._npcData.NPCName;
                 Debug.Log(partnerName);
             }
 
             return;
+        }
+        
+        
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Tree" && Input.actions["Trigger"].WasPressedThisFrame())
+        {
+            if (isInteracting)
+            {
+                return;
+            }
+            isInteracting = true;
+            _stateMachine.OnChangeState(StateMachine.StateType.PShake);
         }
     }
 
@@ -91,14 +116,21 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Kind")
         {
+            NPC = null;
             _metKind = false;
             partnerName = null;
         }
 
         if (other.gameObject.tag == "Idol")
         {
+            NPC = null;
             _metIdol = false;
             partnerName = null;
+        }
+
+        if (other.gameObject.tag == "Tree")
+        {
+            isInteracting = false;
         }
     }
 
@@ -109,22 +141,22 @@ public class PlayerController : MonoBehaviour
         //     return;
         // }
 
-        if (_input.actions["Move"].IsPressed()) // WASD, 십자방향키, 좌측 조이스틱
+        if (Input.actions["Move"].IsPressed()) // WASD, 십자방향키, 좌측 조이스틱
         {
             isMoving = true;
         }
 
-        if (_input.actions["Dash"].IsPressed())
+        if (Input.actions["Dash"].IsPressed())
         {
             isDashing = true;
         }
 
-        if (_input.actions["Trigger"].WasPressedThisFrame())
+        if (Input.actions["Trigger"].WasPressedThisFrame())
         {
             isTriggered = true;
         }
         
-        if (_input.actions["Revert"].WasPressedThisFrame())
+        if (Input.actions["Revert"].WasPressedThisFrame())
         {
             isReverted = true;
             // Debug.Log("B버튼 눌림");
@@ -144,12 +176,12 @@ public class PlayerController : MonoBehaviour
 
     public void ResetInputBool()
     {
-        if (_input.actions["Dash"].WasReleasedThisFrame())
+        if (Input.actions["Dash"].WasReleasedThisFrame())
         {
             isDashing = false;
         }
 
-        if (_input.actions["Move"].WasReleasedThisFrame())
+        if (Input.actions["Move"].WasReleasedThisFrame())
         {
             isMoving = false;
             isDashing = false;
@@ -176,7 +208,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 dir;
 
-        Vector2 move = _input.actions["Move"].ReadValue<Vector2>();
+        Vector2 move = Input.actions["Move"].ReadValue<Vector2>();
 
         dir = new Vector3(move.x, 0, move.y);
         // Debug.Log(dir);
