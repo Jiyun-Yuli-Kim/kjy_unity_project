@@ -13,11 +13,7 @@ public class PlayerShakeTree : StateBase
     {
         _animator.SetBool("isShaking", true);
     }
-    
-    // public override void OnStateUpdate()
-    // {
-    // }
-    
+
     public override void OnStateExit()
     {
         _animator.SetBool("isShaking", false);

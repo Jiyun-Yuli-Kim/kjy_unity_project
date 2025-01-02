@@ -12,6 +12,7 @@ public class FruitTree : MonoBehaviour, IInteractable
     [SerializeField] private Fruit _fruit2;
     [SerializeField] private Fruit _fruit3;
     [SerializeField] private GameObject _fruitPrefab;
+    [SerializeField] private GameObject _parent;
     
     [SerializeField] private Transform _fruit1Pos;
     [SerializeField] private Transform _fruit2Pos;
@@ -27,8 +28,7 @@ public class FruitTree : MonoBehaviour, IInteractable
     private PlayerController _player;
     private StateMachine _stateMachine;
     
-    private bool _isTriggered = false;
-    private bool _isFalling = false;
+    public bool isInteracting = false;
 
     public UnityEvent OnInteraction;
 
@@ -36,16 +36,18 @@ public class FruitTree : MonoBehaviour, IInteractable
     {
         _animator = GetComponent<Animator>();
     }
-
-    private void Update()
-    {
-        // StartCoroutine(CheckInteraction());
-    }
     
     public void Interact()
     {
+        if (isInteracting)
+        {
+            return;
+        }
+
+        isInteracting = true;
         Debug.Log("나무에 대한 Interact 로직 작동");
         StartCoroutine(ShakeAndDrop());
+        
         // if (_isTriggered == false || _isFalling == true)
         // {
         //     // yield break;
@@ -64,15 +66,18 @@ public class FruitTree : MonoBehaviour, IInteractable
     private IEnumerator ShakeAndDrop()
     {
         _animator.SetBool("isShaking", true);
-        // yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.3f);
         
-        _fruit1.FruitFall();
-        _fruit2.FruitFall();
-        _fruit3.FruitFall();
-        // yield return new WaitForSeconds(_fallTime);
+        Fruit[] fruits = _parent.GetComponentsInChildren<Fruit>();
+        foreach (Fruit fruit in fruits)
+        {
+            fruit.FruitFall();
+        }
+        yield return new WaitForSeconds(_fallTime);
         
         _animator.SetBool("isShaking", false);
         
+        isInteracting = false;
     }
 
 }

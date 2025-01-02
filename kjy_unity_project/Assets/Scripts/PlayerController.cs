@@ -128,8 +128,11 @@ public class PlayerController : MonoBehaviour
     {
         if (_interactable != null && Input.actions["Trigger"].WasPressedThisFrame())
         {
-            Debug.Log("상호작용 시행");
             _interactable.Interact();
+            if ()
+            {
+                
+            }
         }
     }
 
