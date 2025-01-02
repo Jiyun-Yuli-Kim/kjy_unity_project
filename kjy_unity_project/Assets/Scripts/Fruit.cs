@@ -9,10 +9,11 @@ public class Fruit : MonoBehaviour
 {
     private Rigidbody _rb;
     private Collider _col;
-    
+
     private PlayerInput _input;
-    
+
     private bool _isPickupable = false;
+    private bool _isBeingPickedup = false;
     private bool _isGrounded = false;
 
     void Awake()
@@ -23,66 +24,103 @@ public class Fruit : MonoBehaviour
 
     void Update()
     {
-        CheckPickupable();
+        // CheckPickupable();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            // _isPickupable = true 주울 수 있는 상태가 된다
-            // _isPickupable == true이고 Trigger 눌렸을 때(업데이트에서 처리)
-            // PickUpFruit()
-        }
-    }
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.gameObject.CompareTag("Player"))
+    //     {
+    //         _isPickupable = true;
+    //         // _isPickupable == true이고 Trigger 눌렸을 때(업데이트에서 처리)
+    //         // PickUpFruit()
+    //     }
+    // }
+    //
+    // private void OnTriggerStay(Collider other)
+    // {
+    //     if (_isBeingPickedup)
+    //     {
+    //         return;
+    //     }
+    //     
+    //     if (other.gameObject.CompareTag("Player"))
+    //     {
+    //         if (_isPickupable && _input.actions["Trigger"].WasPressedThisFrame())
+    //         {
+    //             StartCoroutine(PickUpFruit());
+    //         }
+    //     }
+    // }
+    //
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if (other.gameObject.CompareTag("Player"))
+    //     {
+    //         _isPickupable = false;
+    //     }
+    // }
+    //
+    // private void OnCollisionStay(Collision other)
+    // {
+    //     if (other.gameObject.CompareTag("Ground"))
+    //     {
+    //         Debug.Log("Ground");
+    //         if (_isGrounded)
+    //         {
+    //             return;
+    //         }
+    //
+    //         _isGrounded = true;
+    //         _rb.constraints = RigidbodyConstraints.FreezeAll;
+    //     }
+    // }
 
-    private void OnCollisionStay(Collision other)
-    {
-        if (other.gameObject.tag == "Ground" && _rb.velocity.magnitude < 0.1f)
-        {
-            _rb.constraints = RigidbodyConstraints.FreezeAll;
-            _rb.mass = 100;
-            _isGrounded = true;
-        }
-    }
-    
-    private void OnCollisionExit(Collision other)
-    {
-        if (other.gameObject.tag == "Ground")
-        {
-            _rb.constraints = RigidbodyConstraints.None;
-            _rb.mass = 10;
-            _isGrounded = false;
-        }
-    }
+    // private void OnCollisionExit(Collision other)
+    // {
+    //     if (other.gameObject.tag == "Ground")
+    //     {
+    //         _rb.constraints = RigidbodyConstraints.None;
+    //         _rb.mass = 10;
+    //         _isGrounded = false;
+    //     }
+    // }
 
-    private void CheckPickupable()
-    {
-        if (!_isPickupable)
-        {
-            return;
-        }
-        
-        else if (_isPickupable)
-        {
-            if (_input.actions["Trigger"].WasPressedThisFrame())
-            {
-                // StartCoroutine(PickUpFruit());
-            }
-        }
-    }
+    // private void CheckPickupable()
+    // {
+    //     if (!_isPickupable)
+    //     {
+    //         return;
+    //     }
+    //     
+    //     else if (_isPickupable)
+    //     {
+    //         if (_input.actions["Trigger"].WasPressedThisFrame())
+    //         {
+    //             // StartCoroutine(PickUpFruit());
+    //         }
+    //     }
+    // }
 
     public void FruitFall()
     {
         _rb.constraints = RigidbodyConstraints.None;
     }
 
-    // public IEnumerator PickUpFruit()
-    // {
-        // 직접적으로 과일을 줍는 로직
+    //  직접적으로 과일을 줍는 로직
+    public IEnumerator PickUpFruit()
+    {
+        _isBeingPickedup = true;
         // 플레이어 : 줍기 애니메이션 실행
+        // _anima
         // WaitUntil 줍기완료
         // 인벤토리 : Inventory.Instance.AddItem(주운거)
-    // }
+        yield return new WaitForSeconds(0.5f);
+        _isBeingPickedup = false;
+    }
 
+
+    
 }
+
+

@@ -11,6 +11,11 @@ public class FruitTree : MonoBehaviour, IInteractable
     [SerializeField] private Fruit _fruit1;
     [SerializeField] private Fruit _fruit2;
     [SerializeField] private Fruit _fruit3;
+    [SerializeField] private GameObject _fruitPrefab;
+    
+    [SerializeField] private Transform _fruit1Pos;
+    [SerializeField] private Transform _fruit2Pos;
+    [SerializeField] private Transform _fruit3Pos;
     
     [SerializeField] private Collider _collider;
     [SerializeField] private Collider _trigger;
@@ -39,26 +44,35 @@ public class FruitTree : MonoBehaviour, IInteractable
     
     public void Interact()
     {
-        if (_isTriggered == false || _isFalling == true)
-        {
-            // yield break;
-        }
-
-        if (_input.actions["Trigger"].WasPressedThisFrame())
-        {
-            _isFalling = true;
-            _stateMachine.OnChangeState(StateMachine.StateType.PShake);
-            _animator.SetBool("isShaking", true);
-            // yield return new WaitForSeconds(0.3f);
-            
-            _fruit1.FruitFall();
-            _fruit2.FruitFall();
-            _fruit3.FruitFall();
-            // yield return new WaitForSeconds(_fallTime);
-            
-            _animator.SetBool("isShaking", false);
-            _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
-            _isFalling = false;
-        }
+        Debug.Log("나무에 대한 Interact 로직 작동");
+        StartCoroutine(ShakeAndDrop());
+        // if (_isTriggered == false || _isFalling == true)
+        // {
+        //     // yield break;
+        // }
+        //
+        // if (_input.actions["Trigger"].WasPressedThisFrame())
+        // {
+        //     _isFalling = true;
+        //     _stateMachine.OnChangeState(StateMachine.StateType.PShake);
+        //     
+        //     _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
+        //     _isFalling = false;
+        // }
     }
+
+    private IEnumerator ShakeAndDrop()
+    {
+        _animator.SetBool("isShaking", true);
+        // yield return new WaitForSeconds(0.3f);
+        
+        _fruit1.FruitFall();
+        _fruit2.FruitFall();
+        _fruit3.FruitFall();
+        // yield return new WaitForSeconds(_fallTime);
+        
+        _animator.SetBool("isShaking", false);
+        
+    }
+
 }

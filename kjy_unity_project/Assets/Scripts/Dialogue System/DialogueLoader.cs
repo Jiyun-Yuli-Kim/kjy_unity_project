@@ -68,7 +68,7 @@ public class DialogueLoader : MonoBehaviour
 
         else
         {
-            Debug.Log("데이터를 로드할 수 없습니다");
+            Debug.LogError("데이터를 로드할 수 없습니다");
         }
         
     }
@@ -80,9 +80,6 @@ public class DialogueLoader : MonoBehaviour
     
         // 2차원 배열 생성. DialogueTable[,] 1열: 대사 인덱스, 2열: 대사, 3열: 선택, 4열: 다음 인덱스
         string[,] DialogueTable = new string[lines.Length, lines[0].Split(',').Length];
-    
-        Debug.Log(lines.Length);
-        Debug.Log(lines[0].Split(',').Length);
         
         // 행 바꾸기
         for (int i = 1; i < lines.Length; i++)
@@ -92,7 +89,6 @@ public class DialogueLoader : MonoBehaviour
             // 해당 행의 열마다 데이터 넣기
             for (int j = 0; j < values.Length; j++)
             {
-                Debug.Log(values.Length);
                 values[j] = Decode(values[j]);
                 DialogueTable[i, j] = values[j];
             }

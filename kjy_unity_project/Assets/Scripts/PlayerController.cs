@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private DialogueSystem _dialogueSystem;
     private StateMachine _stateMachine;
     public PlayerInput Input;
-
+    private IInteractable _interactable;
     
     [SerializeField] public float playerMoveSpeed;
     [field: SerializeField] public float rotateInterpolation { get; private set; }
@@ -58,7 +58,8 @@ public class PlayerController : MonoBehaviour
         }
 
         GetInputBool();
-        DialogueCheck();
+        CheckDialogue();
+        CheckInteraction();
     }
 
     public void LateUpdate()
@@ -69,6 +70,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        _interactable = other.gameObject.GetComponent<IInteractable>();
+        Debug.Log($"트리거 진입, {_interactable}");
         if (other.gameObject.tag == "Kind")
         {
             _metKind = true;
@@ -95,25 +98,12 @@ public class PlayerController : MonoBehaviour
 
             return;
         }
-        
-        
     }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag == "Tree" && Input.actions["Trigger"].WasPressedThisFrame())
-        {
-            if (isInteracting)
-            {
-                return;
-            }
-            isInteracting = true;
-            _stateMachine.OnChangeState(StateMachine.StateType.PShake);
-        }
-    }
-
+    
     private void OnTriggerExit(Collider other)
     {
+        _interactable = null;
+
         if (other.gameObject.tag == "Kind")
         {
             NPC = null;
@@ -131,6 +121,15 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Tree")
         {
             isInteracting = false;
+        }
+    }
+
+    public void CheckInteraction()
+    {
+        if (_interactable != null && Input.actions["Trigger"].WasPressedThisFrame())
+        {
+            Debug.Log("상호작용 시행");
+            _interactable.Interact();
         }
     }
 
@@ -230,7 +229,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void DialogueCheck()
+    private void CheckDialogue()
     {
         if (isInteracting)
         {
