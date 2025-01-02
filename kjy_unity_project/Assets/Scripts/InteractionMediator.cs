@@ -3,17 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-// public class InteractionMediator : MonoBehaviour
-// {
-//     public UnityEvent OnShakeTree;
-//     public UnityEvent OnShakeTreeEnd;
-//     public UnityEvent OnDropFruits;
-//     [SerializeField] private PlayerController _player;
-//
-//     void Start()
-//     {
-//         OnShakeTree.AddListener(_player.ShakeTree);
-//         OnShakeTreeEnd.AddListener(_player.StopShakeTree);
-//     }
-//
-// }
+public class InteractionMediator : MonoBehaviour
+{
+    public static InteractionMediator Instance { get; private set; }
+    
+    public UnityEvent OnShakeTree;
+    public UnityEvent OnShakeTreeEnd;
+    public UnityEvent OnDropFruits;
+    
+    void Start()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            Instance = this;
+        }
+
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+}

@@ -27,7 +27,6 @@ public class FruitTree : MonoBehaviour, IInteractable
     private Animator _animator;
     private PlayerController _player;
     private StateMachine _stateMachine;
-    // private InteractionMediator _mediator;
     
     public bool isInteracting = false;
 
@@ -35,7 +34,6 @@ public class FruitTree : MonoBehaviour, IInteractable
 
     void Awake()
     {
-        // _mediator = GetComponent<InteractionMediator>();
         _player = FindObjectOfType<PlayerController>();
         _animator = GetComponent<Animator>();
     }
@@ -49,7 +47,7 @@ public class FruitTree : MonoBehaviour, IInteractable
 
         isInteracting = true;
         _player.isShakingTree = true;
-        // _mediator.OnShakeTree.Invoke();
+        InteractionMediator.Instance.OnShakeTree.Invoke();
         Debug.Log("나무에 대한 Interact 로직 작동");
         StartCoroutine(ShakeAndDrop());
     }
@@ -69,7 +67,7 @@ public class FruitTree : MonoBehaviour, IInteractable
         
         _animator.SetBool("isShaking", false);
         
-        //_mediator.OnShakeTreeEnd.Invoke();
+        InteractionMediator.Instance.OnShakeTreeEnd.Invoke();
         _player.isShakingTree = false;
         isInteracting = false;
     }

@@ -249,7 +249,6 @@ MonoBehaviour:
   OnDropFruits:
     m_PersistentCalls:
       m_Calls: []
-  _player: {fileID: 0}
 --- !u!1 &235628402 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2268724145755230599, guid: e9e9c815e0376c84188668083f14b2b7, type: 3}
@@ -650,6 +649,59 @@ MonoBehaviour:
   _highlighterC: {fileID: 326080268}
   _blinker: {fileID: 2117187927}
   choice: 0
+--- !u!1 &832056280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 832056282}
+  - component: {fileID: 832056281}
+  m_Layer: 0
+  m_Name: InteractionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &832056281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832056280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7417491a7b802a4bba15ec04afb9cc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnShakeTree:
+    m_PersistentCalls:
+      m_Calls: []
+  OnShakeTreeEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDropFruits:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!4 &832056282
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832056280}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.7208924, y: 2.1869924, z: 0.6363755}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &882673435
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,7 +988,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 344767462, guid: 925885b22e738c442beafb4944df6f1c, type: 3}
   m_PrefabInstance: {fileID: 6255354432709771197}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2117286248}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
@@ -1367,7 +1419,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 344767464, guid: 925885b22e738c442beafb4944df6f1c, type: 3}
   m_PrefabInstance: {fileID: 6255354432709771197}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2117286248}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 303e5c4998feda441bfbf0b3b1adc70c, type: 3}
@@ -1394,33 +1446,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2268724146561961890, guid: e9e9c815e0376c84188668083f14b2b7, type: 3}
   m_PrefabInstance: {fileID: 2268724145990465269}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2117286248 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6846780794237692195, guid: 925885b22e738c442beafb4944df6f1c, type: 3}
-  m_PrefabInstance: {fileID: 6255354432709771197}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2117286252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2117286248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7417491a7b802a4bba15ec04afb9cc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnShakeTree:
-    m_PersistentCalls:
-      m_Calls: []
-  OnShakeTreeEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDropFruits:
-    m_PersistentCalls:
-      m_Calls: []
-  _player: {fileID: 1906586505}
 --- !u!135 &267536299652874618
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2452,7 +2477,6 @@ GameObject:
   - component: {fileID: 5218841857964110653}
   - component: {fileID: 5218841857964110655}
   - component: {fileID: 1310409127}
-  - component: {fileID: 5218841857964110656}
   m_Layer: 0
   m_Name: AppleTree
   m_TagString: Untagged
@@ -2519,28 +2543,6 @@ MonoBehaviour:
   OnInteraction:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5218841857964110656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5218841857964110650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7417491a7b802a4bba15ec04afb9cc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnShakeTree:
-    m_PersistentCalls:
-      m_Calls: []
-  OnShakeTreeEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDropFruits:
-    m_PersistentCalls:
-      m_Calls: []
-  _player: {fileID: 1906586505}
 --- !u!4 &5297336451855492316
 Transform:
   m_ObjectHideFlags: 0
@@ -2696,6 +2698,10 @@ PrefabInstance:
       propertyPath: _rb
       value: 
       objectReference: {fileID: 1309056291}
+    - target: {fileID: 344767464, guid: 925885b22e738c442beafb4944df6f1c, type: 3}
+      propertyPath: Input
+      value: 
+      objectReference: {fileID: 1309056288}
     - target: {fileID: 344767464, guid: 925885b22e738c442beafb4944df6f1c, type: 3}
       propertyPath: _input
       value: 

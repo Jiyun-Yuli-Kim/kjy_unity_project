@@ -23,10 +23,10 @@ public class PlayerIdle : StateBase
             _stateMachine.OnChangeState(StateMachine.StateType.PWalk);
         }
 
-        if (_controller.isShakingTree)
-        {
-            _stateMachine.OnChangeState(StateMachine.StateType.PShake);
-        }
+        // if (_controller.isShakingTree)
+        // {
+        //     _stateMachine.OnChangeState(StateMachine.StateType.PShake);
+        // }
     }
 
     public override void OnStateExit()

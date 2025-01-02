@@ -16,10 +16,10 @@ public class PlayerShakeTree : StateBase
     
     public override void OnStateUpdate()
     {
-        if (!_controller.isShakingTree)
-        {
-            _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
-        }
+        // if (!_controller.isShakingTree)
+        // {
+        //     _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
+        // }
     }
 
     public override void OnStateExit()

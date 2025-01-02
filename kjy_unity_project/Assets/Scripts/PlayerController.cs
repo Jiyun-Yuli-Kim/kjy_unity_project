@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
     private StateMachine _stateMachine;
     public PlayerInput Input;
     private IInteractable _interactable;
-    // private InteractionMediator _mediator;
     
     [SerializeField] public float playerMoveSpeed;
     [field: SerializeField] public float rotateInterpolation { get; private set; }
@@ -49,13 +48,13 @@ public class PlayerController : MonoBehaviour
     public void Awake()
     {
         _stateMachine = GetComponent<StateMachine>();
-        // _mediator = GetComponent<InteractionMediator>();
         Input = GetComponent<PlayerInput>();
     }
 
     public void Start()
     {
-
+        InteractionMediator.Instance.OnShakeTree.AddListener(ShakeTree);
+        InteractionMediator.Instance.OnShakeTreeEnd.AddListener(StopShakeTree);
     }
 
     public void Update()
@@ -80,6 +79,7 @@ public class PlayerController : MonoBehaviour
     {
         _interactable = other.gameObject.GetComponent<IInteractable>();
         Debug.Log($"트리거 진입, {_interactable}");
+        
         if (other.gameObject.tag == "Kind")
         {
             _metKind = true;
