@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private StateMachine _stateMachine;
     public PlayerInput Input;
     private IInteractable _interactable;
+    // private InteractionMediator _mediator;
     
     [SerializeField] public float playerMoveSpeed;
     [field: SerializeField] public float rotateInterpolation { get; private set; }
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public bool isMoving = false;
     public bool isDashing = false;
     public bool isTriggered = false;
+    public bool isShakingTree = false;
     public bool isReverted = false;
     public bool isSouth = false;
     public bool isNorth = false;
@@ -47,7 +49,13 @@ public class PlayerController : MonoBehaviour
     public void Awake()
     {
         _stateMachine = GetComponent<StateMachine>();
+        // _mediator = GetComponent<InteractionMediator>();
         Input = GetComponent<PlayerInput>();
+    }
+
+    public void Start()
+    {
+
     }
 
     public void Update()
@@ -129,10 +137,6 @@ public class PlayerController : MonoBehaviour
         if (_interactable != null && Input.actions["Trigger"].WasPressedThisFrame())
         {
             _interactable.Interact();
-            if ()
-            {
-                
-            }
         }
     }
 
@@ -252,6 +256,17 @@ public class PlayerController : MonoBehaviour
             Debug.Log("아이돌 유형 주민과 대화");
             isInteracting = false;
         }
+    }
+
+    public void ShakeTree()
+    {
+        Debug.Log("플레이어 나무 흔들기");
+        _stateMachine.OnChangeState(StateMachine.StateType.PShake);
+    }
+
+    public void StopShakeTree()
+    {
+        _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
     }
 
 }

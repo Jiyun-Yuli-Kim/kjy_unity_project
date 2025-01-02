@@ -13,6 +13,14 @@ public class PlayerShakeTree : StateBase
     {
         _animator.SetBool("isShaking", true);
     }
+    
+    public override void OnStateUpdate()
+    {
+        if (!_controller.isShakingTree)
+        {
+            _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
+        }
+    }
 
     public override void OnStateExit()
     {
