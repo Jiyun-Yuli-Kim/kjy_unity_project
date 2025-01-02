@@ -16,14 +16,21 @@ public class FruitTree : MonoBehaviour
     [SerializeField] private PlayerInput _input;
     [SerializeField] private float _fallTime =2f;
     
+    private Animator _animator;
     private PlayerController _player;
     private StateMachine _stateMachine;
     
     private bool _isTriggered = false;
+    private bool _isFalling = false;
+
+    void Awake()
+    {
+        _animator = GetComponent<Animator>();
+    }
 
     private void Update()
     {
-        CheckInteraction();
+        StartCoroutine(CheckInteraction());
     }
 
     private void OnTriggerEnter(Collider other)
@@ -48,20 +55,24 @@ public class FruitTree : MonoBehaviour
 
     private IEnumerator CheckInteraction()
     {
-        if (_isTriggered == false)
+        if (_isTriggered == false || _isFalling == true)
         {
             yield break;
         }
 
         if (_input.actions["Trigger"].WasPressedThisFrame())
         {
-            Debug.Log("나무 흔들기");
+            _isFalling = true;
+            _animator.SetBool("isShaking", true);
             _stateMachine.OnChangeState(StateMachine.StateType.PShake);
+            yield return new WaitForSeconds(0.3f);
             _fruit1.FruitFall();
             _fruit2.FruitFall();
             _fruit3.FruitFall();
             yield return new WaitForSeconds(_fallTime);
+            _animator.SetBool("isShaking", false);
             _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
+            _isFalling = false;
         }
     }
 }
