@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private StateMachine _stateMachine;
     public PlayerInput Input;
     private IInteractable _interactable;
+    private IPickupable _pickupable;
     
     [SerializeField] public float playerMoveSpeed;
     [field: SerializeField] public float rotateInterpolation { get; private set; }
@@ -80,6 +81,9 @@ public class PlayerController : MonoBehaviour
         _interactable = other.gameObject.GetComponent<IInteractable>();
         Debug.Log($"트리거 진입, {_interactable}");
         
+        _pickupable = other.gameObject.GetComponent<IPickupable>();
+        Debug.Log($"트리거 진입, {_pickupable}");
+        
         if (other.gameObject.tag == "Kind")
         {
             _metKind = true;
@@ -137,6 +141,11 @@ public class PlayerController : MonoBehaviour
         if (_interactable != null && Input.actions["Trigger"].WasPressedThisFrame())
         {
             _interactable.Interact();
+        }
+        
+        if (_pickupable != null && Input.actions["Trigger"].WasPressedThisFrame())
+        {
+            _pickupable.Pickup();
         }
     }
 
