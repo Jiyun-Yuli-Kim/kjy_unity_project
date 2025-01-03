@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Fruit : MonoBehaviour
+public class Fruit : MonoBehaviour, IPickupable
 {
     private Rigidbody _rb;
     private Collider _col;
@@ -16,6 +16,7 @@ public class Fruit : MonoBehaviour
     private bool _isBeingPickedup = false;
     private bool _isGrounded = false;
 
+    [SerializeField] private ItemData _fruitData;
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -101,26 +102,27 @@ public class Fruit : MonoBehaviour
     //         }
     //     }
     // }
-
     public void FruitFall()
     {
         _rb.constraints = RigidbodyConstraints.None;
     }
+    
+    public void BeingPickedUp()
+    {
+        StartCoroutine(PickUpFruit());
+    }
 
-    //  직접적으로 과일을 줍는 로직
     public IEnumerator PickUpFruit()
     {
         _isBeingPickedup = true;
-        // 플레이어 : 줍기 애니메이션 실행
-        // _anima
+        // 플레이어 : 줍기 애니메이션 실행 완료까지 대기
+        // OnPickupEnd 발동시
+        // Destroy
         // WaitUntil 줍기완료
         // 인벤토리 : Inventory.Instance.AddItem(주운거)
         yield return new WaitForSeconds(0.5f);
         _isBeingPickedup = false;
     }
-
-
-    
 }
 
 

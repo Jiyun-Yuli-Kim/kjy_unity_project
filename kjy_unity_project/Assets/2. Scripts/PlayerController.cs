@@ -54,8 +54,10 @@ public class PlayerController : MonoBehaviour
 
     public void Start()
     {
-        InteractionMediator.Instance.OnShakeTree.AddListener(ShakeTree);
-        InteractionMediator.Instance.OnShakeTreeEnd.AddListener(StopShakeTree);
+        InteractionManager.Instance.OnShakeTree.AddListener(ShakeTree);
+        InteractionManager.Instance.OnShakeTreeEnd.AddListener(StopShakeTree);
+        InteractionManager.Instance.OnPickup.AddListener(Pickup);
+        
     }
 
     public void Update()
@@ -82,7 +84,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log($"트리거 진입, {_interactable}");
         
         _pickupable = other.gameObject.GetComponent<IPickupable>();
-        Debug.Log($"트리거 진입, {_pickupable}");
+        Debug.Log(_pickupable);
         
         if (other.gameObject.tag == "Kind")
         {
@@ -115,6 +117,9 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         _interactable = null;
+        _pickupable = null;
+        
+        isInteracting = false;
 
         if (other.gameObject.tag == "Kind")
         {
@@ -137,25 +142,35 @@ public class PlayerController : MonoBehaviour
     }
 
     public void CheckInteraction()
-    {
+    { // 겹치는거 어떻게 처리할지 고민해야함.
+        if (isInteracting)
+        {
+            return;
+        }
+
         if (_interactable != null && Input.actions["Trigger"].WasPressedThisFrame())
         {
+            InteractionManager.Instance.OnPickup.Invoke();
             _interactable.Interact();
         }
         
-        if (_pickupable != null && Input.actions["Trigger"].WasPressedThisFrame())
+        // 일단 인풋을 다르게 받을거라 괜찮을 것 같긴 하지만... 
+        if (_pickupable != null && Input.actions["Revert"].WasPressedThisFrame())
         {
-            _pickupable.Pickup();
+            
+            _pickupable.BeingPickedUp();
         }
     }
 
+    // public IEnumerator Interact()
+    // {
+    //     isInteracting = true;
+    //     _interactable.Interact();
+    //     yield return new WaitUntil(() => !isInteracting);
+    // }
+
     public void GetInputBool()
     {
-        // if (_isInteracting)
-        // {
-        //     return;
-        // }
-
         if (Input.actions["Move"].IsPressed()) // WASD, 십자방향키, 좌측 조이스틱
         {
             isMoving = true;
@@ -208,17 +223,6 @@ public class PlayerController : MonoBehaviour
         // // isNorth = false;
     }
 
-
-    // public bool GetInputAB()
-    // {
-    //     if (_input.actions["Trigger"].IsPressed() || _input.actions["Revert"].IsPressed())
-    //     {
-    //         return true;
-    //     }
-    //
-    //     return false;
-    // }
-
     public void PlayerMove()
     {
         Vector3 dir;
@@ -238,7 +242,6 @@ public class PlayerController : MonoBehaviour
             );
         }
 
-        // 폴리싱 
         else
         {
             _rb.angularDrag = angularDrag;
@@ -269,13 +272,30 @@ public class PlayerController : MonoBehaviour
 
     public void ShakeTree()
     {
+        isInteracting = true;
+        // 여기서 왜 문제 발생하는지 확인해야함
         Debug.Log("플레이어 나무 흔들기");
+        // transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(transform.position - _interactable.GetPosition()), 2*Time.deltaTime);
+        transform.rotation = Quaternion.LookRotation(_interactable.GetPosition());
         _stateMachine.OnChangeState(StateMachine.StateType.PShake);
     }
 
     public void StopShakeTree()
     {
         _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
+        isInteracting = false;
+    }
+
+    public void Pickup()
+    {
+        isInteracting = true;
+        _stateMachine.OnChangeState(StateMachine.StateType.PShake);
+    }
+
+    public void StopPickup()
+    {
+        _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
+        isInteracting = false;
     }
 
 }

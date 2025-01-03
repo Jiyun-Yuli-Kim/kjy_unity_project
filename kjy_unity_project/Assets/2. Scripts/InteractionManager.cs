@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class InteractionMediator : MonoBehaviour
+public class InteractionManager : MonoBehaviour
 {
-    public static InteractionMediator Instance { get; private set; }
+    public static InteractionManager Instance { get; private set; }
     
     public UnityEvent OnShakeTree;
     public UnityEvent OnShakeTreeEnd;
-    public UnityEvent OnDropFruits;
+    public UnityEvent OnPickup;
+    public UnityEvent OnPickupEnd;
     
     void Start()
     {

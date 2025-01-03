@@ -8,9 +8,6 @@ using UnityEngine.InputSystem;
 
 public class FruitTree : MonoBehaviour, IInteractable
 {
-    // [SerializeField] private Fruit _fruit1;
-    // [SerializeField] private Fruit _fruit2;
-    // [SerializeField] private Fruit _fruit3;
     private Fruit[] fruits = new Fruit[3];
     [SerializeField] private GameObject _fruitPrefab;
     [SerializeField] private GameObject _parent;
@@ -27,7 +24,6 @@ public class FruitTree : MonoBehaviour, IInteractable
     
     private Animator _animator;
     private PlayerController _player;
-    private StateMachine _stateMachine;
     
     public bool isInteracting = false;
 
@@ -52,10 +48,14 @@ public class FruitTree : MonoBehaviour, IInteractable
         }
 
         isInteracting = true;
-        _player.isShakingTree = true;
-        InteractionMediator.Instance.OnShakeTree.Invoke();
+        InteractionManager.Instance.OnShakeTree.Invoke();
         Debug.Log("나무에 대한 Interact 로직 작동");
         StartCoroutine(ShakeAndDrop());
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
     }
 
     private IEnumerator ShakeAndDrop()
@@ -72,8 +72,7 @@ public class FruitTree : MonoBehaviour, IInteractable
         
         _animator.SetBool("isShaking", false);
         
-        InteractionMediator.Instance.OnShakeTreeEnd.Invoke();
-        _player.isShakingTree = false;
+        InteractionManager.Instance.OnShakeTreeEnd.Invoke();
         isInteracting = false;
         ClearArray();
 

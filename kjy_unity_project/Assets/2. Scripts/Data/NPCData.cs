@@ -8,5 +8,4 @@ public class NPCData : ScriptableObject
     public string NPCName;
     public Personalities personality;
     public string CatchPhrase;
-
 }
