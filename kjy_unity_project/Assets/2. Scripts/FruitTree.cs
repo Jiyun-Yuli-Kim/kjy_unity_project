@@ -35,9 +35,12 @@ public class FruitTree : MonoBehaviour, IInteractable
         _animator = GetComponent<Animator>();
     }
 
-    void Update()
+    void Start()
     {
-        SpawnFruit();
+        if (fruits[0] == null && fruits[1] == null && fruits[2] == null)
+        {
+            SpawnFruit();
+        }
     }
 
     public void Interact()
@@ -80,15 +83,15 @@ public class FruitTree : MonoBehaviour, IInteractable
 
     private void SpawnFruit()
     {
-        if (fruits[0] == null && fruits[1] == null && fruits[2] == null)
-        {
+
             fruits[0] = Instantiate(_fruitPrefab, _fruit1Pos.position,
                 new Quaternion(-0.107541613f, 0, 0, 0.994200587f)).GetComponent<Fruit>();
             fruits[1] = Instantiate(_fruitPrefab, _fruit2Pos.position,
                 new Quaternion(-0.0911203697f, 0.19207485f, -0.0179143753f, 0.976976693f)).GetComponent<Fruit>();
             fruits[2] = Instantiate(_fruitPrefab, _fruit3Pos.position,
                 new Quaternion(-0.0839739516f, -0.19348672f, 0.0112915235f, 0.977437377f)).GetComponent<Fruit>();
-        }
+            
+            Debug.Log($"fruit {fruits[0].gameObject.name}, fruit {fruits[1].gameObject.name}, fruit {fruits[2].gameObject.name}");
     }
 
     private void ClearArray()

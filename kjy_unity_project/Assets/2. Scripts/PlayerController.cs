@@ -57,7 +57,6 @@ public class PlayerController : MonoBehaviour
         InteractionManager.Instance.OnShakeTree.AddListener(ShakeTree);
         InteractionManager.Instance.OnShakeTreeEnd.AddListener(StopShakeTree);
         InteractionManager.Instance.OnPickup.AddListener(Pickup);
-        
     }
 
     public void Update()
@@ -75,7 +74,7 @@ public class PlayerController : MonoBehaviour
     public void LateUpdate()
     {
         ResetInputBool();
-        _rb.angularDrag = 3;
+        // _rb.angularDrag = 3;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -157,7 +156,6 @@ public class PlayerController : MonoBehaviour
         // 일단 인풋을 다르게 받을거라 괜찮을 것 같긴 하지만... 
         if (_pickupable != null && Input.actions["Revert"].WasPressedThisFrame())
         {
-            
             _pickupable.BeingPickedUp();
         }
     }
