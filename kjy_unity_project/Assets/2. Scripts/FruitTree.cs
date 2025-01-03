@@ -35,7 +35,7 @@ public class FruitTree : MonoBehaviour, IInteractable
         _animator = GetComponent<Animator>();
     }
 
-    void Start()
+    void Update()
     {
         if (fruits[0] == null && fruits[1] == null && fruits[2] == null)
         {

@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
         InteractionManager.Instance.OnShakeTree.AddListener(ShakeTree);
         InteractionManager.Instance.OnShakeTreeEnd.AddListener(StopShakeTree);
         InteractionManager.Instance.OnPickup.AddListener(Pickup);
+        InteractionManager.Instance.OnPickupEnd.AddListener(StopPickup);
     }
 
     public void Update()
@@ -149,7 +150,6 @@ public class PlayerController : MonoBehaviour
 
         if (_interactable != null && Input.actions["Trigger"].WasPressedThisFrame())
         {
-            InteractionManager.Instance.OnPickup.Invoke();
             _interactable.Interact();
         }
         
@@ -287,7 +287,7 @@ public class PlayerController : MonoBehaviour
     public void Pickup()
     {
         isInteracting = true;
-        _stateMachine.OnChangeState(StateMachine.StateType.PShake);
+        _stateMachine.OnChangeState(StateMachine.StateType.PPickup);
     }
 
     public void StopPickup()

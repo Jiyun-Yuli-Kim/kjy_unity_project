@@ -11,6 +11,7 @@ public class PlayerPickupItem : StateBase
     
     public override void OnStateEnter()
     {
+        Debug.Log("PlayerPickupItem.OnStateEnter");
         _animator.SetBool("isPickingUp", true);
     }
     

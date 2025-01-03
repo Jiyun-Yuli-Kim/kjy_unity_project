@@ -109,6 +109,13 @@ public class Fruit : MonoBehaviour, IPickupable
     
     public void BeingPickedUp()
     {
+        if (_isBeingPickedup)
+        {
+            return;
+        }
+
+        _isBeingPickedup = true;
+        InteractionManager.Instance.OnPickup.Invoke();
         StartCoroutine(PickUpFruit());
     }
 
@@ -121,6 +128,7 @@ public class Fruit : MonoBehaviour, IPickupable
         // WaitUntil 줍기완료
         // 인벤토리 : Inventory.Instance.AddItem(주운거)
         yield return new WaitForSeconds(0.5f);
+        InteractionManager.Instance.OnPickupEnd.Invoke();
         _isBeingPickedup = false;
     }
 }
