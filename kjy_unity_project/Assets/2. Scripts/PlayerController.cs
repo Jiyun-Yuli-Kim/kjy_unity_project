@@ -287,12 +287,12 @@ public class PlayerController : MonoBehaviour
     public void Pickup()
     {
         isInteracting = true;
-        _stateMachine.OnChangeState(StateMachine.StateType.PPickup);
+        Debug.Log("픽업 트리거 발동");
+        _animator.SetTrigger("PickupTrigger");
     }
 
     public void StopPickup()
     {
-        _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
         isInteracting = false;
     }
 

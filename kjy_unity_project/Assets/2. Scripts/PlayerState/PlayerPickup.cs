@@ -14,9 +14,9 @@ public class PlayerPickup : StateBase
         _animator.SetBool("isPickingUp", true);
     }
     
-    public override void OnStateUpdate()
-    {
-    }
+    // public override void OnStateUpdate()
+    // {
+    // }
 
     public override void OnStateExit()
     {

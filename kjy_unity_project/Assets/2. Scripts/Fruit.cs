@@ -61,29 +61,29 @@ public class Fruit : MonoBehaviour, IPickupable
 
     public void BeingPickedUp()
     {
+        InteractionManager.Instance.OnPickup.Invoke();
+    }
+
+    public void PickupFruit()
+    {
         if (_isBeingPickedup)
         {
             return;
         }
 
         _isBeingPickedup = true;
-        InteractionManager.Instance.OnPickup.Invoke();
-    }
-
-    public void PickupFruit()
-    {
         StartCoroutine(PickupCoroutine());
     }
 
     public IEnumerator PickupCoroutine()
     {
         // 현재 플레이어 애니메이션은 독립적으로 작동중.
-        
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return new WaitForSeconds(0.5f);
         
         // yield return new WaitForSeconds(0.5f);
-        // InteractionManager.Instance.OnPickupEnd.Invoke();
-        // _isBeingPickedup = false;
+        InteractionManager.Instance.OnPickupEnd.Invoke();
+        Debug.Log("픽업종료");
+        _isBeingPickedup = false;
     }
 }
 
