@@ -12,101 +12,53 @@ public class Fruit : MonoBehaviour, IPickupable
 
     private PlayerInput _input;
 
-    private bool _isPickupable = false;
     private bool _isBeingPickedup = false;
-    private bool _isGrounded = false;
 
     [SerializeField] private ItemData _fruitData;
+
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _col = GetComponent<Collider>();
     }
 
-    void Update()
+    void Start()
     {
-        // CheckPickupable();
+        // InteractionManager.Instance.OnShakeTreeEnd.AddListener(FreezeFruit);
+        InteractionManager.Instance.OnPickupEnd.AddListener(PickupFruit);
     }
 
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.gameObject.CompareTag("Player"))
-    //     {
-    //         _isPickupable = true;
-    //         // _isPickupable == true이고 Trigger 눌렸을 때(업데이트에서 처리)
-    //         // PickUpFruit()
-    //     }
-    // }
-    //
-    // private void OnTriggerStay(Collider other)
-    // {
-    //     if (_isBeingPickedup)
-    //     {
-    //         return;
-    //     }
-    //     
-    //     if (other.gameObject.CompareTag("Player"))
-    //     {
-    //         if (_isPickupable && _input.actions["Trigger"].WasPressedThisFrame())
-    //         {
-    //             StartCoroutine(PickUpFruit());
-    //         }
-    //     }
-    // }
-    //
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if (other.gameObject.CompareTag("Player"))
-    //     {
-    //         _isPickupable = false;
-    //     }
-    // }
-    //
-    // private void OnCollisionStay(Collision other)
-    // {
-    //     if (other.gameObject.CompareTag("Ground"))
-    //     {
-    //         Debug.Log("Ground");
-    //         if (_isGrounded)
-    //         {
-    //             return;
-    //         }
-    //
-    //         _isGrounded = true;
-    //         _rb.constraints = RigidbodyConstraints.FreezeAll;
-    //     }
-    // }
+    // 초기 과일이 스폰된 상태에는 Constraints가 모두 설정되어있음
+    // FruitTree상에서 이벤트를 통해 FruitFall을 호출하고있다. 이때 constraints가 일시 해제된다.
+    // 그럼이제 여기서는 땅에 닿았는지를 판정해서 다시 freeze해주면 될 것 같다.
+    // 다만 이제 여기서 반동을 줄거라면? 조금 복잡해지겠죠
+    // 이벤트에 등록해서 한번 처리해볼게.... 가 아니다 이거 너무 복잡해진다.
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            // FreezeFruit();
+        }
+    }
 
     // private void OnCollisionExit(Collision other)
     // {
     //     if (other.gameObject.tag == "Ground")
     //     {
-    //         _rb.constraints = RigidbodyConstraints.None;
-    //         _rb.mass = 10;
-    //         _isGrounded = false;
     //     }
     // }
-
-    // private void CheckPickupable()
-    // {
-    //     if (!_isPickupable)
-    //     {
-    //         return;
-    //     }
-    //     
-    //     else if (_isPickupable)
-    //     {
-    //         if (_input.actions["Trigger"].WasPressedThisFrame())
-    //         {
-    //             // StartCoroutine(PickUpFruit());
-    //         }
-    //     }
-    // }
+    
     public void FruitFall()
     {
         _rb.constraints = RigidbodyConstraints.None;
     }
-    
+
+    public void FreezeFruit()
+    {
+        _rb.constraints = RigidbodyConstraints.FreezeAll;
+    }
+
     public void BeingPickedUp()
     {
         if (_isBeingPickedup)
@@ -116,20 +68,22 @@ public class Fruit : MonoBehaviour, IPickupable
 
         _isBeingPickedup = true;
         InteractionManager.Instance.OnPickup.Invoke();
-        StartCoroutine(PickUpFruit());
     }
 
-    public IEnumerator PickUpFruit()
+    public void PickupFruit()
     {
-        _isBeingPickedup = true;
-        // 플레이어 : 줍기 애니메이션 실행 완료까지 대기
-        // OnPickupEnd 발동시
-        // Destroy
-        // WaitUntil 줍기완료
-        // 인벤토리 : Inventory.Instance.AddItem(주운거)
-        yield return new WaitForSeconds(0.5f);
-        InteractionManager.Instance.OnPickupEnd.Invoke();
-        _isBeingPickedup = false;
+        StartCoroutine(PickupCoroutine());
+    }
+
+    public IEnumerator PickupCoroutine()
+    {
+        // 현재 플레이어 애니메이션은 독립적으로 작동중.
+        
+        yield return new WaitForSecondsRealtime(0.5f);
+        
+        // yield return new WaitForSeconds(0.5f);
+        // InteractionManager.Instance.OnPickupEnd.Invoke();
+        // _isBeingPickedup = false;
     }
 }
 

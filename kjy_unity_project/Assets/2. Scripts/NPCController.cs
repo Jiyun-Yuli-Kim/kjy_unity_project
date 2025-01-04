@@ -5,6 +5,7 @@ using UnityEngine;
 public class NPCController : MonoBehaviour
 {
     [SerializeField] public NPCData _npcData;
+    // 플레이어 방향을 따라 고개 돌리도록
     [SerializeField] public GameObject NPCHead;
     [SerializeField] private PlayerController _player;
     

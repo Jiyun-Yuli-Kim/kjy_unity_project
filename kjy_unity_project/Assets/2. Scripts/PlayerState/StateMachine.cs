@@ -26,8 +26,8 @@ public class StateMachine : MonoBehaviour
         PlayerIdle playerIdle = new PlayerIdle(_playerController, _animator, this);
         PlayerWalk playerWalk = new PlayerWalk(_playerController, _animator, this);
         PlayerShakeTree playerShakeTree = new PlayerShakeTree(_playerController, _animator, this);
-        PlayerPickupItem playerPickupItem = new PlayerPickupItem(_playerController, _animator, this);
-        AddState(playerIdle, playerWalk, playerShakeTree, playerPickupItem);
+        PlayerPickup playerPickup = new PlayerPickup(_playerController, _animator, this);
+        AddState(playerIdle, playerWalk, playerShakeTree, playerPickup);
         
         OnChangeState(StateType.PIdle);
     }

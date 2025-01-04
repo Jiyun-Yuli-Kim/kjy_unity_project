@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerPickupItem : StateBase
+public class PlayerPickup : StateBase
 {
-    public PlayerPickupItem(PlayerController controller, Animator animator, StateMachine stateMachine) : base(controller, animator, stateMachine)
+    public PlayerPickup(PlayerController controller, Animator animator, StateMachine stateMachine) : base(controller, animator, stateMachine)
     {
         
     }
     
     public override void OnStateEnter()
     {
-        Debug.Log("PlayerPickupItem.OnStateEnter");
         _animator.SetBool("isPickingUp", true);
     }
     
