@@ -294,6 +294,7 @@ public class PlayerController : MonoBehaviour
     public void StopPickup()
     {
         isInteracting = false;
+        _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
     }
 
 }
