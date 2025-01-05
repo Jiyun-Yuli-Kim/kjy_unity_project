@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     public PlayerInput Input;
     private IInteractable _interactable;
     private IPickupable _pickupable;
-    
+
     [SerializeField] public float playerMoveSpeed;
     [field: SerializeField] public float rotateInterpolation { get; private set; }
     [field: SerializeField] public float dashMultiplier { get; private set; }
@@ -81,9 +81,9 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _interactable = other.gameObject.GetComponent<IInteractable>();
-        
-        _pickupable = other.gameObject.GetComponent<IPickupable>(); 
-        
+
+        _pickupable = other.gameObject.GetComponent<IPickupable>();
+
         if (other.gameObject.tag == "Kind")
         {
             _metKind = true;
@@ -111,12 +111,12 @@ public class PlayerController : MonoBehaviour
             return;
         }
     }
-    
+
     private void OnTriggerExit(Collider other)
     {
         _interactable = null;
         _pickupable = null;
-        
+
         isInteracting = false;
 
         if (other.gameObject.tag == "Kind")
@@ -140,7 +140,8 @@ public class PlayerController : MonoBehaviour
     }
 
     public void CheckInteraction()
-    { // 겹치는거 어떻게 처리할지 고민해야함.
+    {
+        // 겹치는거 어떻게 처리할지 고민해야함.
         if (isInteracting)
         {
             return;
@@ -150,16 +151,16 @@ public class PlayerController : MonoBehaviour
         {
             _interactable.Interact();
         }
-        
+
         // 일단 인풋을 다르게 받을거라 괜찮을 것 같긴 하지만... 
         if (_pickupable != null && Input.actions["Revert"].WasPressedThisFrame())
         {
             _pickupable.BeingPickedUp();
-            Debug.Log("_pickupable.BeingPickedUp(); 발동");
+            _pickupable = null;
         }
     }
 
-    // public IEnumerator Interact()
+// public IEnumerator Interact()
     // {
     //     isInteracting = true;
     //     _interactable.Interact();

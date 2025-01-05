@@ -56,6 +56,7 @@ public class Fruit : Item, IPickupable
         if (other.gameObject.CompareTag("Player"))
         {
             InteractionManager.Instance.OnPickup.AddListener(PickupFruit);
+            InteractionManager.Instance.OnPickupEnd.AddListener(EndPickupFruit);
         }
     }
     
@@ -64,6 +65,7 @@ public class Fruit : Item, IPickupable
         if (other.gameObject.CompareTag("Player"))
         {
             InteractionManager.Instance.OnPickup.RemoveListener(PickupFruit);
+            InteractionManager.Instance.OnPickupEnd.AddListener(EndPickupFruit);
         }
     }
 
@@ -79,16 +81,15 @@ public class Fruit : Item, IPickupable
 
     public void BeingPickedUp()
     {
+        if (_isBeingPickedup || !_isGrounded)
+        {
+            return;
+        }
         InteractionManager.Instance.OnPickup.Invoke();
     }
 
     public void PickupFruit()
     {
-        if (_isBeingPickedup || !_isGrounded)
-        {
-            return;
-        }
-
         _isBeingPickedup = true;
         StartCoroutine(PickupCoroutine());
     }
@@ -104,6 +105,11 @@ public class Fruit : Item, IPickupable
         InteractionManager.Instance.OnPickupEnd.Invoke();
         Debug.Log("픽업종료");
         _isBeingPickedup = false;
+    }
+
+    public void EndPickupFruit()
+    {
+        _isGrounded = false;
     }
 }
 
