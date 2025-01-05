@@ -12,7 +12,7 @@ public class Fruit : Item, IPickupable
 
     private PlayerInput _input;
 
-    private bool _isGrounded = false;
+    public bool isGrounded;
     // private bool _isBeingPickedup = false;
 
     // 데이터 필드는 어차피 부모클래스인 Item에서 정의했으므로..
@@ -20,13 +20,14 @@ public class Fruit : Item, IPickupable
 
     void Awake()
     {
+        isGrounded = false;
         _rb = GetComponent<Rigidbody>();
         _col = GetComponent<Collider>();
     }
 
     void Start()
     {
-        // InteractionManager.Instance.OnShakeTreeEnd.AddListener(FreezeFruit);
+        isGrounded = false;
     }
 
     // 초기 과일이 스폰된 상태에는 Constraints가 모두 설정되어있음
@@ -39,7 +40,7 @@ public class Fruit : Item, IPickupable
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            _isGrounded = true;
+            isGrounded = true;
             FreezeFruit();
         }
     }
@@ -48,7 +49,7 @@ public class Fruit : Item, IPickupable
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            _isGrounded = false;
+            isGrounded = false;
         }
     }
 
@@ -56,6 +57,7 @@ public class Fruit : Item, IPickupable
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            Debug.Log($"눈앞에있는 사과: {isGrounded}");
             InteractionManager.Instance.OnPickup.AddListener(PickupFruit);
             InteractionManager.Instance.OnPickupEnd.AddListener(EndPickupFruit);
         }
@@ -82,21 +84,29 @@ public class Fruit : Item, IPickupable
 
     public void BeingPickedUp()
     {
-        if (!_isGrounded)
+        if (!isGrounded)
         {
+            Debug.Log("과일이 바닥에 있지 않아서 리턴");
+            InteractionManager.Instance.OnPickupEnd.Invoke();
             return;
         }
         InteractionManager.Instance.OnPickup.Invoke();
+        Debug.Log("픽업 이벤트 발동");
     }
 
     public void PickupFruit()
     {
-        // _isBeingPickedup = true;
         StartCoroutine(PickupCoroutine());
     }
 
     public IEnumerator PickupCoroutine()
     {
+        if (!isGrounded)
+        {
+            InteractionManager.Instance.OnPickupEnd.Invoke();
+            yield break;
+        }
+
         // 플레이어 애니메이션 동작시간에 맞춰 대기
         yield return new WaitForSeconds(0.8f);
         
@@ -105,12 +115,11 @@ public class Fruit : Item, IPickupable
         
         InteractionManager.Instance.OnPickupEnd.Invoke();
         Debug.Log("픽업종료");
-        // _isBeingPickedup = false;
     }
 
     public void EndPickupFruit()
     {
-        _isGrounded = false;
+        isGrounded = false;
     }
 }
 

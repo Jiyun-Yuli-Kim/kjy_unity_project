@@ -116,9 +116,7 @@ public class PlayerController : MonoBehaviour
     {
         _interactable = null;
         _pickupable = null;
-
-        isInteracting = false;
-
+        
         if (other.gameObject.tag == "Kind")
         {
             NPC = null;
@@ -156,17 +154,6 @@ public class PlayerController : MonoBehaviour
         if (Input.actions["Dash"].IsPressed())
         {
             isDashing = true;
-        }
-
-        if (Input.actions["Trigger"].WasPressedThisFrame())
-        {
-            isTriggered = true;
-        }
-        
-        if (Input.actions["Revert"].WasPressedThisFrame())
-        {
-            isReverted = true;
-            // Debug.Log("B버튼 눌림");
         }
 
         // if (_input.actions["South"].WasPressedThisFrame())
@@ -218,11 +205,11 @@ public class PlayerController : MonoBehaviour
                 rotateInterpolation * Time.deltaTime
             );
         }
-
-        else
-        {
-            _rb.angularDrag = angularDrag;
-        }
+        //
+        // else
+        // {
+        //     _rb.angularDrag = angularDrag;
+        // }
     }
 
     public void CheckInteraction()
