@@ -5,16 +5,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Fruit : MonoBehaviour, IPickupable
+public class Fruit : Item, IPickupable
 {
     private Rigidbody _rb;
     private Collider _col;
 
     private PlayerInput _input;
 
+    private bool _isGrounded;
     private bool _isBeingPickedup = false;
 
-    [SerializeField] private ItemData _fruitData;
+    // [SerializeField] private ItemData _fruitData;
 
     void Awake()
     {
@@ -37,16 +38,18 @@ public class Fruit : MonoBehaviour, IPickupable
     {
         if (other.gameObject.CompareTag("Ground"))
         {
+            _isGrounded = true;
             FreezeFruit();
         }
     }
 
-    // private void OnCollisionExit(Collision other)
-    // {
-    //     if (other.gameObject.tag == "Ground")
-    //     {
-    //     }
-    // }
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            _isGrounded = false;
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -81,7 +84,7 @@ public class Fruit : MonoBehaviour, IPickupable
 
     public void PickupFruit()
     {
-        if (_isBeingPickedup)
+        if (_isBeingPickedup || !_isGrounded)
         {
             return;
         }

@@ -478,6 +478,51 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &563967247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 563967249}
+  - component: {fileID: 563967248}
+  m_Layer: 0
+  m_Name: Inventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &563967248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563967247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81e285f20d1cf6c48ba4a1ed2c926cb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _curItemCount: 0
+--- !u!4 &563967249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563967247}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.106322, y: 1.8171933, z: 0.6015033}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &680693509
 GameObject:
   m_ObjectHideFlags: 0
@@ -1543,6 +1588,18 @@ PrefabInstance:
       propertyPath: _fruitPrefab
       value: 
       objectReference: {fileID: 8394658269659714125, guid: c38cbfccf980c154c8a95f9bfc90bcdc, type: 3}
+    - target: {fileID: 7051773242501465020, guid: 13cce9122dcdf724a8b290398a72a474, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051773242501465020, guid: 13cce9122dcdf724a8b290398a72a474, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051773242501465020, guid: 13cce9122dcdf724a8b290398a72a474, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.78
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13cce9122dcdf724a8b290398a72a474, type: 3}
 --- !u!1001 &3570271311933905609
@@ -1817,11 +1874,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 344767464, guid: 925885b22e738c442beafb4944df6f1c, type: 3}
       propertyPath: <angularDrag>k__BackingField
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 344767464, guid: 925885b22e738c442beafb4944df6f1c, type: 3}
       propertyPath: <dashMultiplier>k__BackingField
-      value: 1.7
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 344767464, guid: 925885b22e738c442beafb4944df6f1c, type: 3}
       propertyPath: <_dashMultiplier>k__BackingField

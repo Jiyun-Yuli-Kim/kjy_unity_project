@@ -6,7 +6,7 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory Instance { get; private set; }
 
-    private List<IPickupable> _inventory = new List<IPickupable>();
+    private List<Item> _inventory = new List<Item>();
     public int _curItemCount = 0; 
     private int _maxItemCount = 30;
     
@@ -25,15 +25,16 @@ public class Inventory : MonoBehaviour
     }
 
     // 인벤토리 맨 뒤에 아이템 추가
-    public void AddItem(IPickupable item)
+    public void AddItem(Item item)
     {
         _inventory.Add(item);
         _curItemCount++;
-        Debug.Log($"인벤토리에 아이템 추가 : {_inventory}");
+        Debug.Log($"인벤토리에 아이템 추가 : {item}");
+        ShowInventory();
     }
 
     // 해당 아이템 삭제
-    public void RemoveItem(IPickupable item)
+    public void RemoveItem(Item item)
     {
         _inventory.Remove(item);
         _curItemCount--;
@@ -43,6 +44,14 @@ public class Inventory : MonoBehaviour
     public void RemoveItem(int index)
     {
         _inventory.RemoveAt(index);
+    }
+
+    public void ShowInventory()
+    {
+        foreach (Item item in _inventory)
+        {
+            Debug.Log(item.data.ItemName);
+        }
     }
 
 }

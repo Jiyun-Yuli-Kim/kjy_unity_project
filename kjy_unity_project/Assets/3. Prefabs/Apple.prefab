@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95204fd1b0ac70d439b92a2a3e73f0f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fruitData: {fileID: 11400000, guid: 2d13dba906b544d4f936872fb60871f8, type: 2}
+  data: {fileID: 11400000, guid: 2d13dba906b544d4f936872fb60871f8, type: 2}
 --- !u!54 &8876300260970966294
 Rigidbody:
   m_ObjectHideFlags: 0
