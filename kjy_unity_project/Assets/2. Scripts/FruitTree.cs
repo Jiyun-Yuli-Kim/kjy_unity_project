@@ -8,6 +8,10 @@ using UnityEngine.InputSystem;
 
 public class FruitTree : MonoBehaviour, IInteractable
 {
+    // 과일을 나무에서 떨어뜨리는 기능 담당
+    // 규칙에 따라 과일을 3개씩 스폰함
+    // 플레이어로부터 인풋을 받았을 때 흔들리는 애니메이션 재생
+    
     private Fruit[] fruits = new Fruit[3];
     [SerializeField] private GameObject _fruitPrefab;
     [SerializeField] private GameObject _parent;
@@ -25,10 +29,8 @@ public class FruitTree : MonoBehaviour, IInteractable
     private Animator _animator;
     private PlayerController _player;
     
-    public bool isInteracting = false;
-
-    public UnityEvent OnInteraction;
-
+    // public bool isInteracting = false;
+    
     void Awake()
     {
         _player = FindObjectOfType<PlayerController>();
@@ -45,12 +47,12 @@ public class FruitTree : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (isInteracting)
-        {
-            return;
-        }
-
-        isInteracting = true;
+        // if (isInteracting)
+        // {
+        //     return;
+        // }
+        //
+        // isInteracting = true;
         InteractionManager.Instance.OnShakeTree.Invoke();
         Debug.Log("나무에 대한 Interact 로직 작동");
         StartCoroutine(ShakeAndDrop());
@@ -76,7 +78,7 @@ public class FruitTree : MonoBehaviour, IInteractable
         _animator.SetBool("isShaking", false);
         
         InteractionManager.Instance.OnShakeTreeEnd.Invoke();
-        isInteracting = false;
+        // isInteracting = false;
         ClearArray();
 
     }
@@ -104,5 +106,4 @@ public class FruitTree : MonoBehaviour, IInteractable
             }
         }
     }
-
 }

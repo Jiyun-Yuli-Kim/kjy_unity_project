@@ -101,11 +101,9 @@ public class DialogueSystem : MonoBehaviour
 
         // 랜덤으로 대사를 출력함
         textToPrint = _kindData[_randIndex, 1];
-        Debug.Log("첫 대사" + textToPrint);
         yield return StartCoroutine(_textPresenter.StartDialogue());
         
         string[] firstchoices = _kindData[_randIndex, 2].Split("|");
-        Debug.Log("첫 선택지"+ firstchoices[0]);
         yield return StartCoroutine(CheckChoicesCount(_kindData, firstchoices, _randIndex));
         
         OnTalkEnd.Invoke();
@@ -119,15 +117,12 @@ public class DialogueSystem : MonoBehaviour
             // 다음 대사 로드
             if (data[index, 3].Trim() == "END")
             {
-                // 대화 끝내기 로직
-                Debug.Log("끝내기 로직 정상시행1");
                 OnTalkEnd.Invoke();
                 yield break;
             }
 
             else
             {
-                Debug.Log($"파싱 완료 데이터 {int.Parse(data[index, 3])}");
                 textToPrint = data[int.Parse(data[index, 3]) - _indexOffset, 1];
                 yield return StartCoroutine(_textPresenter.LoadNextLine());
 
@@ -138,8 +133,6 @@ public class DialogueSystem : MonoBehaviour
         
         else if (choices.Length == 2)
         {
-            Debug.Log("선택지가 두개인 경우");
-
             int i = 0;
             
             yield return StartCoroutine(_textPresenter.GetChoice(choices));
@@ -150,8 +143,6 @@ public class DialogueSystem : MonoBehaviour
             {
                 if (ss[0].Trim() == "END")
                 {
-                    Debug.Log("끝내기 로직 정상시행2");
-
                     OnTalkEnd.Invoke();
                     yield break;
                 }
@@ -162,14 +153,11 @@ public class DialogueSystem : MonoBehaviour
             {
                 if (ss[1].Trim() == "END")
                 {
-                    Debug.Log("끝내기 로직 정상시행3");
-
                     OnTalkEnd.Invoke();
                     yield break;
                 }
                 i = int.Parse(ss[1]);
             }
-            Debug.Log($"{i}, {_choice}");
             textToPrint = data[i - _indexOffset, 1];
             yield return StartCoroutine(_textPresenter.LoadNextLine());
             
@@ -179,8 +167,6 @@ public class DialogueSystem : MonoBehaviour
         
         else if (choices.Length == 3)
         {
-            Debug.Log("선택지가 세개인 경우");
-
             int i = 0;
             
             yield return StartCoroutine(_textPresenter.GetChoice(choices));
@@ -191,8 +177,6 @@ public class DialogueSystem : MonoBehaviour
             {
                 if (ss[0].Trim() == "END")
                 {
-                    Debug.Log("끝내기 로직 정상시행2");
-
                     OnTalkEnd.Invoke();
                     yield break;
                 }
@@ -201,11 +185,8 @@ public class DialogueSystem : MonoBehaviour
 
             if (_choice == 1)
             {
-                // 여기서 뭔가 문제 발생
                 if (ss[1].Trim() == "END")
                 {
-                    Debug.Log("끝내기 로직 정상시행3");
-
                     OnTalkEnd.Invoke();
                     yield break;
                 }
@@ -214,11 +195,8 @@ public class DialogueSystem : MonoBehaviour
             
             if (_choice == 2)
             {
-                // 여기서 뭔가 문제 발생
                 if (ss[2].Trim() == "END")
                 {
-                    Debug.Log("끝내기 로직 정상시행3");
-
                     OnTalkEnd.Invoke();
                     yield break;
                 }

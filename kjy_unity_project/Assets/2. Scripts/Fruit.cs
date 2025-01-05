@@ -12,9 +12,10 @@ public class Fruit : Item, IPickupable
 
     private PlayerInput _input;
 
-    private bool _isGrounded;
-    private bool _isBeingPickedup = false;
+    private bool _isGrounded = false;
+    // private bool _isBeingPickedup = false;
 
+    // 데이터 필드는 어차피 부모클래스인 Item에서 정의했으므로..
     // [SerializeField] private ItemData _fruitData;
 
     void Awake()
@@ -81,7 +82,7 @@ public class Fruit : Item, IPickupable
 
     public void BeingPickedUp()
     {
-        if (_isBeingPickedup || !_isGrounded)
+        if (!_isGrounded)
         {
             return;
         }
@@ -90,7 +91,7 @@ public class Fruit : Item, IPickupable
 
     public void PickupFruit()
     {
-        _isBeingPickedup = true;
+        // _isBeingPickedup = true;
         StartCoroutine(PickupCoroutine());
     }
 
@@ -104,7 +105,7 @@ public class Fruit : Item, IPickupable
         
         InteractionManager.Instance.OnPickupEnd.Invoke();
         Debug.Log("픽업종료");
-        _isBeingPickedup = false;
+        // _isBeingPickedup = false;
     }
 
     public void EndPickupFruit()

@@ -17,8 +17,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private Animator _animator;
     [SerializeField] private DialogueSystem _dialogueSystem;
+    
     private StateMachine _stateMachine;
     public PlayerInput Input;
+    
     private IInteractable _interactable;
     private IPickupable _pickupable;
 
@@ -94,7 +96,6 @@ public class PlayerController : MonoBehaviour
                 partnerCp = NPC._npcData.CatchPhrase;
                 Debug.Log($"{partnerName}, {partnerCp}");
             }
-
             return;
         }
 
@@ -107,7 +108,6 @@ public class PlayerController : MonoBehaviour
                 partnerName = NPC._npcData.NPCName;
                 Debug.Log(partnerName);
             }
-
             return;
         }
     }
@@ -138,28 +138,7 @@ public class PlayerController : MonoBehaviour
             isInteracting = false;
         }
     }
-
-    public void CheckInteraction()
-    {
-        // 겹치는거 어떻게 처리할지 고민해야함.
-        if (isInteracting)
-        {
-            return;
-        }
-
-        if (_interactable != null && Input.actions["Trigger"].WasPressedThisFrame())
-        {
-            _interactable.Interact();
-        }
-
-        // 일단 인풋을 다르게 받을거라 괜찮을 것 같긴 하지만... 
-        if (_pickupable != null && Input.actions["Revert"].WasPressedThisFrame())
-        {
-            _pickupable.BeingPickedUp();
-            _pickupable = null;
-        }
-    }
-
+    
 // public IEnumerator Interact()
     // {
     //     isInteracting = true;
@@ -246,6 +225,27 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void CheckInteraction()
+    {
+        // 겹치는거 어떻게 처리할지 고민해야함.
+        if (isInteracting)
+        {
+            return;
+        }
+
+        if (_interactable != null && Input.actions["Trigger"].WasPressedThisFrame())
+        {
+            isInteracting = true;
+            _interactable.Interact();
+        }
+
+        // 일단 인풋을 다르게 받을거라 괜찮을 것 같긴 하지만... 
+        if (_pickupable != null && Input.actions["Revert"].WasPressedThisFrame())
+        {
+            isInteracting = true;
+            _pickupable.BeingPickedUp();
+        }
+    }
     private void CheckDialogue()
     {
         if (isInteracting)
@@ -270,8 +270,6 @@ public class PlayerController : MonoBehaviour
 
     public void ShakeTree()
     {
-        isInteracting = true;
-        // 여기서 왜 문제 발생하는지 확인해야함
         Debug.Log("플레이어 나무 흔들기");
         // transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(transform.position - _interactable.GetPosition()), 2*Time.deltaTime);
         transform.rotation = Quaternion.LookRotation(_interactable.GetPosition());
@@ -286,7 +284,6 @@ public class PlayerController : MonoBehaviour
 
     public void Pickup()
     {
-        isInteracting = true;
         _animator.SetTrigger("PickupTrigger");
         // _stateMachine.OnChangeState(StateMachine.StateType.PPickup);
     }

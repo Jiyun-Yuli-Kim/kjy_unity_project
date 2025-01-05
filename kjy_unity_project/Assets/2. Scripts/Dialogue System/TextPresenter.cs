@@ -108,7 +108,6 @@ public class TextPresenter : MonoBehaviour
     public IEnumerator GetChoice(string[] choices)
     {
         SetChoices(choices);
-        Debug.Log("선택 코루틴 정상시행");
         yield return null;
         
         if (choices.Length == 2)
@@ -116,8 +115,6 @@ public class TextPresenter : MonoBehaviour
             choice = 0;
             while (!_input.actions["Trigger"].WasPressedThisFrame())
             {
-                Debug.Log("선택 루프 정상시행");
-
                 if (choice == 0 && _input.actions["South"].WasPressedThisFrame())
                 {
                     _highlighter1.SetActive(false);
@@ -144,8 +141,6 @@ public class TextPresenter : MonoBehaviour
             choice = 0;
             while (!_input.actions["Trigger"].WasPressedThisFrame())
             {
-                Debug.Log($"선택 루프 정상시행, {choice}");
-                    
                 if (choice == 0 && _input.actions["South"].WasPressedThisFrame())
                 {
                     _highlighterA.SetActive(false);
