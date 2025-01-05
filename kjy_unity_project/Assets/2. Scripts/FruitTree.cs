@@ -91,7 +91,7 @@ public class FruitTree : MonoBehaviour, IInteractable
             fruits[2] = Instantiate(_fruitPrefab, _fruit3Pos.position,
                 new Quaternion(-0.0839739516f, -0.19348672f, 0.0112915235f, 0.977437377f)).GetComponent<Fruit>();
             
-            Debug.Log($"fruit {fruits[0].gameObject.name}, fruit {fruits[1].gameObject.name}, fruit {fruits[2].gameObject.name}");
+            // Debug.Log($"fruit {fruits[0].gameObject.name}, fruit {fruits[1].gameObject.name}, fruit {fruits[2].gameObject.name}");
     }
 
     private void ClearArray()

@@ -6,7 +6,7 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory Instance { get; private set; }
 
-    private List<GameObject> _inventory = new List<GameObject>();
+    private List<IPickupable> _inventory = new List<IPickupable>();
     public int _curItemCount = 0; 
     private int _maxItemCount = 30;
     
@@ -25,15 +25,18 @@ public class Inventory : MonoBehaviour
     }
 
     // 인벤토리 맨 뒤에 아이템 추가
-    public void AddItem(GameObject item)
+    public void AddItem(IPickupable item)
     {
         _inventory.Add(item);
+        _curItemCount++;
+        Debug.Log($"인벤토리에 아이템 추가 : {_inventory}");
     }
 
     // 해당 아이템 삭제
-    public void RemoveItem(GameObject item)
+    public void RemoveItem(IPickupable item)
     {
         _inventory.Remove(item);
+        _curItemCount--;
     }
 
     // 해당 인덱스의 아이템 삭제

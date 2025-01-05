@@ -25,7 +25,6 @@ public class Fruit : MonoBehaviour, IPickupable
     void Start()
     {
         // InteractionManager.Instance.OnShakeTreeEnd.AddListener(FreezeFruit);
-        InteractionManager.Instance.OnPickupEnd.AddListener(PickupFruit);
     }
 
     // 초기 과일이 스폰된 상태에는 Constraints가 모두 설정되어있음
@@ -38,7 +37,7 @@ public class Fruit : MonoBehaviour, IPickupable
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            // FreezeFruit();
+            FreezeFruit();
         }
     }
 
@@ -48,7 +47,23 @@ public class Fruit : MonoBehaviour, IPickupable
     //     {
     //     }
     // }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            InteractionManager.Instance.OnPickup.AddListener(PickupFruit);
+        }
+    }
     
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            InteractionManager.Instance.OnPickup.RemoveListener(PickupFruit);
+        }
+    }
+
     public void FruitFall()
     {
         _rb.constraints = RigidbodyConstraints.None;
@@ -77,10 +92,12 @@ public class Fruit : MonoBehaviour, IPickupable
 
     public IEnumerator PickupCoroutine()
     {
-        // 현재 플레이어 애니메이션은 독립적으로 작동중.
-        yield return new WaitForSeconds(0.5f);
+        // 플레이어 애니메이션 동작시간에 맞춰 대기
+        yield return new WaitForSeconds(0.8f);
         
-        // yield return new WaitForSeconds(0.5f);
+        Inventory.Instance.AddItem(this);
+        Destroy(this.gameObject);
+        
         InteractionManager.Instance.OnPickupEnd.Invoke();
         Debug.Log("픽업종료");
         _isBeingPickedup = false;

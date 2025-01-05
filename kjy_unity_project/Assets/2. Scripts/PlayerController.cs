@@ -81,10 +81,8 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _interactable = other.gameObject.GetComponent<IInteractable>();
-        Debug.Log($"트리거 진입, {_interactable}");
         
-        _pickupable = other.gameObject.GetComponent<IPickupable>();
-        Debug.Log(_pickupable);
+        _pickupable = other.gameObject.GetComponent<IPickupable>(); 
         
         if (other.gameObject.tag == "Kind")
         {
@@ -157,6 +155,7 @@ public class PlayerController : MonoBehaviour
         if (_pickupable != null && Input.actions["Revert"].WasPressedThisFrame())
         {
             _pickupable.BeingPickedUp();
+            Debug.Log("_pickupable.BeingPickedUp(); 발동");
         }
     }
 
@@ -287,14 +286,14 @@ public class PlayerController : MonoBehaviour
     public void Pickup()
     {
         isInteracting = true;
-        Debug.Log("픽업 트리거 발동");
         _animator.SetTrigger("PickupTrigger");
+        // _stateMachine.OnChangeState(StateMachine.StateType.PPickup);
     }
 
     public void StopPickup()
     {
         isInteracting = false;
-        _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
+        // _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
     }
 
 }

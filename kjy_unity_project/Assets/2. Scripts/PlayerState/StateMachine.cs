@@ -6,7 +6,8 @@ public class StateMachine : MonoBehaviour
 {
     public enum StateType
     {
-        PIdle, PWalk, PShake, PPickup
+        PIdle, PWalk, PShake 
+        // PPickup
     }
     
     public StateBase CurrentState;
@@ -26,8 +27,8 @@ public class StateMachine : MonoBehaviour
         PlayerIdle playerIdle = new PlayerIdle(_playerController, _animator, this);
         PlayerWalk playerWalk = new PlayerWalk(_playerController, _animator, this);
         PlayerShakeTree playerShakeTree = new PlayerShakeTree(_playerController, _animator, this);
-        PlayerPickup playerPickup = new PlayerPickup(_playerController, _animator, this);
-        AddState(playerIdle, playerWalk, playerShakeTree, playerPickup);
+        // PlayerPickup playerPickup = new PlayerPickup(_playerController, _animator, this);
+        AddState(playerIdle, playerWalk, playerShakeTree);
         
         OnChangeState(StateType.PIdle);
     }
