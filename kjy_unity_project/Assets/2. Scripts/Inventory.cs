@@ -6,7 +6,7 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory Instance { get; private set; }
 
-    private List<Item> _inventory = new List<Item>();
+    public List<Item> inventory = new List<Item>();
     public int _curItemCount = 0; 
     private const int _maxItemCount = 30;
     
@@ -33,7 +33,7 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        _inventory.Add(item);
+        inventory.Add(item);
         _curItemCount++;
         Debug.Log($"인벤토리에 아이템 추가 : {item}");
         ShowInventory();
@@ -48,7 +48,7 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        _inventory.Remove(item);
+        inventory.Remove(item);
         _curItemCount--;
     }
 
@@ -60,12 +60,12 @@ public class Inventory : MonoBehaviour
             Debug.LogWarning("Inventory is empty");
             return;
         }
-        _inventory.RemoveAt(index);
+        inventory.RemoveAt(index);
     }
 
     public void ShowInventory()
     {
-        foreach (Item item in _inventory)
+        foreach (Item item in inventory)
         {
             Debug.Log(item.data.ItemName);
         }

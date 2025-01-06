@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject slot1Icon;
+    private List<Item> _inventory = Inventory.Instance.inventory;
+
+    private void ShowIcon(int number)
     {
-        
+        slot1Icon.sprite .Instance.inventory[number].data.ItemIcon = Resources.Load<Sprite>("Icon");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
 }
