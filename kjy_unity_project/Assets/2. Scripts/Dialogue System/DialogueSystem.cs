@@ -86,10 +86,11 @@ public class DialogueSystem : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        SetMaxRange(data);
+        
         // 대화 시작에 따른 각종 초기화. 줌인 + 팝업활성화 + interacting = true 
         OnTalkStart.Invoke();
 
-        SetMaxRange(data);
         _randIndex = Random.Range(1, _maxRange);
         Debug.Log(_randIndex);
 

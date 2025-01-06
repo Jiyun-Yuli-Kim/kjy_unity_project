@@ -8,7 +8,7 @@ public class Inventory : MonoBehaviour
 
     private List<Item> _inventory = new List<Item>();
     public int _curItemCount = 0; 
-    private int _maxItemCount = 30;
+    private const int _maxItemCount = 30;
     
     void Awake()
     {
