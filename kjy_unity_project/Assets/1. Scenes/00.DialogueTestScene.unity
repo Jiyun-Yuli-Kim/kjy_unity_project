@@ -612,7 +612,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81e285f20d1cf6c48ba4a1ed2c926cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: []
   _curItemCount: 0
+  _inventoryUI: {fileID: 1453528092}
 --- !u!4 &563967249
 Transform:
   m_ObjectHideFlags: 0
@@ -1473,6 +1475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad2b59fdf7324704e9c44129596f87ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slot1Icon: {fileID: 0}
 --- !u!1 &1455981738
 GameObject:
   m_ObjectHideFlags: 3

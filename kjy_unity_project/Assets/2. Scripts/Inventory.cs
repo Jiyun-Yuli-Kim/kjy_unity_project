@@ -10,6 +10,8 @@ public class Inventory : MonoBehaviour
     public int _curItemCount = 0; 
     private const int _maxItemCount = 30;
     
+    [SerializeField] private InventoryUI _inventoryUI;
+    
     void Awake()
     {
         if (Instance != null)
@@ -34,9 +36,12 @@ public class Inventory : MonoBehaviour
         }
 
         inventory.Add(item);
+        
+        _inventoryUI.Show
+        
         _curItemCount++;
         Debug.Log($"인벤토리에 아이템 추가 : {item}");
-        ShowInventory();
+        // ShowInventory();
     }
 
     // 해당 아이템 삭제
