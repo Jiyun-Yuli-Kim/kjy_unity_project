@@ -26,11 +26,11 @@ public class DialogueSystem : MonoBehaviour
 
     private int _maxRange;
     public string[,] kindData;
-    private int _kindMaxRange = 5;
+    private int _kindMaxRange = 30;
     public string[,] idolData;
-    private int _idolMaxRange = 2;
+    private int _idolMaxRange = 3;
     public string[,] crankyData;
-    private int _crankyMaxRange = 5;
+    private int _crankyMaxRange = 1;
 
     public UnityEvent OnDataLoaded;
     public UnityEvent OnTalkStart; // 대화시작
@@ -76,24 +76,6 @@ public class DialogueSystem : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-
-    // private void OnKindDataLoaded()
-    // {
-    //     kindData = _dialogueLoader.DialogueData; 
-    //     // _dialogueLoader.ShowCSVData(_kindData);
-    // }
-    //
-    // private void OnIdolDataLoaded()
-    // {
-    //     idolData = _dialogueLoader.DialogueData; 
-    //     // _dialogueLoader.ShowCSVData(_idolData);
-    // }
-    //
-    // private void OnCrankyDataLoaded()
-    // {
-    //     crankyData = _dialogueLoader.DialogueData; 
-    //     // _dialogueLoader.ShowCSVData(_crankyData);
-    // }
 
     public IEnumerator TalkToVillager(string[,] data)
     {
