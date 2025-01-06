@@ -11,9 +11,9 @@ public class DialogueLoader : MonoBehaviour
     [SerializeField] private PlayerController _player;
     
     public string dialogueURL;
-    public UnityEvent OnKindLoaded;
-    public UnityEvent OnIdolLoaded;
-    public UnityEvent OnCrankyLoaded;
+    // public UnityEvent OnKindLoaded;
+    // public UnityEvent OnIdolLoaded;
+    // public UnityEvent OnCrankyLoaded;
 
     public const string KindDialogue =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=0&single=true&output=csv";
@@ -26,12 +26,27 @@ public class DialogueLoader : MonoBehaviour
 
     private void Awake()
     {
-        // StartLoad(KindDialogue);
+        StartCoroutine(StartLoad(DialogueLoader.KindDialogue, data => 
+        {
+            DialogueSystem.Instance.kindData = data;
+        }));
+
+        StartCoroutine(StartLoad(DialogueLoader.IdolDialogue, data => 
+        {
+            DialogueSystem.Instance.idolData = data;
+        }));
+
+        StartCoroutine(StartLoad(DialogueLoader.CrankyDialogue, data => 
+        {
+            DialogueSystem.Instance.crankyData = data;
+        }));    
     }
 
-    public void StartLoad(string dialogueURL)
+    public IEnumerator StartLoad(string dialogueURL, System.Action<string[,]> onComplete)
     {
-        StartCoroutine(DownLoadRoutine(dialogueURL));
+        yield return StartCoroutine(DownLoadRoutine(dialogueURL));
+        onComplete(DialogueData);
+        DialogueSystem.Instance.OnDataLoaded.Invoke();
     }
 
     public IEnumerator DownLoadRoutine(string urlPath)
@@ -47,21 +62,21 @@ public class DialogueLoader : MonoBehaviour
             // Debug.Log(recievedData);
             
             // 2단계: DialogueData-2차원 배열로 가공한 데이터
-            DialogueData = ProcessCSV(recievedData);
+            yield return DialogueData = ProcessCSV(recievedData);
             
-            // 3단계: 주민 성격별로 다른 데이터 타입을 로드하기 위해 이벤트를 활용
-            if (urlPath == KindDialogue)
-            {
-                OnKindLoaded.Invoke();
-            }
-            if (urlPath == IdolDialogue)
-            {
-                OnIdolLoaded.Invoke();
-            }
-            if (urlPath == CrankyDialogue)
-            {
-                OnIdolLoaded.Invoke();
-            }
+            // // 3단계: 주민 성격별로 다른 데이터 타입을 로드하기 위해 이벤트를 활용
+            // if (urlPath == KindDialogue)
+            // {
+            //     OnKindLoaded.Invoke();
+            // }
+            // if (urlPath == IdolDialogue)
+            // {
+            //     OnIdolLoaded.Invoke();
+            // }
+            // if (urlPath == CrankyDialogue)
+            // {
+            //     OnCrankyLoaded.Invoke();
+            // }
             
             // ShowCSVData(DialogueData);
         }
@@ -120,17 +135,3 @@ public class DialogueLoader : MonoBehaviour
         else return input;
     }
 }
-
-// string path = Application.dataPath + "/CSV/DataTable";
-//     
-// if (!Directory.Exists(path))
-// {
-//     Debug.LogError("경로가 없습니다.");
-//     return null;
-// }
-//     
-// if (!File.Exists(path + "/DialogueCSV.csv"))
-// {
-//     Debug.LogError("파일이 없습니다.");
-//     return null;
-// }

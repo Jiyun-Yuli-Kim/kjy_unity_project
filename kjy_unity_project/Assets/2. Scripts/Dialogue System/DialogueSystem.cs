@@ -22,21 +22,22 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera[] cameras;
     
     // [SerializeField] private Animator _uiAnimator;
-    
+
+    private int _maxRange;
     public string[,] kindData;
     private int _kindMaxRange = 5;
     public string[,] idolData;
-    private int _idolMaxRange = 5;
+    private int _idolMaxRange = 2;
     public string[,] crankyData;
     private int _crankyMaxRange = 5;
-    
+
+    public UnityEvent OnDataLoaded;
     public UnityEvent OnTalkStart; // 대화시작
     public UnityEvent OnTalkEnd; // 대화종료
     
-    // 첫 대사의 개수
     private int _randIndex;
     private int _choice = 0;
-    private int _indexOffset = 95;
+    private int _indexOffset;
 
     public string textToPrint;
     
@@ -48,19 +49,15 @@ public class DialogueSystem : MonoBehaviour
             Debug.LogError("Player is null");
         }
         
-        // _uICanvas.SetActive(false);
-        // _2opsPopup.SetActive(false);
-        // _highlighter1.SetActive(false);
-        // _highlighter2.SetActive(false);
-        // _blinker.SetActive(false);
+        // _dialogueLoader.StartLoad(DialogueLoader.KindDialogue);
+
     }
 
     private void Start()
     {
         Init();
         
-        _dialogueLoader.OnKindLoaded.AddListener(OnKindDataLoaded);
-        _dialogueLoader.StartLoad(DialogueLoader.KindDialogue);
+        // _dialogueLoader.OnKindLoaded.AddListener(OnKindDataLoaded);
         
         // _dialogueLoader.OnIdolLoaded.AddListener(OnIdolDataLoaded);
         // _dialogueLoader.StartLoad(DialogueLoader.IdolDialogue);
@@ -87,23 +84,23 @@ public class DialogueSystem : MonoBehaviour
         }
     }
 
-    private void OnKindDataLoaded()
-    {
-        kindData = _dialogueLoader.DialogueData; 
-        // _dialogueLoader.ShowCSVData(_kindData);
-    }
-    
-    private void OnIdolDataLoaded()
-    {
-        idolData = _dialogueLoader.DialogueData; 
-        // _dialogueLoader.ShowCSVData(_idolData);
-    }
-    
-    private void OnCrankyDataLoaded()
-    {
-        crankyData = _dialogueLoader.DialogueData; 
-        // _dialogueLoader.ShowCSVData(_crankyData);
-    }
+    // private void OnKindDataLoaded()
+    // {
+    //     kindData = _dialogueLoader.DialogueData; 
+    //     // _dialogueLoader.ShowCSVData(_kindData);
+    // }
+    //
+    // private void OnIdolDataLoaded()
+    // {
+    //     idolData = _dialogueLoader.DialogueData; 
+    //     // _dialogueLoader.ShowCSVData(_idolData);
+    // }
+    //
+    // private void OnCrankyDataLoaded()
+    // {
+    //     crankyData = _dialogueLoader.DialogueData; 
+    //     // _dialogueLoader.ShowCSVData(_crankyData);
+    // }
 
     public IEnumerator TalkToVillager(string[,] data)
     {
@@ -117,10 +114,12 @@ public class DialogueSystem : MonoBehaviour
         // 대화 시작에 따른 각종 초기화. 줌인 + 팝업활성화 + interacting = true 
         OnTalkStart.Invoke();
 
-        int maxRange = SetMaxRange(data);
-        _randIndex = Random.Range(1, maxRange);
+        SetMaxRange(data);
+        _randIndex = Random.Range(1, _maxRange);
+        Debug.Log(_randIndex);
 
         // 랜덤으로 대사를 출력함
+        Debug.Log(data);
         textToPrint = data[_randIndex, 1];
         yield return StartCoroutine(_textPresenter.StartDialogue());
         
@@ -130,28 +129,24 @@ public class DialogueSystem : MonoBehaviour
         OnTalkEnd.Invoke();
     }
 
-    private int SetMaxRange(string[,] data)
+    private void SetMaxRange(string[,] data)
     {
         if (data == kindData)
         {
-            return _kindMaxRange;
+            _maxRange = _kindMaxRange;
         }
 
         if (data == idolData)
         {
-            return _idolMaxRange;
+            _maxRange = _idolMaxRange;
         }
 
         if (data == crankyData)
         {
-            return _crankyMaxRange;
+            _maxRange = _crankyMaxRange;
         }
-
-        else
-        {
-            Debug.LogError("Max Range is wrong");  
-            return 0;
-        }
+        
+        _indexOffset = 100 - _maxRange;
     }
 
     private IEnumerator CheckChoicesCount(string[,] data, string[] choices, int index)

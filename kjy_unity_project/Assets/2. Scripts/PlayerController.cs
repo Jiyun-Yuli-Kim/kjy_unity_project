@@ -70,7 +70,6 @@ public class PlayerController : MonoBehaviour
         }
 
         GetInputBool();
-        // CheckDialogue();
         CheckInteraction();
     }
 
@@ -86,27 +85,14 @@ public class PlayerController : MonoBehaviour
 
         _pickupable = other.gameObject.GetComponent<IPickupable>();
 
-        if (other.gameObject.tag == "Kind")
+        if (other.gameObject.tag == "Villager")
         {
-            _metKind = true;
             NPC = other.GetComponent<NPCController>();
             if (NPC != null)
             {
                 partnerName = NPC._npcData.NPCName;
                 partnerCp = NPC._npcData.CatchPhrase;
                 Debug.Log($"{partnerName}, {partnerCp}");
-            }
-            return;
-        }
-
-        if (other.gameObject.tag == "Idol")
-        {
-            _metIdol = true;
-            NPC = other.GetComponent<NPCController>();
-            if (NPC != null)
-            {
-                partnerName = NPC._npcData.NPCName;
-                Debug.Log(partnerName);
             }
             return;
         }
@@ -117,32 +103,17 @@ public class PlayerController : MonoBehaviour
         _interactable = null;
         _pickupable = null;
         
-        if (other.gameObject.tag == "Kind")
+        if (other.gameObject.tag == "Villager")
         {
             NPC = null;
-            _metKind = false;
             partnerName = null;
         }
-
-        if (other.gameObject.tag == "Idol")
-        {
-            NPC = null;
-            _metIdol = false;
-            partnerName = null;
-        }
-
+        
         if (other.gameObject.tag == "Tree")
         {
             isInteracting = false;
         }
     }
-    
-// public IEnumerator Interact()
-    // {
-    //     isInteracting = true;
-    //     _interactable.Interact();
-    //     yield return new WaitUntil(() => !isInteracting);
-    // }
 
     public void GetInputBool()
     {
@@ -233,27 +204,6 @@ public class PlayerController : MonoBehaviour
             _pickupable.BeingPickedUp();
         }
     }
-    // private void CheckDialogue()
-    // {
-    //     if (isInteracting)
-    //     {
-    //         return;
-    //     }
-    //
-    //     // if (_metKind && isTriggered)
-    //     // {
-    //     //     isInteracting = true;
-    //     //     //_dialogueSystem.대화시행코루틴
-    //     //     StartCoroutine(_dialogueSystem.TalkToKindVillager());
-    //     // }
-    //     //
-    //     // if (_metIdol && isTriggered)
-    //     // {
-    //     //     isInteracting = true;
-    //     //     Debug.Log("아이돌 유형 주민과 대화");
-    //     //     isInteracting = false;
-    //     // }
-    // }
 
     public void ShakeTree()
     {
