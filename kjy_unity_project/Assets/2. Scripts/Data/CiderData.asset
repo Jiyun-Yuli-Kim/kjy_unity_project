@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CiderData
   m_EditorClassIdentifier: 
   NPCName: "\uC0AC\uC774\uB2E4"
-  personality: 1
+  personality: 0
   CatchPhrase: "\uD401\uD401"

@@ -49,13 +49,14 @@ public class DialogueSystem : MonoBehaviour
             Debug.LogError("Player is null");
         }
         
+        Init();
+
         // _dialogueLoader.StartLoad(DialogueLoader.KindDialogue);
 
     }
 
     private void Start()
     {
-        Init();
         
         // _dialogueLoader.OnKindLoaded.AddListener(OnKindDataLoaded);
         

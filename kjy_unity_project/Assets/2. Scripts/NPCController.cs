@@ -36,17 +36,19 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
         if (_npcData.personality == Personalities.Kind)
         {
             _dialogueData = DialogueSystem.Instance.kindData;
-            Debug.Log($"kinddata loaded,{_dialogueData[1,1]}");
+            Debug.Log($"kind data loaded,{_dialogueData[1,1]}");
         }
 
         if (_npcData.personality == Personalities.Idol)
         {
             _dialogueData = DialogueSystem.Instance.idolData;
+            Debug.Log($"idol data loaded,{_dialogueData[1,1]}");
         }
 
         if (_npcData.personality == Personalities.Cranky)
         {
             _dialogueData = DialogueSystem.Instance.crankyData;
+            Debug.Log($"cranky data loaded,{_dialogueData[1,1]}");
         }
     }
 

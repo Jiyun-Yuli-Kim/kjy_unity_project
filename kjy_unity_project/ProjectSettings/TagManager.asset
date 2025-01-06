@@ -8,6 +8,7 @@ TagManager:
   - Kind
   - Ground
   - Tree
+  - Villager
   layers:
   - Default
   - TransparentFX
