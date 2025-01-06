@@ -105,7 +105,7 @@ public class DialogueSystem : MonoBehaviour
         // _dialogueLoader.ShowCSVData(_crankyData);
     }
 
-    public IEnumerator TalkToVillager(string[,] data, int maxRange)
+    public IEnumerator TalkToVillager(string[,] data)
     {
         if (_player.partnerName == null)
         {
@@ -117,6 +117,7 @@ public class DialogueSystem : MonoBehaviour
         // 대화 시작에 따른 각종 초기화. 줌인 + 팝업활성화 + interacting = true 
         OnTalkStart.Invoke();
 
+        int maxRange = SetMaxRange(data);
         _randIndex = Random.Range(1, maxRange);
 
         // 랜덤으로 대사를 출력함
@@ -127,6 +128,30 @@ public class DialogueSystem : MonoBehaviour
         yield return StartCoroutine(CheckChoicesCount(data, firstchoices, _randIndex));
         
         OnTalkEnd.Invoke();
+    }
+
+    private int SetMaxRange(string[,] data)
+    {
+        if (data == kindData)
+        {
+            return _kindMaxRange;
+        }
+
+        if (data == idolData)
+        {
+            return _idolMaxRange;
+        }
+
+        if (data == crankyData)
+        {
+            return _crankyMaxRange;
+        }
+
+        else
+        {
+            Debug.LogError("Max Range is wrong");  
+            return 0;
+        }
     }
 
     private IEnumerator CheckChoicesCount(string[,] data, string[] choices, int index)

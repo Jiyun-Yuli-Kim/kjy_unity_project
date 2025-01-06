@@ -9,14 +9,14 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
     [SerializeField] public GameObject NPCHead;
     [SerializeField] private PlayerController _player;
 
-    Interact()
+    public void Interact()
     {
         
     }
 
-    Talk()
+    public void Talk(String[,] data)
     {
-        StartCoroutine(DialogueSystem.Instance.TalkToVillager());
+        StartCoroutine(DialogueSystem.Instance.TalkToVillager(data));
     }
 
 }
