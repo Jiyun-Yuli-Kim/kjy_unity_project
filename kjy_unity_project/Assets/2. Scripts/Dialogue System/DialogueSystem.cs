@@ -19,7 +19,8 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private DialogueLoader _dialogueLoader;
     [SerializeField] private TextPresenter _textPresenter;
     
-    [SerializeField] private CinemachineVirtualCamera[] cameras;
+    [SerializeField] private CinemachineVirtualCamera[] _cameras;
+    [SerializeField] private CinemachineTargetGroup _targetGroup;
     
     // [SerializeField] private Animator _uiAnimator;
 
@@ -57,15 +58,6 @@ public class DialogueSystem : MonoBehaviour
 
     private void Start()
     {
-        
-        // _dialogueLoader.OnKindLoaded.AddListener(OnKindDataLoaded);
-        
-        // _dialogueLoader.OnIdolLoaded.AddListener(OnIdolDataLoaded);
-        // _dialogueLoader.StartLoad(DialogueLoader.IdolDialogue);
-        //
-        // _dialogueLoader.OnCrankyLoaded.AddListener(OnCrankyDataLoaded);
-        // _dialogueLoader.StartLoad(DialogueLoader.CrankyDialogue);
-        
         OnTalkStart.AddListener(StartInteraction);
         OnTalkEnd.AddListener(ResetInteraction);
     }
@@ -254,6 +246,7 @@ public class DialogueSystem : MonoBehaviour
     
     public void StartInteraction()
     {
+        AddTarget();
         TalkCamOn();
         NPCLooksPlayer();
         _player.isInteracting = true;
@@ -262,18 +255,31 @@ public class DialogueSystem : MonoBehaviour
     public void ResetInteraction()
     {
         TalkCamOff();
+        RemoveTarget();
         _player.isInteracting = false;
         _textPresenter.EndDialogue();
     }
 
     public void TalkCamOn()
     {
-        cameras[1].Priority = 11;
+        _cameras[1].Priority = 11;
     }
     
     public void TalkCamOff()
     {
-        cameras[1].Priority = 9;
+        _cameras[1].Priority = 9;
+    }
+
+    public void AddTarget()
+    {   
+        Debug.Log("AddTarget 진입");
+        Debug.Log(_player.NPC.name);
+        _targetGroup.AddMember(_player.NPC.transform, 1, 0);
+    }
+
+    public void RemoveTarget()
+    {
+        _targetGroup.RemoveMember(_player.NPC.transform);
     }
 
     public void NPCLooksPlayer()
