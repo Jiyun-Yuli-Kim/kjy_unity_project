@@ -51,10 +51,10 @@ public class StateMachine : MonoBehaviour
         if (0 <= (int)type && (int)type < _states.Count)
         {
             CurrentState?.OnStateExit();
-            Debug.Log($"현재상태 {CurrentState}에서 나감");
+            // Debug.Log($"현재상태 {CurrentState}에서 나감");
             CurrentState = _states[(int)type];
             CurrentState.OnStateEnter();
-            Debug.Log($"다음상태 {CurrentState}(으)로 돌입");
+            // Debug.Log($"다음상태 {CurrentState}(으)로 돌입");
 
         }
     }

@@ -13,6 +13,7 @@ using UnityEngine.Rendering.Universal;
 
 public class DialogueSystem : MonoBehaviour
 {
+    public static DialogueSystem Instance { get; private set; }
     [SerializeField] private PlayerController _player;
     private NPCController _npc;
     [SerializeField] private DialogueLoader _dialogueLoader;
@@ -22,15 +23,17 @@ public class DialogueSystem : MonoBehaviour
     
     // [SerializeField] private Animator _uiAnimator;
     
-    string[,] _kindData;
-    string[,] _idolData;
-    string[,] _crankyData;
+    public string[,] kindData;
+    private int _kindMaxRange = 5;
+    public string[,] idolData;
+    private int _idolMaxRange = 5;
+    public string[,] crankyData;
+    private int _crankyMaxRange = 5;
     
     public UnityEvent OnTalkStart; // 대화시작
     public UnityEvent OnTalkEnd; // 대화종료
     
     // 첫 대사의 개수
-    private int _kindMaxRange = 5;
     private int _randIndex;
     private int _choice = 0;
     private int _indexOffset = 95;
@@ -54,6 +57,8 @@ public class DialogueSystem : MonoBehaviour
 
     private void Start()
     {
+        Init();
+        
         _dialogueLoader.OnKindLoaded.AddListener(OnKindDataLoaded);
         _dialogueLoader.StartLoad(DialogueLoader.KindDialogue);
         
@@ -67,25 +72,40 @@ public class DialogueSystem : MonoBehaviour
         OnTalkEnd.AddListener(ResetInteraction);
     }
 
+    private void Init()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            Instance = this;
+        }
+
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
     private void OnKindDataLoaded()
     {
-        _kindData = _dialogueLoader.DialogueData; 
+        kindData = _dialogueLoader.DialogueData; 
         // _dialogueLoader.ShowCSVData(_kindData);
     }
     
     private void OnIdolDataLoaded()
     {
-        _idolData = _dialogueLoader.DialogueData; 
+        idolData = _dialogueLoader.DialogueData; 
         // _dialogueLoader.ShowCSVData(_idolData);
     }
     
     private void OnCrankyDataLoaded()
     {
-        _crankyData = _dialogueLoader.DialogueData; 
+        crankyData = _dialogueLoader.DialogueData; 
         // _dialogueLoader.ShowCSVData(_crankyData);
     }
 
-    public IEnumerator TalkToKindVillager()
+    public IEnumerator TalkToVillager(string[,] data, int maxRange)
     {
         if (_player.partnerName == null)
         {
@@ -97,14 +117,14 @@ public class DialogueSystem : MonoBehaviour
         // 대화 시작에 따른 각종 초기화. 줌인 + 팝업활성화 + interacting = true 
         OnTalkStart.Invoke();
 
-        _randIndex = Random.Range(1, _kindMaxRange);
+        _randIndex = Random.Range(1, maxRange);
 
         // 랜덤으로 대사를 출력함
-        textToPrint = _kindData[_randIndex, 1];
+        textToPrint = data[_randIndex, 1];
         yield return StartCoroutine(_textPresenter.StartDialogue());
         
-        string[] firstchoices = _kindData[_randIndex, 2].Split("|");
-        yield return StartCoroutine(CheckChoicesCount(_kindData, firstchoices, _randIndex));
+        string[] firstchoices = data[_randIndex, 2].Split("|");
+        yield return StartCoroutine(CheckChoicesCount(data, firstchoices, _randIndex));
         
         OnTalkEnd.Invoke();
     }

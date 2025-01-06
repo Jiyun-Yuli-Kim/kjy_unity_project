@@ -101,12 +101,6 @@ public class Fruit : Item, IPickupable
 
     public IEnumerator PickupCoroutine()
     {
-        if (!isGrounded)
-        {
-            InteractionManager.Instance.OnPickupEnd.Invoke();
-            yield break;
-        }
-
         // 플레이어 애니메이션 동작시간에 맞춰 대기
         yield return new WaitForSeconds(0.8f);
         

@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
         }
 
         GetInputBool();
-        CheckDialogue();
+        // CheckDialogue();
         CheckInteraction();
     }
 
@@ -233,27 +233,27 @@ public class PlayerController : MonoBehaviour
             _pickupable.BeingPickedUp();
         }
     }
-    private void CheckDialogue()
-    {
-        if (isInteracting)
-        {
-            return;
-        }
-
-        if (_metKind && isTriggered)
-        {
-            isInteracting = true;
-            //_dialogueSystem.대화시행코루틴
-            StartCoroutine(_dialogueSystem.TalkToKindVillager());
-        }
-
-        if (_metIdol && isTriggered)
-        {
-            isInteracting = true;
-            Debug.Log("아이돌 유형 주민과 대화");
-            isInteracting = false;
-        }
-    }
+    // private void CheckDialogue()
+    // {
+    //     if (isInteracting)
+    //     {
+    //         return;
+    //     }
+    //
+    //     // if (_metKind && isTriggered)
+    //     // {
+    //     //     isInteracting = true;
+    //     //     //_dialogueSystem.대화시행코루틴
+    //     //     StartCoroutine(_dialogueSystem.TalkToKindVillager());
+    //     // }
+    //     //
+    //     // if (_metIdol && isTriggered)
+    //     // {
+    //     //     isInteracting = true;
+    //     //     Debug.Log("아이돌 유형 주민과 대화");
+    //     //     isInteracting = false;
+    //     // }
+    // }
 
     public void ShakeTree()
     {
