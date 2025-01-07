@@ -6,7 +6,7 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory Instance { get; private set; }
 
-    public List<Item> inventory = new List<Item>();
+    public Item[] inventory = new Item[30];
     public int _curItemCount = 0; 
     private const int _maxItemCount = 30;
     
@@ -35,7 +35,7 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        inventory.Add(item);
+        inventory[_curItemCount] = item;
 
         //_inventoryUI.Show();
         
@@ -53,7 +53,7 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        inventory.Remove(item);
+        inventory[_curItemCount-1] = null;
         _curItemCount--;
     }
 
@@ -65,7 +65,7 @@ public class Inventory : MonoBehaviour
             Debug.LogWarning("Inventory is empty");
             return;
         }
-        inventory.RemoveAt(index);
+        inventory[index-1] = null;
     }
 
     public void ShowInventory()
@@ -75,5 +75,4 @@ public class Inventory : MonoBehaviour
             Debug.Log(item.data.ItemName);
         }
     }
-
 }

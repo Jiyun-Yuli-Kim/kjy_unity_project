@@ -5,17 +5,29 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-    [SerializeField] private GameObject slot1Icon;
-    private Sprite slot1IconSprite;
-    // Inventory.Instance.inventory; 굳이 변수로 가져올 필요는 없다.  
+    public ItemSlot[] slots = new ItemSlot[30];
+    
+    void Awake()
+    {
+        slots = GetComponentsInChildren<ItemSlot>();
+    }
 
     void Start()
     {
-        slot1IconSprite = slot1Icon.GetComponent<Image>().sprite;
+        Tester();
     }
 
     private void ShowIcon(int number)
     {
-        slot1IconSprite = Inventory.Instance.inventory[number].data.ItemIcon;
+        // slot1IconSprite = Inventory.Instance.inventory[number].data.ItemIcon;
     }
+
+    void Tester()
+    {
+        foreach (ItemSlot slot in slots)
+        {
+            Debug.Log(slot.name);
+        }
+    }
+    
 }

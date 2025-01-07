@@ -24,6 +24,16 @@ public class ItemSlot : MonoBehaviour
 
     private void Update()
     {
+        Tester();
+    }
+
+    public void AddIcon()
+    {
+        
+    }
+
+    void Tester()
+    {
         if (Input.GetKeyDown(KeyCode.Q))
         {
             highlighterE.SetActive(true);
@@ -32,8 +42,8 @@ public class ItemSlot : MonoBehaviour
         {
             highlighterF.SetActive(true);
             ItemIcon.SetActive(true);
-            ItemNameBubble.SetActive(true);
             ItemNameText.text = "아이템";
+            ItemNameBubble.SetActive(true);
         }        
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -43,5 +53,4 @@ public class ItemSlot : MonoBehaviour
             ItemNameBubble.SetActive(false);        
         }
     }
-
 }
