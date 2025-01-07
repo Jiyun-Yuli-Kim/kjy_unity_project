@@ -31,16 +31,8 @@ public class PlayerController : MonoBehaviour
 
     public bool isMoving = false;
     public bool isDashing = false;
-    public bool isTriggered = false;
-    public bool isShakingTree = false;
-    public bool isReverted = false;
-    public bool isSouth = false;
-    public bool isNorth = false;
-
-    // 플레이어가 트리거 범위 내에 있는지만을 확인하기 위한 변수
-    public bool _metKind { get; private set; } = false;
-    public bool _metIdol { get; private set; } = false;
-
+    public bool invenOpened = false;
+    
     // 로직 실행중 다른 입력을 받지 않기 위한 플래그 변수
     public bool isInteracting = false;
 
@@ -64,18 +56,22 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
+        CheckInventory();
+        
         if (isInteracting)
         {
             return;
         }
-
+        
         GetInputBool();
         CheckInteraction();
+
     }
 
     public void LateUpdate()
     {
         ResetInputBool();
+
         // _rb.angularDrag = 3;
     }
 
@@ -126,17 +122,6 @@ public class PlayerController : MonoBehaviour
         {
             isDashing = true;
         }
-
-        // if (_input.actions["South"].WasPressedThisFrame())
-        // {
-        //     isSouth = true;
-        // }
-        //
-        // if (_input.actions["North"].WasPressedThisFrame())
-        // {
-        //     isNorth = true;
-        //     // Debug.Log("B버튼 눌림");
-        // }
     }
 
     public void ResetInputBool()
@@ -151,11 +136,6 @@ public class PlayerController : MonoBehaviour
             isMoving = false;
             isDashing = false;
         }
-
-        isTriggered = false;
-        isReverted = false;
-        // // isSouth = false;
-        // // isNorth = false;
     }
 
     public void PlayerMove()
@@ -181,6 +161,28 @@ public class PlayerController : MonoBehaviour
         // {
         //     _rb.angularDrag = angularDrag;
         // }
+    }
+
+    public void CheckInventory()
+    {
+        if (Input.actions["Inventory"].WasPressedThisFrame())
+        {
+            isInteracting = true;
+            if (invenOpened)
+            {
+                return;
+            }
+            invenOpened = true;
+            InteractionManager.Instance.OnInventoryOpen.Invoke();
+            Debug.Log($"인벤토리 오픈");
+        }
+
+        if (invenOpened && Input.actions["Revert"].WasReleasedThisFrame())
+        {
+            invenOpened = false;
+            InteractionManager.Instance.OnInventoryClose.Invoke();
+            isInteracting = false;
+        }
     }
 
     public void CheckInteraction()

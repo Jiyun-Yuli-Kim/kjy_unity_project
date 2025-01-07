@@ -42,6 +42,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "468e3a02-6a6a-4486-9b5b-65f279082802",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "South",
                     "type": "Button",
                     "id": "a1c5d60c-1102-440e-b253-1bbc92ecc024",
@@ -128,61 +137,6 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Keyboard Arrow",
-                    "id": "c3f5675d-b4a0-4f41-966a-deeebb6388a2",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "202b0719-cd14-4d49-b233-39a5b5524e16",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "1e6beff1-7fab-4c6e-9c68-6488ad968f85",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "b71c1074-a9a1-4464-97ca-dd8df2f1cd15",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "257c8d98-1eab-45e2-b6ec-ef4a0a76dc6a",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "08dd7ca3-30a7-4c57-93fc-1b25b35d2249",
                     "path": "<Gamepad>/buttonSouth",
@@ -196,7 +150,7 @@
                 {
                     "name": "",
                     "id": "4c244f9e-fe84-4460-8ded-dc1d9cf47128",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -218,7 +172,7 @@
                 {
                     "name": "",
                     "id": "3e35547e-abaf-4d5f-9949-3ecf415e60ce",
-                    "path": "<Keyboard>/enter",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -240,7 +194,7 @@
                 {
                     "name": "",
                     "id": "573b7984-0c9c-4c64-9a0e-24cd8960d738",
-                    "path": "<Keyboard>/backspace",
+                    "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -322,6 +276,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "North",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "18240a96-bd8f-4b72-9ed4-4d7f992583c8",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4dcd115-ab25-4670-8831-062fc5bf1109",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

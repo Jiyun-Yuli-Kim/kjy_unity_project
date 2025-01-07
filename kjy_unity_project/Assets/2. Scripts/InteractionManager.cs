@@ -13,6 +13,10 @@ public class InteractionManager : MonoBehaviour
     public UnityEvent OnPickup;
     public UnityEvent OnPickupEnd;
     
+    public UnityEvent OnInventoryOpen;
+    public UnityEvent OnInventoryClose;
+    
+    
     void Awake()
     {
         if (Instance != null)

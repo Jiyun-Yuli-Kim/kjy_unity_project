@@ -26,7 +26,7 @@ public class ItemSlot : MonoBehaviour
 
     private void Update()
     {
-        Tester();
+        // Tester();
     }
 
     public void AddIcon()

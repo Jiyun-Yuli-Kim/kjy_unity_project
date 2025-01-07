@@ -6,7 +6,7 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory Instance { get; private set; }
 
-    public Item[] inventory = new Item[30];
+    public Item[] inventory;
     public int _curItemCount = 0; 
     private const int _maxItemCount = 30;
     
@@ -24,6 +24,7 @@ public class Inventory : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        inventory = new Item[30];
     }
 
     // 인벤토리 맨 뒤에 아이템 추가
@@ -35,6 +36,9 @@ public class Inventory : MonoBehaviour
             return;
         }
 
+        Debug.Log(_curItemCount);
+        Debug.Log(inventory.Length);
+        
         inventory[_curItemCount] = item;
         _inventoryUI.slots[_curItemCount].ItemNameText.text = item.data.ItemName;
         _inventoryUI.slots[_curItemCount].ItemIconSprite.sprite = item.data.ItemIcon;
