@@ -17,9 +17,8 @@ public class InventoryUI : MonoBehaviour
         Tester();
     }
 
-    private void ShowIcon(int number)
+    public void ActivateSlot(int index)
     {
-        // slot1IconSprite = Inventory.Instance.inventory[number].data.ItemIcon;
     }
 
     void Tester()
@@ -29,5 +28,4 @@ public class InventoryUI : MonoBehaviour
             Debug.Log(slot.name);
         }
     }
-    
 }

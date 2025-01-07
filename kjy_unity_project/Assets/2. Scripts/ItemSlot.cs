@@ -11,9 +11,11 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] public GameObject highlighterE;
     [SerializeField] public GameObject highlighterF;
     [SerializeField] public GameObject ItemIcon;
+    [SerializeField] public Image ItemIconSprite;
     [SerializeField] public GameObject ItemNameBubble;
     [SerializeField] public TextMeshProUGUI ItemNameText;
-
+    [SerializeField] public Sprite SampleSprite;
+    
     private void Awake()
     {
         highlighterE.SetActive(false);
@@ -41,6 +43,7 @@ public class ItemSlot : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             highlighterF.SetActive(true);
+            ItemIconSprite.sprite = Resources.Load<Sprite>("04. UI/appleIcon");
             ItemIcon.SetActive(true);
             ItemNameText.text = "아이템";
             ItemNameBubble.SetActive(true);

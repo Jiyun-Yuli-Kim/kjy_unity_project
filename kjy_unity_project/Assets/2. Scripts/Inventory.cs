@@ -36,6 +36,8 @@ public class Inventory : MonoBehaviour
         }
 
         inventory[_curItemCount] = item;
+        _inventoryUI.slots[_curItemCount].ItemNameText.text = item.data.ItemName;
+        _inventoryUI.slots[_curItemCount].ItemIconSprite.sprite = item.data.ItemIcon;
 
         //_inventoryUI.Show();
         
