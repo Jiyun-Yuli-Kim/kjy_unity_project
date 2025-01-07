@@ -36,10 +36,10 @@ public class Inventory : MonoBehaviour
         }
 
         inventory.Add(item);
+
+        //_inventoryUI.Show();
         
-        _inventoryUI.Show
-        
-        _curItemCount++;
+        _curItemCount++; 
         Debug.Log($"인벤토리에 아이템 추가 : {item}");
         // ShowInventory();
     }
