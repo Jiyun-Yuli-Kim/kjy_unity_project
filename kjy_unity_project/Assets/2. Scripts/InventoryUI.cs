@@ -6,10 +6,11 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     public GameObject UICanvas;
-    public ItemSlot[] slots = new ItemSlot[30];
+    public ItemSlot[] slots;
     
     void Awake()
     {
+        slots = new ItemSlot[30];
         UICanvas.SetActive(false);
         slots = GetComponentsInChildren<ItemSlot>();
         InteractionManager.Instance.OnInventoryOpen.AddListener(OpenInventory);

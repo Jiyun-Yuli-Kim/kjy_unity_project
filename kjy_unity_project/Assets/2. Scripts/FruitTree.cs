@@ -82,17 +82,12 @@ public class FruitTree : MonoBehaviour, IInteractable
 
     private void SpawnFruit()
     {
-
             fruits[0] = Instantiate(_fruitPrefab, _fruit1Pos.position,
                 new Quaternion(-0.107541613f, 0, 0, 0.994200587f)).GetComponent<Fruit>();
-            fruits[0].isGrounded = false;
             fruits[1] = Instantiate(_fruitPrefab, _fruit2Pos.position,
                 new Quaternion(-0.0911203697f, 0.19207485f, -0.0179143753f, 0.976976693f)).GetComponent<Fruit>();
-            fruits[1].isGrounded = false;
             fruits[2] = Instantiate(_fruitPrefab, _fruit3Pos.position,
                 new Quaternion(-0.0839739516f, -0.19348672f, 0.0112915235f, 0.977437377f)).GetComponent<Fruit>();
-            fruits[2].isGrounded = false;
-            Debug.Log($"{fruits[0].isGrounded}, {fruits[1].isGrounded}, {fruits[2].isGrounded}");
     }
 
     private void ClearArray()

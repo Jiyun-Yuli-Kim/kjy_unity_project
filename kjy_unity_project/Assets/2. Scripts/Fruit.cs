@@ -25,11 +25,6 @@ public class Fruit : Item, IPickupable
         _col = GetComponent<Collider>();
     }
 
-    void Start()
-    {
-        isGrounded = false;
-    }
-
     // 초기 과일이 스폰된 상태에는 Constraints가 모두 설정되어있음
     // FruitTree상에서 이벤트를 통해 FruitFall을 호출하고있다. 이때 constraints가 일시 해제된다.
     // 그럼이제 여기서는 땅에 닿았는지를 판정해서 다시 freeze해주면 될 것 같다.
@@ -68,7 +63,7 @@ public class Fruit : Item, IPickupable
         if (other.gameObject.CompareTag("Player"))
         {
             InteractionManager.Instance.OnPickup.RemoveListener(PickupFruit);
-            InteractionManager.Instance.OnPickupEnd.AddListener(EndPickupFruit);
+            InteractionManager.Instance.OnPickupEnd.RemoveListener(EndPickupFruit);
         }
     }
 
@@ -105,9 +100,14 @@ public class Fruit : Item, IPickupable
         yield return new WaitForSeconds(0.8f);
         
         Inventory.Instance.AddItem(this);
+        
         Destroy(this.gameObject);
         
         InteractionManager.Instance.OnPickupEnd.Invoke();
+        
+        InteractionManager.Instance.OnPickup.RemoveListener(PickupFruit);
+        InteractionManager.Instance.OnPickupEnd.RemoveListener(EndPickupFruit);
+       
         Debug.Log("픽업종료");
     }
 
