@@ -24,13 +24,11 @@ public class InventoryUI : MonoBehaviour
     private void OpenInventory()
     {
         UICanvas.SetActive(true);
-        Debug.Log("Open Inventory");
     }
 
     private void CloseInventory()
     {
         UICanvas.SetActive(false);
-        Debug.Log("Close Inventory");
     }
 
     public void ActivateSlot(int index)

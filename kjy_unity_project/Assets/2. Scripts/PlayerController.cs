@@ -65,7 +65,6 @@ public class PlayerController : MonoBehaviour
         
         GetInputBool();
         CheckInteraction();
-
     }
 
     public void LateUpdate()
