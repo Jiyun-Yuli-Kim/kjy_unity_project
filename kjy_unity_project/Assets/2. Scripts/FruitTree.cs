@@ -26,6 +26,8 @@ public class FruitTree : MonoBehaviour, IInteractable
     [SerializeField] private PlayerInput _input;
     [SerializeField] private float _fallTime =2f;
     
+    public UnityEvent OnInteract;
+    
     private Animator _animator;
     
     void Awake()

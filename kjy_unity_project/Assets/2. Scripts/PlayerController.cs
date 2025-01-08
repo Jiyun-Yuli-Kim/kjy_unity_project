@@ -226,10 +226,6 @@ public class PlayerController : MonoBehaviour
     public void CheckInteraction()
     {
         // 겹치는거 어떻게 처리할지 고민해야함.
-        if (isInteracting)
-        {
-            return;
-        }
 
         if (_interactable != null && Input.actions["Trigger"].WasPressedThisFrame())
         {
@@ -237,6 +233,11 @@ public class PlayerController : MonoBehaviour
             _interactable.Interact();
         }
 
+        if (isInteracting)
+        {
+            return;
+        }
+        
         // 일단 인풋을 다르게 받을거라 괜찮을 것 같긴 하지만... 
         if (_item != null && Input.actions["Revert"].WasPressedThisFrame())
         {
