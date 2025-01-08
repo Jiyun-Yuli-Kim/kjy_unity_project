@@ -27,14 +27,13 @@ public class Fruit : Item
     // 다만 이제 여기서 반동을 줄거라면? 조금 복잡해지겠죠
     // 이벤트에 등록해서 한번 처리해볼게.... 가 아니다 이거 너무 복잡해진다.
 
-    // private void OnCollisionEnter(Collision other)
-    // {
-    //     if (other.gameObject.tag == "Ground")
-    //     {
-    //         isGrounded = true;
-    //         FreezeFruit();
-    //     }
-    // }
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Ground")
+        {
+            FreezeFruit();
+        }
+    }
     //
     // private void OnCollisionExit(Collision other)
     // {

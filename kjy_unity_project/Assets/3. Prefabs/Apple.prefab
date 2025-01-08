@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 8876300260970966294}
   m_Layer: 11
   m_Name: Apple
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -325,6 +325,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95204fd1b0ac70d439b92a2a3e73f0f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rb: {fileID: 0}
+  _col: {fileID: 0}
   data: {fileID: 11400000, guid: 2d13dba906b544d4f936872fb60871f8, type: 2}
   isGrounded: 0
 --- !u!54 &8876300260970966294

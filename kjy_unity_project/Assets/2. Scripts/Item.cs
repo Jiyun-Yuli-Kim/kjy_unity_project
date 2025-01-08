@@ -59,12 +59,11 @@ public class Item : MonoBehaviour
         
         Destroy(this.gameObject);
         
-        // InteractionManager.Instance.OnPickupEnd.Invoke();
+        InteractionManager.Instance.OnPickupEnd.Invoke();
         //
         // InteractionManager.Instance.OnPickup.RemoveListener(PickupItem);
         // InteractionManager.Instance.OnPickupEnd.RemoveListener(EndPickupItem);
         //
-        Debug.Log("픽업종료");
     }
 
     public void EndPickupItem()

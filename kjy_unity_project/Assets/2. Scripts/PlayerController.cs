@@ -48,10 +48,8 @@ public class PlayerController : MonoBehaviour
 
     public void Start()
     {
-        InteractionManager.Instance.OnShakeTree.AddListener(ShakeTree);
-        InteractionManager.Instance.OnShakeTreeEnd.AddListener(StopShakeTree);
-        InteractionManager.Instance.OnPickup.AddListener(Pickup);
-        InteractionManager.Instance.OnPickupEnd.AddListener(StopPickup);
+
+        // InteractionManager.Instance.OnPickup.AddListener(Pickup);
     }
 
     public void Update()
@@ -85,6 +83,8 @@ public class PlayerController : MonoBehaviour
         if (_interactable == null)
         {
             _interactable = other.gameObject.GetComponent<IInteractable>();
+            InteractionManager.Instance.OnShakeTree.AddListener(ShakeTree);
+            InteractionManager.Instance.OnShakeTreeEnd.AddListener(StopShakeTree);
         }
 
         if (other.gameObject.tag == "Item")
@@ -92,6 +92,8 @@ public class PlayerController : MonoBehaviour
             if (_item == null)
             {
                 _item = other.gameObject.GetComponent<Item>();
+                InteractionManager.Instance.OnPickupEnd.AddListener(StopPickup);
+                Debug.Log(_item.name);
             }
         }
 
@@ -229,7 +231,6 @@ public class PlayerController : MonoBehaviour
 
     public void ShakeTree()
     {
-        Debug.Log("플레이어 나무 흔들기");
         // transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(transform.position - _interactable.GetPosition()), 2*Time.deltaTime);
         transform.rotation = Quaternion.LookRotation(_interactable.GetPosition());
         _stateMachine.OnChangeState(StateMachine.StateType.PShake);
@@ -239,6 +240,8 @@ public class PlayerController : MonoBehaviour
     {
         _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
         isInteracting = false;
+        InteractionManager.Instance.OnShakeTree.RemoveListener(ShakeTree);
+        InteractionManager.Instance.OnShakeTreeEnd.RemoveListener(StopShakeTree);
     }
 
     public void Pickup()
@@ -251,6 +254,7 @@ public class PlayerController : MonoBehaviour
     {
         isInteracting = false;
         _item = null;
+        InteractionManager.Instance.OnPickupEnd.RemoveListener(StopPickup);
         // _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
     }
 
