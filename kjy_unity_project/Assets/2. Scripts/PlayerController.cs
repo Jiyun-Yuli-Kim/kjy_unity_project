@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public PlayerInput Input;
     
     private IInteractable _interactable;
-    private IPickupable _pickupable;
+    private Item _item;
 
     [SerializeField] public float playerMoveSpeed;
     [field: SerializeField] public float rotateInterpolation { get; private set; }
@@ -87,11 +87,14 @@ public class PlayerController : MonoBehaviour
             _interactable = other.gameObject.GetComponent<IInteractable>();
         }
 
-        if (_pickupable == null)
+        if (other.gameObject.tag == "Item")
         {
-            _pickupable = other.gameObject.GetComponent<IPickupable>();
+            if (_item == null)
+            {
+                _item = other.gameObject.GetComponent<Item>();
+            }
         }
-        
+
         if (other.gameObject.tag == "Villager")
         {
             NPC = other.GetComponent<NPCController>();
@@ -113,7 +116,7 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         _interactable = null;
-        _pickupable = null;
+        _item = null;
         
         if (other.gameObject.tag == "Villager")
         {
@@ -216,10 +219,11 @@ public class PlayerController : MonoBehaviour
         }
 
         // 일단 인풋을 다르게 받을거라 괜찮을 것 같긴 하지만... 
-        if (_pickupable != null && Input.actions["Revert"].WasPressedThisFrame())
+        if (_item != null && Input.actions["Revert"].WasPressedThisFrame())
         {
             isInteracting = true;
-            _pickupable.BeingPickedUp();
+            _animator.SetTrigger("PickupTrigger");
+            _item.BeingPickedUp();
         }
     }
 
@@ -246,7 +250,7 @@ public class PlayerController : MonoBehaviour
     public void StopPickup()
     {
         isInteracting = false;
-        _pickupable = null;
+        _item = null;
         // _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
     }
 
