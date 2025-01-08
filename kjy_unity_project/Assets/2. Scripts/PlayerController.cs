@@ -83,8 +83,16 @@ public class PlayerController : MonoBehaviour
         if (_interactable == null)
         {
             _interactable = other.gameObject.GetComponent<IInteractable>();
-            InteractionManager.Instance.OnShakeTree.AddListener(ShakeTree);
-            InteractionManager.Instance.OnShakeTreeEnd.AddListener(StopShakeTree);
+            if (_interactable != null)
+            {
+                var component = _interactable as Component;
+                if (component != null && component.CompareTag("Tree"))
+                {
+                    Debug.Log("Found Tree");
+                    InteractionManager.Instance.OnShakeTree.AddListener(ShakeTree);
+                    InteractionManager.Instance.OnShakeTreeEnd.AddListener(StopShakeTree);
+                }
+            }
         }
 
         if (other.gameObject.tag == "Item")
@@ -92,6 +100,7 @@ public class PlayerController : MonoBehaviour
             if (_item == null)
             {
                 _item = other.gameObject.GetComponent<Item>();
+                InteractionManager.Instance.OnPickup.AddListener(Pickup);
                 InteractionManager.Instance.OnPickupEnd.AddListener(StopPickup);
                 Debug.Log(_item.name);
             }
@@ -125,11 +134,19 @@ public class PlayerController : MonoBehaviour
             NPC = null;
             partnerName = null;
         }
-        
+
         if (other.gameObject.tag == "Tree")
         {
-            isInteracting = false;
+            var component = _interactable as Component;
+            if (component != null && component.CompareTag("Tree"))
+            {
+                InteractionManager.Instance.OnShakeTree.RemoveListener(ShakeTree);
+                InteractionManager.Instance.OnShakeTreeEnd.RemoveListener(StopShakeTree);
+            }
         }
+        
+        isInteracting = false;
+        
     }
 
     public void GetInputBool()
@@ -224,7 +241,6 @@ public class PlayerController : MonoBehaviour
         if (_item != null && Input.actions["Revert"].WasPressedThisFrame())
         {
             isInteracting = true;
-            _animator.SetTrigger("PickupTrigger");
             _item.BeingPickedUp();
         }
     }
@@ -247,13 +263,13 @@ public class PlayerController : MonoBehaviour
     public void Pickup()
     {
         _animator.SetTrigger("PickupTrigger");
-        // _stateMachine.OnChangeState(StateMachine.StateType.PPickup);
     }
 
     public void StopPickup()
     {
         isInteracting = false;
         _item = null;
+        InteractionManager.Instance.OnPickup.RemoveListener(Pickup);
         InteractionManager.Instance.OnPickupEnd.RemoveListener(StopPickup);
         // _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
     }

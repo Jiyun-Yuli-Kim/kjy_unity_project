@@ -27,13 +27,9 @@ public class FruitTree : MonoBehaviour, IInteractable
     [SerializeField] private float _fallTime =2f;
     
     private Animator _animator;
-    private PlayerController _player;
-    
-    // public bool isInteracting = false;
     
     void Awake()
     {
-        _player = FindObjectOfType<PlayerController>();
         _animator = GetComponent<Animator>();
     }
 
@@ -47,12 +43,6 @@ public class FruitTree : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        // if (isInteracting)
-        // {
-        //     return;
-        // }
-        //
-        // isInteracting = true;
         InteractionManager.Instance.OnShakeTree.Invoke();
         Debug.Log("나무에 대한 Interact 로직 작동");
         StartCoroutine(ShakeAndDrop());

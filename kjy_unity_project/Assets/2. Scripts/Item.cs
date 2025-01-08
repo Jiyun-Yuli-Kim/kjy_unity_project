@@ -37,10 +37,10 @@ public class Item : MonoBehaviour
         if (!isGrounded)
         {
             Debug.Log("아이템이 바닥에 있지 않아서 주울 수 없음");
-            // InteractionManager.Instance.OnPickupEnd.Invoke();
+            InteractionManager.Instance.OnPickupEnd.Invoke();
             return;
         }
-        // InteractionManager.Instance.OnPickup.Invoke();
+        InteractionManager.Instance.OnPickup.Invoke();
         PickupItem();
         Debug.Log("픽업 이벤트 발동");
     }
