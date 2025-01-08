@@ -100,8 +100,8 @@ public class PlayerController : MonoBehaviour
             if (_item == null)
             {
                 _item = other.gameObject.GetComponent<Item>();
-                InteractionManager.Instance.OnPickup.AddListener(Pickup);
-                InteractionManager.Instance.OnPickupEnd.AddListener(StopPickup);
+                _item.OnPickup += Pickup;
+                _item.OnPickupEnd += StopPickup;
                 Debug.Log(_item.name);
             }
         }
@@ -127,6 +127,9 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         _interactable = null;
+        
+        _item.OnPickup -= Pickup;
+        _item.OnPickupEnd -= StopPickup;
         _item = null;
         
         if (other.gameObject.tag == "Villager")
@@ -257,8 +260,6 @@ public class PlayerController : MonoBehaviour
     {
         _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
         isInteracting = false;
-        InteractionManager.Instance.OnShakeTree.RemoveListener(ShakeTree);
-        InteractionManager.Instance.OnShakeTreeEnd.RemoveListener(StopShakeTree);
     }
 
     public void Pickup()
@@ -269,10 +270,9 @@ public class PlayerController : MonoBehaviour
     public void StopPickup()
     {
         isInteracting = false;
+        _item.OnPickup -= Pickup;
+        _item.OnPickupEnd -= StopPickup;
         _item = null;
-        InteractionManager.Instance.OnPickup.RemoveListener(Pickup);
-        InteractionManager.Instance.OnPickupEnd.RemoveListener(StopPickup);
-        // _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
     }
 
 }
