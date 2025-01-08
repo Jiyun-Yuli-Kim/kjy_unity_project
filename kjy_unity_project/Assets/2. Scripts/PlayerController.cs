@@ -64,12 +64,18 @@ public class PlayerController : MonoBehaviour
         }
         
         GetInputBool();
-        CheckInteraction();
     }
 
     public void LateUpdate()
     {
         ResetInputBool();
+        
+        if (isInteracting)
+        {
+            return;
+        }
+        
+        CheckInteraction();
 
         // _rb.angularDrag = 3;
     }
@@ -97,6 +103,11 @@ public class PlayerController : MonoBehaviour
             }
             return;
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        
     }
 
     private void OnTriggerExit(Collider other)

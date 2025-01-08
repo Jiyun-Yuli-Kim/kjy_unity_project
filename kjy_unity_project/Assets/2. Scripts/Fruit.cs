@@ -33,9 +33,23 @@ public class Fruit : Item, IPickupable
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        // if (other.gameObject.CompareTag("GroundBase"))
+        // {
+        //     FreezeFruit();
+        // }
+        
+        if (other.gameObject.tag == "Ground")
         {
+            isGrounded = true;
             FreezeFruit();
+        }
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.tag == "Ground")
+        {
+            isGrounded = false;
         }
     }
 
@@ -47,11 +61,6 @@ public class Fruit : Item, IPickupable
             InteractionManager.Instance.OnPickup.AddListener(PickupFruit);
             InteractionManager.Instance.OnPickupEnd.AddListener(EndPickupFruit);
         }
-        
-        if (other.gameObject.tag == "Ground")
-        {
-            isGrounded = true;
-        }
     }
     
     private void OnTriggerExit(Collider other)
@@ -60,11 +69,6 @@ public class Fruit : Item, IPickupable
         {
             InteractionManager.Instance.OnPickup.RemoveListener(PickupFruit);
             InteractionManager.Instance.OnPickupEnd.RemoveListener(EndPickupFruit);
-        }
-        
-        if (other.gameObject.tag == "Ground")
-        {
-            isGrounded = false;
         }
     }
 
