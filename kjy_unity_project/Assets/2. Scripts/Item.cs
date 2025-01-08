@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Item : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class Item : MonoBehaviour
     public Collider _col;
     public ItemData data;
     public bool isGrounded;
+
+    public UnityAction OnPickup;
+    public UnityAction OnPickupEnd;
     
     void Start()
     {

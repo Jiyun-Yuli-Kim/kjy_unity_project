@@ -6796,6 +6796,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AppleTree
       objectReference: {fileID: 0}
+    - target: {fileID: 3004432436480824167, guid: 13cce9122dcdf724a8b290398a72a474, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 7051773242140698435, guid: 13cce9122dcdf724a8b290398a72a474, type: 3}
       propertyPath: _input
       value: 
@@ -6804,6 +6808,10 @@ PrefabInstance:
       propertyPath: _fruitPrefab
       value: 
       objectReference: {fileID: 8394658269659714125, guid: c38cbfccf980c154c8a95f9bfc90bcdc, type: 3}
+    - target: {fileID: 7051773242140698438, guid: 13cce9122dcdf724a8b290398a72a474, type: 3}
+      propertyPath: m_TagString
+      value: Tree
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13cce9122dcdf724a8b290398a72a474, type: 3}
 --- !u!1001 &3308620852850056754

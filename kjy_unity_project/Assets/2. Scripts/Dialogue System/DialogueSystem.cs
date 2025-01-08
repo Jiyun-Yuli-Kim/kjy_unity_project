@@ -26,7 +26,7 @@ public class DialogueSystem : MonoBehaviour
 
     private int _maxRange;
     public string[,] kindData;
-    private int _kindMaxRange = 30;
+    private int _kindMaxRange = 6;
     public string[,] idolData;
     private int _idolMaxRange = 3;
     public string[,] crankyData;

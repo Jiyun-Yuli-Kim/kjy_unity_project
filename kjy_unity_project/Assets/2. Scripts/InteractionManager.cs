@@ -7,9 +7,6 @@ public class InteractionManager : MonoBehaviour
 {
     public static InteractionManager Instance { get; private set; }
 
-    public UnityEvent OnDataLoaded;
-    public UnityEvent OnShakeTree;
-    public UnityEvent OnShakeTreeEnd;
     public UnityEvent OnPickup;
     public UnityEvent OnPickupEnd;
     
