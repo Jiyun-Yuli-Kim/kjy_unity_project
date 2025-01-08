@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Boxophobic.Utils;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class NPCController : MonoBehaviour, IInteractable, ITalkable
 {
     [SerializeField] public NPCData _npcData;
     // 플레이어 방향을 따라 고개 돌리도록
     [SerializeField] public GameObject NPCHead;
+    
+    public event UnityAction OnInteract;
+    public event UnityAction OnInteractEnd;
 
     private string[,] _dialogueData;
     

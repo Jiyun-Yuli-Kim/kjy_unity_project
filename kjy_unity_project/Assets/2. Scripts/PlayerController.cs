@@ -89,8 +89,8 @@ public class PlayerController : MonoBehaviour
                 if (component != null && component.CompareTag("Tree"))
                 {
                     Debug.Log("Found Tree");
-                    InteractionManager.Instance.OnShakeTree.AddListener(ShakeTree);
-                    InteractionManager.Instance.OnShakeTreeEnd.AddListener(StopShakeTree);
+                    _interactable.OnInteract += ShakeTree;
+                    _interactable.OnInteractEnd += StopShakeTree;
                 }
             }
         }
@@ -140,8 +140,8 @@ public class PlayerController : MonoBehaviour
             var component = _interactable as Component;
             if (component != null && component.CompareTag("Tree"))
             {
-                InteractionManager.Instance.OnShakeTree.RemoveListener(ShakeTree);
-                InteractionManager.Instance.OnShakeTreeEnd.RemoveListener(StopShakeTree);
+                _interactable.OnInteract -= ShakeTree;
+                _interactable.OnInteractEnd -= StopShakeTree;
             }
         }
         
