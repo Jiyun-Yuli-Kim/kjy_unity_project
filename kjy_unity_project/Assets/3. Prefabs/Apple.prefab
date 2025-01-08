@@ -180,8 +180,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.27791858
-  m_Center: {x: 0.000000044703484, y: 0.25207815, z: 0}
+  m_Radius: 0.28277165
+  m_Center: {x: -0.0036601129, y: 0.2605058, z: 0.0000000021008046}
 --- !u!1 &2480613330234879138
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,6 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 2d13dba906b544d4f936872fb60871f8, type: 2}
+  isGrounded: 0
 --- !u!54 &8876300260970966294
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -341,4 +342,4 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1

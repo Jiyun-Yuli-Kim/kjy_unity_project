@@ -76,10 +76,16 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        _interactable = other.gameObject.GetComponent<IInteractable>();
+        if (_interactable == null)
+        {
+            _interactable = other.gameObject.GetComponent<IInteractable>();
+        }
 
-        _pickupable = other.gameObject.GetComponent<IPickupable>();
-
+        if (_pickupable == null)
+        {
+            _pickupable = other.gameObject.GetComponent<IPickupable>();
+        }
+        
         if (other.gameObject.tag == "Villager")
         {
             NPC = other.GetComponent<NPCController>();
@@ -229,6 +235,7 @@ public class PlayerController : MonoBehaviour
     public void StopPickup()
     {
         isInteracting = false;
+        _pickupable = null;
         // _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
     }
 

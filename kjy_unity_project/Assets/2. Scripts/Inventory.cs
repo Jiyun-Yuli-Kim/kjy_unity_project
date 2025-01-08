@@ -40,6 +40,7 @@ public class Inventory : MonoBehaviour
         Debug.Log(inventory.Length);
         
         inventory[_curItemCount] = item;
+        Debug.Log(_inventoryUI.slots.Length);
         _inventoryUI.slots[_curItemCount].ItemNameText.text = item.data.ItemName;
         _inventoryUI.slots[_curItemCount].ItemIconSprite.sprite = item.data.ItemIcon;
         _inventoryUI.slots[_curItemCount].ItemIcon.SetActive(true);

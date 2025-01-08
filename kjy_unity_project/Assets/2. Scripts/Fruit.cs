@@ -18,7 +18,7 @@ public class Fruit : Item, IPickupable
     // 데이터 필드는 어차피 부모클래스인 Item에서 정의했으므로..
     // [SerializeField] private ItemData _fruitData;
 
-    void Awake()
+    void Start()
     {
         isGrounded = false;
         _rb = GetComponent<Rigidbody>();
@@ -35,16 +35,7 @@ public class Fruit : Item, IPickupable
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            isGrounded = true;
             FreezeFruit();
-        }
-    }
-
-    private void OnCollisionExit(Collision other)
-    {
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
         }
     }
 
@@ -56,6 +47,11 @@ public class Fruit : Item, IPickupable
             InteractionManager.Instance.OnPickup.AddListener(PickupFruit);
             InteractionManager.Instance.OnPickupEnd.AddListener(EndPickupFruit);
         }
+        
+        if (other.gameObject.tag == "Ground")
+        {
+            isGrounded = true;
+        }
     }
     
     private void OnTriggerExit(Collider other)
@@ -64,6 +60,11 @@ public class Fruit : Item, IPickupable
         {
             InteractionManager.Instance.OnPickup.RemoveListener(PickupFruit);
             InteractionManager.Instance.OnPickupEnd.RemoveListener(EndPickupFruit);
+        }
+        
+        if (other.gameObject.tag == "Ground")
+        {
+            isGrounded = false;
         }
     }
 
