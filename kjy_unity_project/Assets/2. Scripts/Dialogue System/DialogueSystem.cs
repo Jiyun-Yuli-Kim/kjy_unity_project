@@ -26,7 +26,7 @@ public class DialogueSystem : MonoBehaviour
 
     private int _maxRange;
     public string[,] kindData;
-    private int _kindMaxRange = 6;
+    private int _kindMaxRange = 7;
     public string[,] idolData;
     private int _idolMaxRange = 3;
     // public string[,] crankyData;
@@ -102,8 +102,8 @@ public class DialogueSystem : MonoBehaviour
         // 대화 시작에 따른 각종 초기화. 줌인 + 팝업활성화 + interacting = true 
         OnTalkStart.Invoke();
 
-        _randIndex = Random.Range(1, _maxRange);
-        Debug.Log(_randIndex);
+        _randIndex = Random.Range(1, _maxRange + 1);
+        Debug.Log($"최대값 : {_maxRange} , 랜덤값 : {_randIndex}, 오프셋 : {_indexOffset}");
 
         // 랜덤으로 대사를 출력함
         Debug.Log(data);
@@ -114,6 +114,8 @@ public class DialogueSystem : MonoBehaviour
         yield return StartCoroutine(CheckChoicesCount(data, firstchoices, _randIndex));
         
         OnTalkEnd.Invoke();
+        yield return new WaitForSeconds(1f);
+        _player.isInteracting = false;
     }
 
     private void SetMaxRange(string[,] data)
@@ -144,7 +146,7 @@ public class DialogueSystem : MonoBehaviour
             // 다음 대사 로드
             if (data[index, 3].Trim() == "END")
             {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.7f);
             }
 
             else
@@ -249,7 +251,6 @@ public class DialogueSystem : MonoBehaviour
         OnTalkStart.RemoveAllListeners();
         OnTalkEnd.RemoveAllListeners();
         isTalking = false;
-        _player.isInteracting = false;
     }
 
     public void TalkCamOn()
