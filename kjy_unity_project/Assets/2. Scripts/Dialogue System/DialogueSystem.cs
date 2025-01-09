@@ -29,8 +29,8 @@ public class DialogueSystem : MonoBehaviour
     private int _kindMaxRange = 6;
     public string[,] idolData;
     private int _idolMaxRange = 3;
-    public string[,] crankyData;
-    private int _crankyMaxRange = 1;
+    // public string[,] crankyData;
+    // private int _crankyMaxRange = 1;
 
     public UnityEvent OnDataLoaded;
     public UnityEvent OnTalkStart; // 대화시작
@@ -39,6 +39,8 @@ public class DialogueSystem : MonoBehaviour
     private int _randIndex;
     private int _choice = 0;
     private int _indexOffset;
+
+    private bool isTalking;
 
     public string textToPrint;
     
@@ -58,8 +60,7 @@ public class DialogueSystem : MonoBehaviour
 
     private void Start()
     {
-        OnTalkStart.AddListener(StartInteraction);
-        OnTalkEnd.AddListener(ResetInteraction);
+
     }
 
     private void Init()
@@ -79,10 +80,20 @@ public class DialogueSystem : MonoBehaviour
 
     public IEnumerator TalkToVillager(string[,] data)
     {
+        if (isTalking)
+        {
+            yield break;
+        }
+
+        isTalking = true;
+        
         if (_player.partnerName == null)
         {
             Debug.Log("_player.partnerName is null");
         }
+        
+        OnTalkStart.AddListener(StartInteraction);
+        OnTalkEnd.AddListener(ResetInteraction);
 
         yield return new WaitForSeconds(0.5f);
 
@@ -117,10 +128,10 @@ public class DialogueSystem : MonoBehaviour
             _maxRange = _idolMaxRange;
         }
 
-        if (data == crankyData)
-        {
-            _maxRange = _crankyMaxRange;
-        }
+        // if (data == crankyData)
+        // {
+        //     _maxRange = _crankyMaxRange;
+        // }
         
         _indexOffset = 100 - _maxRange;
     }
@@ -134,7 +145,7 @@ public class DialogueSystem : MonoBehaviour
             if (data[index, 3].Trim() == "END")
             {
                 OnTalkEnd.Invoke();
-                yield break;
+                yield return new WaitForSeconds(1f);
             }
 
             else
@@ -237,10 +248,14 @@ public class DialogueSystem : MonoBehaviour
     
     public void ResetInteraction()
     {
+        Debug.Log("대화 종료 로직");
         TalkCamOff();
         RemoveTarget();
-        _player.isInteracting = false;
         _textPresenter.EndDialogue();
+        OnTalkStart.RemoveAllListeners();
+        OnTalkEnd.RemoveAllListeners();
+        isTalking = false;
+        _player.isInteracting = false;
     }
 
     public void TalkCamOn()
@@ -255,7 +270,6 @@ public class DialogueSystem : MonoBehaviour
 
     public void AddTarget()
     {   
-        Debug.Log("AddTarget 진입");
         Debug.Log(_player.NPC.name);
         _targetGroup.AddMember(_player.NPC.transform, 1, 0);
     }

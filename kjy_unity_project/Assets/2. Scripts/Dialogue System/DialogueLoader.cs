@@ -19,9 +19,9 @@ public class DialogueLoader : MonoBehaviour
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=0&single=true&output=csv";
     public const string IdolDialogue =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=565515136&single=true&output=csv";
-    public const string CrankyDialogue =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=104577247&single=true&output=csv";
-   
+    // public const string CrankyDialogue =
+    //     "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=104577247&single=true&output=csv";
+    
     public string[,] DialogueData { get; private set; }
 
     private void Awake()
@@ -36,10 +36,10 @@ public class DialogueLoader : MonoBehaviour
             DialogueSystem.Instance.idolData = data;
         }));
 
-        StartCoroutine(StartLoad(DialogueLoader.CrankyDialogue, data => 
-        {
-            DialogueSystem.Instance.crankyData = data;
-        }));    
+        // StartCoroutine(StartLoad(DialogueLoader.CrankyDialogue, data => 
+        // {
+        //     DialogueSystem.Instance.crankyData = data;
+        // }));    
     }
 
     public IEnumerator StartLoad(string dialogueURL, System.Action<string[,]> onComplete)
@@ -63,22 +63,6 @@ public class DialogueLoader : MonoBehaviour
             
             // 2단계: DialogueData-2차원 배열로 가공한 데이터
             yield return DialogueData = ProcessCSV(recievedData);
-            
-            // // 3단계: 주민 성격별로 다른 데이터 타입을 로드하기 위해 이벤트를 활용
-            // if (urlPath == KindDialogue)
-            // {
-            //     OnKindLoaded.Invoke();
-            // }
-            // if (urlPath == IdolDialogue)
-            // {
-            //     OnIdolLoaded.Invoke();
-            // }
-            // if (urlPath == CrankyDialogue)
-            // {
-            //     OnCrankyLoaded.Invoke();
-            // }
-            
-            // ShowCSVData(DialogueData);
         }
 
         else

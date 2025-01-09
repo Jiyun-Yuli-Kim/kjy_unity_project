@@ -837,7 +837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b835d4a45fa91046b2c6d615b3147fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _npcData: {fileID: 11400000, guid: a86cc923962015b4a82930663ad4616f, type: 2}
+  npcData: {fileID: 11400000, guid: a86cc923962015b4a82930663ad4616f, type: 2}
   NPCHead: {fileID: 0}
 --- !u!1 &181797594
 GameObject:
@@ -2307,15 +2307,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7417491a7b802a4bba15ec04afb9cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnDataLoaded:
-    m_PersistentCalls:
-      m_Calls: []
-  OnShakeTree:
-    m_PersistentCalls:
-      m_Calls: []
-  OnShakeTreeEnd:
-    m_PersistentCalls:
-      m_Calls: []
   OnPickup:
     m_PersistentCalls:
       m_Calls: []
@@ -5940,6 +5931,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1719461320, guid: b9289ebb4b609e645b471f85ffab11a6, type: 3}
+      propertyPath: npcData
+      value: 
+      objectReference: {fileID: 11400000, guid: c33bc63c3a6ba474190ac8d15dab8e5b, type: 2}
     - target: {fileID: 4398364487230786098, guid: b9289ebb4b609e645b471f85ffab11a6, type: 3}
       propertyPath: m_Name
       value: Lilly

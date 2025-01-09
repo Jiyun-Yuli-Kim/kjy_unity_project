@@ -46,12 +46,6 @@ public class PlayerController : MonoBehaviour
         Input = GetComponent<PlayerInput>();
     }
 
-    public void Start()
-    {
-
-        // InteractionManager.Instance.OnPickup.AddListener(Pickup);
-    }
-
     public void Update()
     {
         CheckInventory();
@@ -111,17 +105,11 @@ public class PlayerController : MonoBehaviour
             NPC = other.GetComponent<NPCController>();
             if (NPC != null)
             {
-                partnerName = NPC._npcData.NPCName;
-                partnerCp = NPC._npcData.CatchPhrase;
+                partnerName = NPC.npcData.NPCName;
+                partnerCp = NPC.npcData.CatchPhrase;
                 Debug.Log($"{partnerName}, {partnerCp}");
             }
-            return;
         }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        
     }
 
     private void OnTriggerExit(Collider other)
@@ -147,9 +135,7 @@ public class PlayerController : MonoBehaviour
                 _interactable.OnInteractEnd -= StopShakeTree;
             }
         }
-        
         isInteracting = false;
-        
     }
 
     public void GetInputBool()
@@ -186,7 +172,6 @@ public class PlayerController : MonoBehaviour
         Vector2 move = Input.actions["Move"].ReadValue<Vector2>();
 
         dir = new Vector3(move.x, 0, move.y);
-        // Debug.Log(dir);
         _rb.velocity = dir * playerMoveSpeed;
 
         if (dir != Vector3.zero)
@@ -206,6 +191,18 @@ public class PlayerController : MonoBehaviour
 
     public void CheckInventory()
     {
+        if (invenOpened && Input.actions["Revert"].WasReleasedThisFrame())
+        {
+            invenOpened = false;
+            InteractionManager.Instance.OnInventoryClose.Invoke();
+            isInteracting = false;
+        }
+        
+        if (isInteracting || invenOpened)
+        {
+            return;
+        }
+
         if (Input.actions["Inventory"].WasPressedThisFrame())
         {
             isInteracting = true;
@@ -215,30 +212,21 @@ public class PlayerController : MonoBehaviour
             }
             invenOpened = true;
             InteractionManager.Instance.OnInventoryOpen.Invoke();
-            Debug.Log($"인벤토리 오픈");
-        }
-
-        if (invenOpened && Input.actions["Revert"].WasReleasedThisFrame())
-        {
-            invenOpened = false;
-            InteractionManager.Instance.OnInventoryClose.Invoke();
-            isInteracting = false;
         }
     }
 
     public void CheckInteraction()
     {
         // 겹치는거 어떻게 처리할지 고민해야함.
-
+        if (isInteracting)
+        {
+            return;
+        }
+        
         if (_interactable != null && Input.actions["Trigger"].WasPressedThisFrame())
         {
             isInteracting = true;
             _interactable.Interact();
-        }
-
-        if (isInteracting)
-        {
-            return;
         }
         
         // 일단 인풋을 다르게 받을거라 괜찮을 것 같긴 하지만... 

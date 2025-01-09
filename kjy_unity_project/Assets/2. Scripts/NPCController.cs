@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class NPCController : MonoBehaviour, IInteractable, ITalkable
 {
-    [SerializeField] public NPCData _npcData;
+    [SerializeField] public NPCData npcData;
     // 플레이어 방향을 따라 고개 돌리도록
     [SerializeField] public GameObject NPCHead;
     
@@ -32,28 +32,30 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
 
     public void Talk(string[,] data)
     {
+        // DialogueSystem.Instance.OnTalkStart.AddListener(DialogueSystem.Instance.StartInteraction);
+        // DialogueSystem.Instance.OnTalkStart.AddListener(DialogueSystem.Instance.ResetInteraction);
         StartCoroutine(DialogueSystem.Instance.TalkToVillager(data));
     }
 
     private void SetData()
     {
-        if (_npcData.personality == Personalities.Kind)
+        if (npcData.personality == Personalities.Kind)
         {
             _dialogueData = DialogueSystem.Instance.kindData;
             Debug.Log($"kind data loaded,{_dialogueData[1,1]}");
         }
 
-        if (_npcData.personality == Personalities.Idol)
+        if (npcData.personality == Personalities.Idol)
         {
             _dialogueData = DialogueSystem.Instance.idolData;
             Debug.Log($"idol data loaded,{_dialogueData[1,1]}");
         }
 
-        if (_npcData.personality == Personalities.Cranky)
-        {
-            _dialogueData = DialogueSystem.Instance.crankyData;
-            Debug.Log($"cranky data loaded,{_dialogueData[1,1]}");
-        }
+        // if (npcData.personality == Personalities.Cranky)
+        // {
+        //     _dialogueData = DialogueSystem.Instance.crankyData;
+        //     Debug.Log($"cranky data loaded,{_dialogueData[1,1]}");
+        // }
     }
 
 }
