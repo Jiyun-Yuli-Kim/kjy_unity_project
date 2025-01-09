@@ -36,12 +36,14 @@ public class FruitTree : MonoBehaviour, IInteractable
         _animator = GetComponent<Animator>();
     }
 
+    void Start()
+    {
+        StartCoroutine(SpawnFruit());
+    }
+
     void Update()
     {
-        if (fruits[0] == null && fruits[1] == null && fruits[2] == null)
-        {
-            SpawnFruit();
-        }
+
     }
 
     public void Interact()
@@ -73,14 +75,29 @@ public class FruitTree : MonoBehaviour, IInteractable
         ClearArray();
     }
 
-    private void SpawnFruit()
+    private IEnumerator SpawnFruit()
     {
+        SpawnFruits();
+        while (true)
+        {
+            yield return new WaitUntil(() => fruits[0] == null && fruits[1] == null && fruits[2] == null);
+            yield return new WaitForSeconds(300f);
+            SpawnFruits();
+        }
+    }
+
+    private void SpawnFruits()
+    {
+        if (fruits[0] == null && fruits[1] == null && fruits[2] == null)
+        {
             fruits[0] = Instantiate(_fruitPrefab, _fruit1Pos.position,
                 new Quaternion(-0.107541613f, 0, 0, 0.994200587f)).GetComponent<Fruit>();
             fruits[1] = Instantiate(_fruitPrefab, _fruit2Pos.position,
                 new Quaternion(-0.0911203697f, 0.19207485f, -0.0179143753f, 0.976976693f)).GetComponent<Fruit>();
             fruits[2] = Instantiate(_fruitPrefab, _fruit3Pos.position,
                 new Quaternion(-0.0839739516f, -0.19348672f, 0.0112915235f, 0.977437377f)).GetComponent<Fruit>();
+        }
+
     }
 
     private void ClearArray()
