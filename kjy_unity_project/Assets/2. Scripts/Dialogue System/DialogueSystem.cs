@@ -144,7 +144,6 @@ public class DialogueSystem : MonoBehaviour
             // 다음 대사 로드
             if (data[index, 3].Trim() == "END")
             {
-                OnTalkEnd.Invoke();
                 yield return new WaitForSeconds(1f);
             }
 
@@ -170,7 +169,6 @@ public class DialogueSystem : MonoBehaviour
             {
                 if (ss[0].Trim() == "END")
                 {
-                    OnTalkEnd.Invoke();
                     yield break;
                 }
                 i = int.Parse(ss[0]);
@@ -180,7 +178,6 @@ public class DialogueSystem : MonoBehaviour
             {
                 if (ss[1].Trim() == "END")
                 {
-                    OnTalkEnd.Invoke();
                     yield break;
                 }
                 i = int.Parse(ss[1]);
@@ -204,7 +201,6 @@ public class DialogueSystem : MonoBehaviour
             {
                 if (ss[0].Trim() == "END")
                 {
-                    OnTalkEnd.Invoke();
                     yield break;
                 }
                 i = int.Parse(ss[0]);
@@ -214,7 +210,6 @@ public class DialogueSystem : MonoBehaviour
             {
                 if (ss[1].Trim() == "END")
                 {
-                    OnTalkEnd.Invoke();
                     yield break;
                 }
                 i = int.Parse(ss[1]);
@@ -224,7 +219,6 @@ public class DialogueSystem : MonoBehaviour
             {
                 if (ss[2].Trim() == "END")
                 {
-                    OnTalkEnd.Invoke();
                     yield break;
                 }
                 i = int.Parse(ss[2]);

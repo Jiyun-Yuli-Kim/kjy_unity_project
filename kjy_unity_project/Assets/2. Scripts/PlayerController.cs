@@ -115,10 +115,13 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         _interactable = null;
-        
-        _item.OnPickup -= Pickup;
-        _item.OnPickupEnd -= StopPickup;
-        _item = null;
+
+        if (_item != null)
+        {
+            _item.OnPickup -= Pickup;
+            _item.OnPickupEnd -= StopPickup;
+            _item = null;
+        }
         
         if (other.gameObject.tag == "Villager")
         {
@@ -135,6 +138,7 @@ public class PlayerController : MonoBehaviour
                 _interactable.OnInteractEnd -= StopShakeTree;
             }
         }
+        
         isInteracting = false;
     }
 
