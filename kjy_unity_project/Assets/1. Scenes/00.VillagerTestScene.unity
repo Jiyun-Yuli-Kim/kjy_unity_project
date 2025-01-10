@@ -438,15 +438,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   dialogueURL: 
-  OnKindLoaded:
-    m_PersistentCalls:
-      m_Calls: []
-  OnIdolLoaded:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCrankyLoaded:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &119543399
 Transform:
   m_ObjectHideFlags: 0

@@ -1261,7 +1261,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2904,7 +2904,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 920e7653fe26d844dbaa4203646765e2, type: 2}
   m_sharedMaterial: {fileID: -4031657183245122909, guid: 920e7653fe26d844dbaa4203646765e2, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: -4031657183245122909, guid: 920e7653fe26d844dbaa4203646765e2, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -3610,7 +3611,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f5e5ee7d557c7284f96eed5497e79e64, type: 2}
   m_sharedMaterial: {fileID: -7795110137104203465, guid: f5e5ee7d557c7284f96eed5497e79e64, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: -7795110137104203465, guid: f5e5ee7d557c7284f96eed5497e79e64, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -4653,7 +4655,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f5e5ee7d557c7284f96eed5497e79e64, type: 2}
   m_sharedMaterial: {fileID: -7795110137104203465, guid: f5e5ee7d557c7284f96eed5497e79e64, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: -7795110137104203465, guid: f5e5ee7d557c7284f96eed5497e79e64, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
