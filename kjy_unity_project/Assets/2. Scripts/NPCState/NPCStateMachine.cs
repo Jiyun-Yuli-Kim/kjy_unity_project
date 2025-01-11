@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachine : MonoBehaviour
+public class NPCStateMachine : MonoBehaviour
 {
     public enum StateType
     {
@@ -11,15 +11,15 @@ public class StateMachine : MonoBehaviour
         // PPickup
     }
     
-    public StateBase CurrentState;
-    private PlayerController _playerController;
+    public NPCStateBase CurrentState;
+    private NPCController _playerController;
     private Animator _animator;
     
-    private List<StateBase> _states = new();
+    private List<NPCStateBase> _states = new();
 
     private void Awake()
     {
-        _playerController = GetComponent<PlayerController>();
+        _npcController = GetComponent<NPCController>();
         _animator = GetComponent<Animator>();
     }
 
