@@ -12,11 +12,10 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] public PlayerData _playerData;
-
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private Animator _animator;
-    [SerializeField] private DialogueSystem _dialogueSystem;
+    // [SerializeField] private DialogueSystem _dialogueSystem;
     
     private StateMachine _stateMachine;
     public PlayerInput Input;

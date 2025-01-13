@@ -1,52 +1,65 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
-public class NPCStroll : StateBase
+public class NPCStroll : NPCStateBase
 {
-    public NPCStroll(PlayerController controller, Animator animator, StateMachine stateMachine) : base(controller, animator, stateMachine)
+    [SerializeField] public float UpdateInterval;
+    private float _curTime;
+    [SerializeField] NavMeshAgent _agent;
+    
+    public NPCStroll(NPCController controller, Animator animator, NPCStateMachine stateMachine) : base(controller, animator, stateMachine)
     {
         
     }
+    
 
-    private float tempSpeed;
-    private bool isCurDashing = false;
-
+    // 마을 배회 시작
     public override void OnStateEnter()
     {
-        _animator.SetBool("isMoving", true);
+        // NPC를 집 앞의 SpawnPoint에 Instantiate한다.
+        _curTime = UpdateInterval;
+
     }
 
     public override void OnStateUpdate()
     {
-        // move 눌렸을 때 이동, move&dash 눌렸을 때 달리기 
-        if (_controller.isMoving)
+        if (DateTime.Now.Hour >= _controller.npcData.StrollEndHour)
         {
-            if (_controller.isDashing && !isCurDashing)
-            {   
-                isCurDashing = true;
-                _animator.SetBool("isDashing", true);
-                tempSpeed = _controller.playerMoveSpeed;
-                _controller.playerMoveSpeed *= _controller.dashMultiplier;
-            }
-
-            if(!_controller.isDashing && isCurDashing)
-            {
-                isCurDashing = false;
-                _controller.playerMoveSpeed = tempSpeed;
-                _animator.SetBool("isDashing", false);
-            }
-            _controller.PlayerMove();
+            _stateMachine.OnChangeState(NPCStateMachine.StateType.NHome);
         }
-
-        if (!_controller.isMoving)
+        
+        // NavMesh를 통한 랜덤 이동 구현
+        _curTime += Time.deltaTime;
+        if (_curTime >= UpdateInterval)
         {
-            _stateMachine.OnChangeState(StateMachine.StateType.PIdle);
+            Vector3 randpos = GetRandPosOnNavMesh();
+            _agent.SetDestination(randpos);
+            _curTime = 0;
         }
     }
 
     public override void OnStateExit()
     {
-        _animator.SetBool("isMoving", false);
+        // NPC를 삭제한다
+        Destroy(_controller.gameObject);
+    }
+    
+    private Vector3 GetRandPosOnNavMesh()
+    {
+        Vector3 randomPos = Random.insideUnitSphere*40;
+        randomPos += _controller.transform.position;
+        NavMeshHit navHit;
+        if (NavMesh.SamplePosition(randomPos, out navHit, 20f, NavMesh.AllAreas))
+        {
+            return navHit.position;
+        }
+        else
+        {
+            return _controller.transform.position;
+        }
     }
 }

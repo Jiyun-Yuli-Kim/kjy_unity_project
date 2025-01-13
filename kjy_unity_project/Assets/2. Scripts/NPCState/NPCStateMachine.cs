@@ -7,14 +7,12 @@ public class NPCStateMachine : MonoBehaviour
 {
     public enum StateType
     {
-        PIdle, PWalk, PShake 
-        // PPickup
+        NStroll, NHome
     }
     
     public NPCStateBase CurrentState;
     private NPCController _npcController;
     private Animator _animator;
-    
     private List<NPCStateBase> _states = new();
 
     private void Awake()
@@ -25,13 +23,10 @@ public class NPCStateMachine : MonoBehaviour
 
     private void Start()
     {
-        // PlayerIdle playerIdle = new PlayerIdle(_npcController, _animator, this);
-        // PlayerWalk playerWalk = new PlayerWalk(_npcController, _animator, this);
-        // PlayerShakeTree playerShakeTree = new PlayerShakeTree(_npcController, _animator, this);
-        // // PlayerPickup playerPickup = new PlayerPickup(_playerController, _animator, this);
-        // AddState(playerIdle, playerWalk, playerShakeTree);
-        //
-        // OnChangeState(StateType.PIdle);
+        NPCStroll npcStroll = new NPCStroll(_npcController, _animator, this);
+        NPCHome npcHome = new NPCHome(_npcController, _animator, this);
+        AddState(npcStroll, npcHome);
+        OnChangeState(StateType.NStroll);
     }
 
     private void Update()
@@ -39,11 +34,11 @@ public class NPCStateMachine : MonoBehaviour
         CurrentState.OnStateUpdate();
     }
 
-    public void AddState(params StateBase[] states)
+    public void AddState(params NPCStateBase[] states)
     {
         foreach (var state in states)
         {
-            // _states.Add(state);
+            _states.Add(state);
         }
     }
 
@@ -56,7 +51,6 @@ public class NPCStateMachine : MonoBehaviour
             CurrentState = _states[(int)type];
             CurrentState.OnStateEnter();
             // Debug.Log($"다음상태 {CurrentState}(으)로 돌입");
-
         }
     }
 }
