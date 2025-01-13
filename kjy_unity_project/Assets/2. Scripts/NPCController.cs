@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Boxophobic.Utils;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.AI;
 
 public class NPCController : MonoBehaviour, IInteractable, ITalkable
 {
@@ -10,15 +11,30 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
     // 플레이어 방향을 따라 고개 돌리도록
     [SerializeField] public GameObject NPCHead;
     
+    // 랜덤이동 구현용
+    [SerializeField] public float UpdateInterval;
+    [SerializeField] NavMeshAgent _agent;
+    // 테스트용 목적지
+    [SerializeField] public Transform target;
+    
     public event UnityAction OnInteract;
     public event UnityAction OnInteractEnd;
 
     private string[,] _dialogueData;
     
+    
+    
     public void Start()
     {
         DialogueSystem.Instance.OnDataLoaded.AddListener(SetData);
+        _agent.SetDestination(target.position);
     }
+    
+    void Update()
+    {
+     
+    }
+
 
     public void Interact()
     {
