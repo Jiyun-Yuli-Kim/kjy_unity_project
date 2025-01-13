@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d324f3f777a11b141885f07420c48516, type: 3}
-  m_Name: LillyData
+  m_Name: JohnData
   m_EditorClassIdentifier: 
-  NPCName: "\uB9B4\uB9AC\uC548"
-  personality: 1
-  CatchPhrase: "\uADF8\uB807\uC9C0\uBB50"
+  NPCName: "\uC874"
+  personality: 2
+  CatchPhrase: "\uC544\uB2C8"
+  StrollStartHour: 13
+  StrollEndHour: 21

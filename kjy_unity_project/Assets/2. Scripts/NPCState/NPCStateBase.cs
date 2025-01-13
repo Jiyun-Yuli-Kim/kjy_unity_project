@@ -9,7 +9,7 @@ public abstract class NPCStateBase
     public NPCStateMachine _stateMachine;
     
     // 생성자를 통해 PlayerController, Animator를 가질 것을 강제함.
-    public NPCStateBase(PlayerController controller, Animator animator, StateMachine stateMachine)
+    public NPCStateBase(NPCController controller, Animator animator, NPCStateMachine stateMachine)
     {
         _controller = controller;
         _animator = animator;

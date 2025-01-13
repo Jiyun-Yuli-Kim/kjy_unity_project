@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d324f3f777a11b141885f07420c48516, type: 3}
-  m_Name: CiderData
+  m_Name: MapleData
   m_EditorClassIdentifier: 
-  NPCName: "\uC0AC\uC774\uB2E4"
+  NPCName: "\uBA54\uC774\uCCBC"
   personality: 0
-  CatchPhrase: "\uD401\uD401"
+  CatchPhrase: "\uC800\uAE30\uC694"
+  StrollStartHour: 10
+  StrollEndHour: 18

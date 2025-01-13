@@ -8,4 +8,6 @@ public class NPCData : ScriptableObject
     public string NPCName;
     public Personalities personality;
     public string CatchPhrase;
+    public int StrollStartHour;
+    public int StrollEndHour;
 }

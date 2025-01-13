@@ -12,7 +12,7 @@ public class NPCStateMachine : MonoBehaviour
     }
     
     public NPCStateBase CurrentState;
-    private NPCController _playerController;
+    private NPCController _npcController;
     private Animator _animator;
     
     private List<NPCStateBase> _states = new();
@@ -25,13 +25,13 @@ public class NPCStateMachine : MonoBehaviour
 
     private void Start()
     {
-        PlayerIdle playerIdle = new PlayerIdle(_playerController, _animator, this);
-        PlayerWalk playerWalk = new PlayerWalk(_playerController, _animator, this);
-        PlayerShakeTree playerShakeTree = new PlayerShakeTree(_playerController, _animator, this);
-        // PlayerPickup playerPickup = new PlayerPickup(_playerController, _animator, this);
-        AddState(playerIdle, playerWalk, playerShakeTree);
-        
-        OnChangeState(StateType.PIdle);
+        // PlayerIdle playerIdle = new PlayerIdle(_npcController, _animator, this);
+        // PlayerWalk playerWalk = new PlayerWalk(_npcController, _animator, this);
+        // PlayerShakeTree playerShakeTree = new PlayerShakeTree(_npcController, _animator, this);
+        // // PlayerPickup playerPickup = new PlayerPickup(_playerController, _animator, this);
+        // AddState(playerIdle, playerWalk, playerShakeTree);
+        //
+        // OnChangeState(StateType.PIdle);
     }
 
     private void Update()
@@ -43,7 +43,7 @@ public class NPCStateMachine : MonoBehaviour
     {
         foreach (var state in states)
         {
-            _states.Add(state);
+            // _states.Add(state);
         }
     }
 
