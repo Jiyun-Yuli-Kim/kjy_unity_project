@@ -44,10 +44,11 @@ public class GameManager : MonoBehaviour
 
     void CheckSchedule()
     {
-        foreach (GameObject NPC in NPCs)
+        for (int i=0; i < NPCs.Count; i++)
         {
-            var controller = NPC.GetComponent<NPCController>();
-            var statemachine = NPC.GetComponent<NPCStateMachine>();
+            GameObject NPC = NPCs[i];
+            var controller = NPCs[i].GetComponent<NPCController>();
+            var statemachine = NPCs[i].GetComponent<NPCStateMachine>();
             
             // 마을 배회 시작
             if (DateTime.Now.Hour >= controller.npcData.StrollStartHour && controller.isStrolling==false)
@@ -64,8 +65,15 @@ public class GameManager : MonoBehaviour
                     Destroy(NPC);
                 }
 
-                Instantiate(NPC, controller.npcData.TownSpawnPos.position, controller.npcData.TownSpawnPos.rotation);
+                var newNPC = Instantiate(NPC, controller.npcData.TownSpawnPos.position, controller.npcData.TownSpawnPos.rotation);
+                // 기존 데이터 연동
+                newNPC.GetComponent<NPCController>().npcData = controller.npcData;
+                controller = newNPC.GetComponent<NPCController>();
+                statemachine = newNPC.GetComponent<NPCStateMachine>();
+                
+                NPCs[i]= newNPC;
                 controller.npcData.curScene = NPCScenes.Town;
+                
                 statemachine.OnChangeState(NPCStateMachine.StateType.NStroll);
             }
             
@@ -83,7 +91,10 @@ public class GameManager : MonoBehaviour
                 {
                     Destroy(NPC);
                 }
-                Instantiate(NPC, controller.npcData.HomeSpawnPos.position, controller.npcData.HomeSpawnPos.rotation);
+                
+                var newNPC = Instantiate(NPC, controller.npcData.HomeSpawnPos.position, controller.npcData.HomeSpawnPos.rotation);
+                newNPC.GetComponent<NPCController>().npcData = controller.npcData;
+                NPCs[i]= newNPC;
                 controller.npcData.curScene = NPCScenes.Home;
                 statemachine.OnChangeState(NPCStateMachine.StateType.NHome);
             }        

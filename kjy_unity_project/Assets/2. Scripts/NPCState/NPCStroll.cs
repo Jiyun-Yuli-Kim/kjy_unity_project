@@ -9,7 +9,6 @@ public class NPCStroll : NPCStateBase
 {
     [SerializeField] public float UpdateInterval;
     private float _curTime;
-    [SerializeField] NavMeshAgent _agent;
     
     public NPCStroll(NPCController controller, Animator animator, NPCStateMachine stateMachine) : base(controller, animator, stateMachine)
     {
@@ -27,17 +26,18 @@ public class NPCStroll : NPCStateBase
 
     public override void OnStateUpdate()
     {
-        if (DateTime.Now.Hour >= _controller.npcData.StrollEndHour)
-        {
-            _stateMachine.OnChangeState(NPCStateMachine.StateType.NHome);
-        }
+        // if (DateTime.Now.Hour >= _controller.npcData.StrollEndHour)
+        // {
+        //     _stateMachine.OnChangeState(NPCStateMachine.StateType.NHome);
+        // }
+        // -> GameManager로 기능 이관
         
         // NavMesh를 통한 랜덤 이동 구현
         _curTime += Time.deltaTime;
         if (_curTime >= UpdateInterval)
         {
-            Vector3 randpos = GetRandPosOnNavMesh();
-            _agent.SetDestination(randpos);
+            Vector3 randpos = GetRandPosOnNavMesh(); 
+            _controller.agent.SetDestination(randpos);
             _curTime = 0;
         }
     }
