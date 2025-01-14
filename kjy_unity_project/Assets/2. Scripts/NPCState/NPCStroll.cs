@@ -45,7 +45,7 @@ public class NPCStroll : NPCStateBase
     public override void OnStateExit()
     {
         // NPC를 삭제한다
-        Destroy(_controller.gameObject);
+        // Destroy(_controller.gameObject);
     }
     
     private Vector3 GetRandPosOnNavMesh()

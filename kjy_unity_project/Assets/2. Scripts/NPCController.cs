@@ -21,7 +21,9 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
     public event UnityAction OnInteract;
     public event UnityAction OnInteractEnd;
 
-    private string[,] _dialogueData;
+    public string[,] _dialogueData;
+
+    public bool isStrolling;
     
     public void Start()
     {

@@ -10,4 +10,7 @@ public class NPCData : ScriptableObject
     public string CatchPhrase;
     public int StrollStartHour;
     public int StrollEndHour;
+    public NPCScenes curScene;
+    public Transform HomeSpawnPos;
+    public Transform TownSpawnPos;
 }
