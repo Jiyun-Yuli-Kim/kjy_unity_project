@@ -197,7 +197,7 @@ public class PlayerController : MonoBehaviour
         if (invenOpened && Input.actions["Revert"].WasReleasedThisFrame())
         {
             invenOpened = false;
-            InteractionManager.Instance.OnInventoryClose.Invoke();
+            Inventory.Instance.OnInventoryClose.Invoke();
             isInteracting = false;
         }
         
@@ -214,7 +214,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
             invenOpened = true;
-            InteractionManager.Instance.OnInventoryOpen.Invoke();
+            Inventory.Instance.OnInventoryOpen.Invoke();
         }
     }
 

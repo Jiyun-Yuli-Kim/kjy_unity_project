@@ -10,11 +10,6 @@ public class DialogueLoader : MonoBehaviour
 {
     [SerializeField] private PlayerController _player;
     
-    public string dialogueURL;
-    // public UnityEvent OnKindLoaded;
-    // public UnityEvent OnIdolLoaded;
-    // public UnityEvent OnCrankyLoaded;
-
     public const string KindDialogue =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=0&single=true&output=csv";
     public const string IdolDialogue =

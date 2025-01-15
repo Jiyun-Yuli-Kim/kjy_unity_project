@@ -12,13 +12,13 @@ public class InventoryUI : MonoBehaviour
     {
         UICanvas.SetActive(false);
         slots = GetComponentsInChildren<ItemSlot>();
-        InteractionManager.Instance.OnInventoryOpen.AddListener(OpenInventory);
-        InteractionManager.Instance.OnInventoryClose.AddListener(CloseInventory);
+        Inventory.Instance.OnInventoryOpen.AddListener(OpenInventory);
+        Inventory.Instance.OnInventoryClose.AddListener(CloseInventory);
     }
 
     void Start()
     {
-        Tester();
+        // Tester();
     }
 
     private void OpenInventory()

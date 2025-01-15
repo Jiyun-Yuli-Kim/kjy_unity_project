@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Inventory : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class Inventory : MonoBehaviour
     public Item[] inventory;
     public int _curItemCount = 0; 
     private const int _maxItemCount = 30;
+
+    public UnityEvent OnInventoryOpen = new UnityEvent();
+    public UnityEvent OnInventoryClose = new UnityEvent();
     
     [SerializeField] private InventoryUI _inventoryUI;
     
@@ -17,7 +21,6 @@ public class Inventory : MonoBehaviour
         if (Instance != null)
         {
             Destroy(gameObject);
-            Instance = this;
         }
         else
         {
