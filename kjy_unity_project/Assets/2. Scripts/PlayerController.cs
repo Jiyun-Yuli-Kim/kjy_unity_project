@@ -245,6 +245,7 @@ public class PlayerController : MonoBehaviour
         // transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(transform.position - _interactable.GetPosition()), 2*Time.deltaTime);
         transform.rotation = Quaternion.LookRotation(_interactable.GetPosition());
         _stateMachine.OnChangeState(StateMachine.StateType.PShake);
+        Debug.Log("PShake 상태로 전환");
     }
 
     public void StopShakeTree()
