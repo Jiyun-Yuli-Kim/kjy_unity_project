@@ -8,7 +8,9 @@ using UnityEngine.UI;
 
 public class ItemSlot : MonoBehaviour
 {
+    // 빈 슬롯의 하이라이터 
     [SerializeField] public GameObject highlighterE;
+    // 찬 슬롯의 하이라이터
     [SerializeField] public GameObject highlighterF;
     [SerializeField] public GameObject ItemIcon;
     [SerializeField] public Image ItemIconSprite;
@@ -32,6 +34,15 @@ public class ItemSlot : MonoBehaviour
     public void AddIcon()
     {
         
+    }
+
+    public void Highlight()
+    {
+        // 슬롯이 찬 경우
+        
+        
+        // 슬롯이 빈 경우
+                
     }
 
     void Tester()

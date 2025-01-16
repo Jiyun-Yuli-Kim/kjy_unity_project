@@ -12,6 +12,7 @@ public class PlayerShakeTree : StateBase
     public override void OnStateEnter()
     {
         _animator.SetBool("isShaking", true);
+        Debug.Log("PShake state entered");
     }
     
     public override void OnStateUpdate()

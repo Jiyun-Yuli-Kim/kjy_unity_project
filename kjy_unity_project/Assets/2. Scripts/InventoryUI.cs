@@ -7,6 +7,8 @@ public class InventoryUI : MonoBehaviour
 {
     public GameObject UICanvas;
     public ItemSlot[] slots = new ItemSlot[30];
+
+    public int pointer;
     
     void Awake()
     {
@@ -33,6 +35,7 @@ public class InventoryUI : MonoBehaviour
 
     public void ActivateSlot(int index)
     {
+        
     }
 
     void Tester()

@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
             if (_interactable != null)
             {
                 var component = _interactable as Component;
-                if (component != null && component.CompareTag("Tree"))
+                if (component.CompareTag("Tree"))
                 {
                     Debug.Log("Found Tree");
                     _interactable.OnInteract += ShakeTree;

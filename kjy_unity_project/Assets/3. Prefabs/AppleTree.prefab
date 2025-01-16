@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5766655756968716074}
   m_Layer: 0
   m_Name: AppleTree
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -340,7 +340,7 @@ GameObject:
   - component: {fileID: 5766655757950067089}
   m_Layer: 0
   m_Name: AppleTree
-  m_TagString: Tree
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
