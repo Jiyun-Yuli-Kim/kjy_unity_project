@@ -17,6 +17,8 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] public GameObject ItemNameBubble;
     [SerializeField] public TextMeshProUGUI ItemNameText;
     [SerializeField] public Sprite SampleSprite;
+
+    private bool _isFull;
     
     private void Awake()
     {
@@ -39,7 +41,8 @@ public class ItemSlot : MonoBehaviour
     public void Highlight()
     {
         // 슬롯이 찬 경우
-        
+        // 하이라이터와 이름 활성화
+        // isfull
         
         // 슬롯이 빈 경우
                 
