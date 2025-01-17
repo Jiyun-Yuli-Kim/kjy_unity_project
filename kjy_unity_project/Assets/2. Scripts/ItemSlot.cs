@@ -40,12 +40,26 @@ public class ItemSlot : MonoBehaviour
 
     public void Highlight()
     {
-        // 슬롯이 찬 경우
+        if (_isFull)
+        {
+            highlighterF.SetActive(true);
+            ItemNameBubble.SetActive(true);
+        }
         // 하이라이터와 이름 활성화
         // isfull
-        
+        else if (!_isFull)
+        {
+            
+        }
         // 슬롯이 빈 경우
                 
+    }
+
+    public void HighlightOff()
+    {
+        highlighterE.SetActive(false);
+        highlighterF.SetActive(false);
+        ItemNameBubble.SetActive(false);
     }
 
     void Tester()
