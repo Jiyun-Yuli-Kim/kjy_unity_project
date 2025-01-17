@@ -14,7 +14,7 @@ public class Inventory : MonoBehaviour
     public UnityEvent OnInventoryOpen = new UnityEvent();
     public UnityEvent OnInventoryClose = new UnityEvent();
     
-    [SerializeField] private InventoryUI _inventoryUI;
+    [SerializeField] public InventoryUI inventoryUI;
     
     void Awake()
     {
@@ -43,13 +43,13 @@ public class Inventory : MonoBehaviour
         Debug.Log(inventory.Length);
         
         inventory[_curItemCount] = item;
-        Debug.Log(_inventoryUI.slots.Length);
-        _inventoryUI.slots[_curItemCount].ItemNameText.text = item.data.ItemName;
-        _inventoryUI.slots[_curItemCount].ItemIconSprite.sprite = item.data.ItemIcon;
-        _inventoryUI.slots[_curItemCount].ItemIcon.SetActive(true);
+        Debug.Log(inventoryUI.slots.Length);
+        inventoryUI.slots[_curItemCount].ItemNameText.text = item.data.ItemName;
+        inventoryUI.slots[_curItemCount].ItemIconSprite.sprite = item.data.ItemIcon;
+        inventoryUI.slots[_curItemCount].ItemIcon.SetActive(true);
 
         //_inventoryUI.Show();
-        _inventoryUI.slots[_curItemCount].isFull = true;
+        inventoryUI.slots[_curItemCount].isFull = true;
         _curItemCount++; 
         Debug.Log($"인벤토리에 아이템 추가 : {item}");
         // ShowInventory();
@@ -65,7 +65,7 @@ public class Inventory : MonoBehaviour
         }
 
         inventory[_curItemCount-1] = null;
-        _inventoryUI.slots[_curItemCount].isFull = false;
+        inventoryUI.slots[_curItemCount].isFull = false;
         _curItemCount--;
     }
 
