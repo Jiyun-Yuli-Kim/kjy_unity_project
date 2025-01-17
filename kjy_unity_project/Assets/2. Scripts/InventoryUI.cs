@@ -30,10 +30,12 @@ public class InventoryUI : MonoBehaviour
     void Update()
     {
         CheckPointer();
+        Debug.Log(pointer);
     }
 
     private void OpenInventory()
     {
+        pointer = 0;
         UICanvas.SetActive(true);
         _canvasOn = true;
     }
@@ -81,12 +83,12 @@ public class InventoryUI : MonoBehaviour
     
     void CheckPointer()
     {
-        int row = pointer / 10 + 1;
+        int row = pointer / 10 +1;
         int col = pointer % 10;
         
         if (Input.GetKeyDown(KeyCode.W))
         {
-            if (col == 2 || col == 3)
+            if (row == 2 || row == 3)
             {
                 slots[pointer].HighlightOff();
                 pointer -= 10;
@@ -114,10 +116,10 @@ public class InventoryUI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            if (col >= 2 && col <= 10)
+            if (col >= 1 && col <= 9)
             {
                 slots[pointer].HighlightOff();
-                pointer --;
+                pointer -= 1;
                 slots[pointer].Highlight();
             }
             else
@@ -128,10 +130,10 @@ public class InventoryUI : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.D))
         {
-            if (col >= 1 && col <= 9)
+            if (col >= 0 && col <= 8)
             {
                 slots[pointer].HighlightOff();
-                pointer++;
+                pointer += 1;
                 slots[pointer].Highlight();
             }
             else

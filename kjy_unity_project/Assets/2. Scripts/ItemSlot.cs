@@ -18,7 +18,7 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] public TextMeshProUGUI ItemNameText;
     [SerializeField] public Sprite SampleSprite;
 
-    private bool _isFull;
+    public bool isFull;
     
     private void Awake()
     {
@@ -40,16 +40,16 @@ public class ItemSlot : MonoBehaviour
 
     public void Highlight()
     {
-        if (_isFull)
+        if (isFull)
         {
             highlighterF.SetActive(true);
             ItemNameBubble.SetActive(true);
         }
         // 하이라이터와 이름 활성화
         // isfull
-        else if (!_isFull)
+        else if (!isFull)
         {
-            
+            highlighterE.SetActive(true);
         }
         // 슬롯이 빈 경우
                 

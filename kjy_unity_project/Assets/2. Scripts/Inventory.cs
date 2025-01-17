@@ -49,7 +49,7 @@ public class Inventory : MonoBehaviour
         _inventoryUI.slots[_curItemCount].ItemIcon.SetActive(true);
 
         //_inventoryUI.Show();
-        
+        _inventoryUI.slots[_curItemCount].isFull = true;
         _curItemCount++; 
         Debug.Log($"인벤토리에 아이템 추가 : {item}");
         // ShowInventory();
@@ -65,6 +65,7 @@ public class Inventory : MonoBehaviour
         }
 
         inventory[_curItemCount-1] = null;
+        _inventoryUI.slots[_curItemCount].isFull = false;
         _curItemCount--;
     }
 
