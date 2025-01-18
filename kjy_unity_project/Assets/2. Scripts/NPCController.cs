@@ -11,6 +11,7 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
     // 플레이어 방향을 따라 고개 돌리도록
     [SerializeField] public GameObject NPCHead;
     [SerializeField] public NavMeshAgent agent;
+    [SerializeField] public Animator animator;
     
     // 랜덤이동 구현용
     // [SerializeField] public float UpdateInterval;

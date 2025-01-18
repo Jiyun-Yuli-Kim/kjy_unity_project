@@ -39,11 +39,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating("CheckSchedule", 0, 600);
+        InvokeRepeating("CheckSchedule", 0, 60);
+        // 시간단위니까 1분마다 체크?
     }
 
     void CheckSchedule()
     {
+        Debug.Log("CheckSchedule Invoked");
         for (int i=0; i < NPCs.Count; i++)
         {
             GameObject NPC = NPCs[i];
@@ -53,9 +55,12 @@ public class GameManager : MonoBehaviour
             // 마을 배회 시작
             if (DateTime.Now.Hour >= controller.npcData.StrollStartHour && controller.isStrolling==false)
             {
-                // 이미 마을에 있다면 아래 로직 시행하지 않음
+                Debug.Log($"{NPC.name} starts strolling");
+                // 이미 마을에 있다면 state만 변경
                 if (controller.npcData.curScene == NPCScenes.Town)
                 {
+                    statemachine.OnChangeState(NPCStateMachine.StateType.NStroll);
+                    Debug.Log($"{NPC.name} state changed to {statemachine.CurrentState}");
                     continue;
                 }
                 
@@ -65,7 +70,7 @@ public class GameManager : MonoBehaviour
                     Destroy(NPC);
                 }
 
-                var newNPC = Instantiate(NPC, controller.npcData.TownSpawnPos.position, controller.npcData.TownSpawnPos.rotation);
+                var newNPC = Instantiate(NPC, controller.npcData.TownSpawnPos, controller.npcData.TownSpawnRot);
                 // 기존 데이터 연동
                 newNPC.GetComponent<NPCController>().npcData = controller.npcData;
                 controller = newNPC.GetComponent<NPCController>();
@@ -92,7 +97,7 @@ public class GameManager : MonoBehaviour
                     Destroy(NPC);
                 }
                 
-                var newNPC = Instantiate(NPC, controller.npcData.HomeSpawnPos.position, controller.npcData.HomeSpawnPos.rotation);
+                var newNPC = Instantiate(NPC, controller.npcData.HomeSpawnPos, controller.npcData.HomeSpawnRot);
                 newNPC.GetComponent<NPCController>().npcData = controller.npcData;
                 NPCs[i]= newNPC;
                 controller.npcData.curScene = NPCScenes.Home;

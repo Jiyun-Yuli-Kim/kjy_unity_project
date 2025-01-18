@@ -11,6 +11,9 @@ public class NPCData : ScriptableObject
     public int StrollStartHour;
     public int StrollEndHour;
     public NPCScenes curScene;
-    public Transform HomeSpawnPos;
-    public Transform TownSpawnPos;
+    
+    public Vector3 HomeSpawnPos;
+    public Quaternion HomeSpawnRot;
+    public Vector3 TownSpawnPos;
+    public Quaternion TownSpawnRot;
 }

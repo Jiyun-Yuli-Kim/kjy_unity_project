@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class NPCStroll : NPCStateBase
 {
-    [SerializeField] public float UpdateInterval;
+    [SerializeField] public float UpdateInterval = 3f;
     private float _curTime;
     
     public NPCStroll(NPCController controller, Animator animator, NPCStateMachine stateMachine) : base(controller, animator, stateMachine)
@@ -26,18 +26,15 @@ public class NPCStroll : NPCStateBase
 
     public override void OnStateUpdate()
     {
-        // if (DateTime.Now.Hour >= _controller.npcData.StrollEndHour)
-        // {
-        //     _stateMachine.OnChangeState(NPCStateMachine.StateType.NHome);
-        // }
-        // -> GameManager로 기능 이관
-        
+        Debug.Log("OnStateUpdate: NStroll");
         // NavMesh를 통한 랜덤 이동 구현
         _curTime += Time.deltaTime;
         if (_curTime >= UpdateInterval)
         {
+            Debug.Log("이동로직 진입");
             Vector3 randpos = GetRandPosOnNavMesh(); 
             _controller.agent.SetDestination(randpos);
+            _animator.SetFloat("speed", _controller.agent.velocity.magnitude);
             _curTime = 0;
         }
     }
