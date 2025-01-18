@@ -58,11 +58,6 @@ public class DialogueSystem : MonoBehaviour
 
     }
 
-    private void Start()
-    {
-
-    }
-
     private void Init()
     {
         if (Instance != null)

@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     public NPCController NPC;
     public string partnerName;
+    public Personalities partnerType;
     public string partnerCp; // 상대방 말버릇
 
     public void Awake()
@@ -105,6 +106,7 @@ public class PlayerController : MonoBehaviour
             if (NPC != null)
             {
                 partnerName = NPC.npcData.NPCName;
+                partnerType = NPC.npcData.personality;
                 partnerCp = NPC.npcData.CatchPhrase;
                 Debug.Log($"{partnerName}, {partnerCp}");
             }

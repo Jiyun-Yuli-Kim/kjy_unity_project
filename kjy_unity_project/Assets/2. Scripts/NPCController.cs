@@ -77,25 +77,25 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
         StartCoroutine(DialogueSystem.Instance.TalkToVillager(data));
     }
 
-    private void SetData()
-    {
-        if (npcData.personality == Personalities.Kind)
-        {
-            _dialogueData = DialogueSystem.Instance.kindData;
-            Debug.Log($"kind data loaded,{_dialogueData[1,1]}");
-        }
-
-        if (npcData.personality == Personalities.Idol)
-        {
-            _dialogueData = DialogueSystem.Instance.idolData;
-            Debug.Log($"idol data loaded,{_dialogueData[1,1]}");
-        }
+    // private void SetData()
+    // {
+    //     if (npcData.personality == Personalities.Kind)
+    //     {
+    //         _dialogueData = DialogueSystem.Instance.kindData;
+    //         Debug.Log($"kind data loaded,{_dialogueData[1,1]}");
+    //     }
+    //
+    //     if (npcData.personality == Personalities.Idol)
+    //     {
+    //         _dialogueData = DialogueSystem.Instance.idolData;
+    //         Debug.Log($"idol data loaded,{_dialogueData[1,1]}");
+    //     }
 
         // if (npcData.personality == Personalities.Cranky)
         // {
         //     _dialogueData = DialogueSystem.Instance.crankyData;
         //     Debug.Log($"cranky data loaded,{_dialogueData[1,1]}");
         // }
-    }
+    // }
 
 }

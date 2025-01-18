@@ -56,6 +56,8 @@ public class TextPresenter : MonoBehaviour
         _highlighterC.SetActive(false);
         _blinker.SetActive(false);
     }
+    
+    // 요녀석이 활성화됐을 때 플레이어의 상대방을 확인해서 해당 데이터를 로드하자
 
     public IEnumerator StartDialogue()
     {
