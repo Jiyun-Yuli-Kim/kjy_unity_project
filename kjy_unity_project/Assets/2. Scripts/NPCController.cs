@@ -29,7 +29,6 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
     
     public void Start()
     {
-        DialogueSystem.Instance.OnDataLoaded.AddListener(SetData);
         // _curTime = UpdateInterval;
         // _agent.speed = _speed;
     }
@@ -62,7 +61,7 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
 
     public void Interact()
     {
-        Talk(_dialogueData);
+        Talk();
     }
 
     public Vector3 GetPosition()
@@ -70,32 +69,11 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
         return transform.position;
     }
 
-    public void Talk(string[,] data)
+    public void Talk()
     {
         // DialogueSystem.Instance.OnTalkStart.AddListener(DialogueSystem.Instance.StartInteraction);
         // DialogueSystem.Instance.OnTalkStart.AddListener(DialogueSystem.Instance.ResetInteraction);
-        StartCoroutine(DialogueSystem.Instance.TalkToVillager(data));
+        StartCoroutine(DialogueSystem.Instance.TalkToVillager());
     }
-
-    // private void SetData()
-    // {
-    //     if (npcData.personality == Personalities.Kind)
-    //     {
-    //         _dialogueData = DialogueSystem.Instance.kindData;
-    //         Debug.Log($"kind data loaded,{_dialogueData[1,1]}");
-    //     }
-    //
-    //     if (npcData.personality == Personalities.Idol)
-    //     {
-    //         _dialogueData = DialogueSystem.Instance.idolData;
-    //         Debug.Log($"idol data loaded,{_dialogueData[1,1]}");
-    //     }
-
-        // if (npcData.personality == Personalities.Cranky)
-        // {
-        //     _dialogueData = DialogueSystem.Instance.crankyData;
-        //     Debug.Log($"cranky data loaded,{_dialogueData[1,1]}");
-        // }
-    // }
-
+    
 }

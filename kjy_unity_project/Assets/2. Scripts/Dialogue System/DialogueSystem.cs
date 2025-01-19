@@ -1,15 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Net.Mime;
+using Boxophobic.Utils;
 using Cinemachine;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.Universal;
 
 public class DialogueSystem : MonoBehaviour
 {
@@ -17,32 +13,29 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private PlayerController _player;
     private NPCController _npc;
     [SerializeField] private DialogueLoader _dialogueLoader;
-    [SerializeField] private TextPresenter _textPresenter;
+    [SerializeField] private TextPresenter _presenter;
     
     [SerializeField] private CinemachineVirtualCamera[] _cameras;
     [SerializeField] private CinemachineTargetGroup _targetGroup;
     
-    // [SerializeField] private Animator _uiAnimator;
-
     private int _maxRange;
     public string[,] kindData;
     private int _kindMaxRange = 7;
     public string[,] idolData;
     private int _idolMaxRange = 3;
-    // public string[,] crankyData;
-    // private int _crankyMaxRange = 1;
+    public string[,] crankyData;
+    private int _crankyMaxRange = 1;
 
     public UnityEvent OnDataLoaded;
     public UnityEvent OnTalkStart; // 대화시작
     public UnityEvent OnTalkEnd; // 대화종료
     
     private int _randIndex;
-    private int _choice = 0;
     private int _indexOffset;
 
     private bool isTalking;
 
-    public string textToPrint;
+    public int choice = 0;
     
     private void Awake()
     {
@@ -51,11 +44,7 @@ public class DialogueSystem : MonoBehaviour
         {
             Debug.LogError("Player is null");
         }
-        
         Init();
-
-        // _dialogueLoader.StartLoad(DialogueLoader.KindDialogue);
-
     }
 
     private void Init()
@@ -73,8 +62,27 @@ public class DialogueSystem : MonoBehaviour
         }
     }
 
-    public IEnumerator TalkToVillager(string[,] data)
+    private string[,] SetData()
     {
+        switch (_player.partnerType)
+        {
+            case Personalities.Kind:
+                return kindData;
+            case Personalities.Idol:
+                return idolData;
+            case Personalities.Cranky:
+                return crankyData;
+            default:
+                return null;
+        }
+    }
+
+    public IEnumerator TalkToVillager()
+    {
+        // 캐릭터 성격에 따른 데이터 세팅
+        var data = SetData();
+        
+        // 대화가 진행중이면 더이상 trigger되지 않음
         if (isTalking)
         {
             yield break;
@@ -82,28 +90,24 @@ public class DialogueSystem : MonoBehaviour
 
         isTalking = true;
         
-        if (_player.partnerName == null)
-        {
-            Debug.Log("_player.partnerName is null");
-        }
-        
         OnTalkStart.AddListener(StartInteraction);
         OnTalkEnd.AddListener(ResetInteraction);
 
         yield return new WaitForSeconds(0.5f);
 
+        // 데이터 타입에 해당하는 maxRange를 불러온다. 오프셋 설정때문에 필요
         SetMaxRange(data);
         
-        // 대화 시작에 따른 각종 초기화. 줌인 + 팝업활성화 + interacting = true 
+        // 대화 시작에 따른 각종 초기화. 줌인 + 팝업활성화 + interacting 
         OnTalkStart.Invoke();
 
+        // maxRange 범위 안에서 첫 대사를 랜덤으로 불러온다.
         _randIndex = Random.Range(1, _maxRange + 1);
         Debug.Log($"최대값 : {_maxRange} , 랜덤값 : {_randIndex}, 오프셋 : {_indexOffset}");
-
-        // 랜덤으로 대사를 출력함
-        Debug.Log(data);
-        textToPrint = data[_randIndex, 1];
-        yield return StartCoroutine(_textPresenter.StartDialogue());
+        _presenter.SetDialogueText(data[_randIndex, 1]);
+        
+        // UI를 활성화하고, 첫 대사를 제시하고, 인풋을 받는다
+        yield return StartCoroutine(StartDialogue());
         
         string[] firstchoices = data[_randIndex, 2].Split("|");
         yield return StartCoroutine(CheckChoicesCount(data, firstchoices, _randIndex));
@@ -112,27 +116,21 @@ public class DialogueSystem : MonoBehaviour
         yield return new WaitForSeconds(1f);
         _player.isInteracting = false;
     }
-
-    private void SetMaxRange(string[,] data)
+    
+    private IEnumerator StartDialogue()
     {
-        if (data == kindData)
-        {
-            _maxRange = _kindMaxRange;
-        }
+        yield return new WaitForSeconds(1f);
+        _presenter.npcName.text = _player.partnerName;
+        // _presenter.dialogueText.text = textToPrint.Replace("!CP!", _player.partnerCp);
+        _presenter.uICanvas.SetActive(true);
 
-        if (data == idolData)
-        {
-            _maxRange = _idolMaxRange;
-        }
+        yield return new WaitForSeconds(0.7f);
+        _presenter.blinker.SetActive(true);
 
-        // if (data == crankyData)
-        // {
-        //     _maxRange = _crankyMaxRange;
-        // }
-        
-        _indexOffset = 100 - _maxRange;
+        yield return new WaitUntil(() => _player.input.actions["Trigger"].WasPressedThisFrame());
+        _presenter.blinker.SetActive(false);
     }
-
+    
     private IEnumerator CheckChoicesCount(string[,] data, string[] choices, int index)
     {
         // 선택지 배열이 한개인 경우 즉 선택지가 따로 없는 경우
@@ -146,8 +144,8 @@ public class DialogueSystem : MonoBehaviour
 
             else
             {
-                textToPrint = data[int.Parse(data[index, 3]) - _indexOffset, 1];
-                yield return StartCoroutine(_textPresenter.LoadNextLine());
+                _presenter.SetDialogueText(data[int.Parse(data[index, 3]) - _indexOffset, 1]);
+                yield return StartCoroutine(LoadNextLine());
 
                 string[] nextchoices = data[int.Parse(data[index, 3]) - _indexOffset, 2].Split("|");
                 yield return CheckChoicesCount(data, nextchoices, int.Parse(data[index, 3]) - _indexOffset);
@@ -158,11 +156,10 @@ public class DialogueSystem : MonoBehaviour
         {
             int i = 0;
             
-            yield return StartCoroutine(_textPresenter.GetChoice(choices));
-            _choice = _textPresenter.choice;
+            yield return StartCoroutine(GetChoice(choices));
             string[] ss = data[index, 3].Split("|");
             
-            if(_choice == 0)
+            if(choice == 0)
             {
                 if (ss[0].Trim() == "END")
                 {
@@ -171,7 +168,7 @@ public class DialogueSystem : MonoBehaviour
                 i = int.Parse(ss[0]);
             }
 
-            if (_choice == 1)
+            if (choice == 1)
             {
                 if (ss[1].Trim() == "END")
                 {
@@ -179,8 +176,8 @@ public class DialogueSystem : MonoBehaviour
                 }
                 i = int.Parse(ss[1]);
             }
-            textToPrint = data[i - _indexOffset, 1];
-            yield return StartCoroutine(_textPresenter.LoadNextLine());
+            _presenter.SetDialogueText(data[i - _indexOffset, 1]);
+            yield return StartCoroutine(LoadNextLine());
             
             string[] nextchoices = data[i - _indexOffset, 2].Split("|");
             yield return CheckChoicesCount(data, nextchoices, i - _indexOffset);
@@ -190,11 +187,11 @@ public class DialogueSystem : MonoBehaviour
         {
             int i = 0;
             
-            yield return StartCoroutine(_textPresenter.GetChoice(choices));
-            _choice = _textPresenter.choice;
+            yield return StartCoroutine(GetChoice(choices));
+            choice = choice;
             string[] ss = data[index, 3].Split("|");
             
-            if(_choice == 0)
+            if(choice == 0)
             {
                 if (ss[0].Trim() == "END")
                 {
@@ -203,7 +200,7 @@ public class DialogueSystem : MonoBehaviour
                 i = int.Parse(ss[0]);
             }
 
-            if (_choice == 1)
+            if (choice == 1)
             {
                 if (ss[1].Trim() == "END")
                 {
@@ -212,7 +209,7 @@ public class DialogueSystem : MonoBehaviour
                 i = int.Parse(ss[1]);
             }
             
-            if (_choice == 2)
+            if (choice == 2)
             {
                 if (ss[2].Trim() == "END")
                 {
@@ -221,12 +218,121 @@ public class DialogueSystem : MonoBehaviour
                 i = int.Parse(ss[2]);
             }
 
-            textToPrint = data[i - _indexOffset, 1];
-            yield return StartCoroutine(_textPresenter.LoadNextLine());
+            _presenter.SetDialogueText(data[i - _indexOffset, 1]);
+            yield return StartCoroutine(LoadNextLine());
             
             string[] nextchoices = data[i - _indexOffset, 2].Split("|");
             yield return CheckChoicesCount(data, nextchoices, i - _indexOffset);
         }
+    }
+    
+    public IEnumerator LoadNextLine()
+    {
+        // _presenter.dialogueText.text = textToPrint.Replace("!CP!", _player.partnerCp);
+        yield return new WaitForSeconds(0.7f);
+        _presenter.blinker.SetActive(true);
+
+        yield return new WaitUntil(() => _player.input.actions["Trigger"].WasPressedThisFrame());
+        _presenter.blinker.SetActive(false);
+    }
+    
+    public IEnumerator GetChoice(string[] choices)
+    {
+        SetChoices(choices);
+        yield return null;
+
+        if (choices.Length == 2)
+        {
+            choice = 0;
+            while (!_player.input.actions["Trigger"].WasPressedThisFrame())
+            {
+                if (choice == 0 && _player.input.actions["South"].WasPressedThisFrame())
+                {
+                    _presenter.Select2();
+                    choice = 1;
+                }
+
+                if (choice == 1 && _player.input.actions["North"].WasPressedThisFrame())
+                {
+                    _presenter.Select1();
+                    choice = 0;
+                }
+
+                yield return null;
+            }
+            _presenter.TwoOpsPopupOff();
+        }
+
+        if (choices.Length == 3)
+        {
+            choice = 0;
+            while (!_player.input.actions["Trigger"].WasPressedThisFrame())
+            {
+                if (choice == 0 && _player.input.actions["South"].WasPressedThisFrame())
+                {
+                    _presenter.SelectB();
+                    choice = 1;
+                }
+
+                else if (choice == 1 && _player.input.actions["North"].WasPressedThisFrame())
+                {
+                    _presenter.SelectA();
+                    choice = 0;
+                }
+
+                else if (choice == 1 && _player.input.actions["South"].WasPressedThisFrame())
+                {
+                    _presenter.SelectC();
+                    choice = 2;
+                }
+
+                else if (choice == 2 && _player.input.actions["North"].WasPressedThisFrame())
+                {
+                    _presenter.SelectB();
+                    choice = 1;
+                }
+
+                yield return null;
+            }
+            _presenter.ThreeOpsPopupOff();
+        }
+    }
+    
+    public void SetChoices(string[] choices)
+    {
+        if (choices.Length == 2)
+        {
+            _presenter.SetChoice1(choices[0]);
+            _presenter.SetChoice2(choices[1]);
+            _presenter.TwoOpsPopupOn();
+        }
+        if (choices.Length == 3)
+        {
+            _presenter.SetChoiceA(choices[0]);
+            _presenter.SetChoiceB(choices[1]);
+            _presenter.SetChoiceC(choices[2]);
+            _presenter.ThreeOpsPopupOn();
+        }
+    }
+    
+    private void SetMaxRange(string[,] data)
+    {
+        if (data == kindData)
+        {
+            _maxRange = _kindMaxRange;
+        }
+
+        if (data == idolData)
+        {
+            _maxRange = _idolMaxRange;
+        }
+
+        if (data == crankyData)
+        {
+            _maxRange = _crankyMaxRange;
+        }
+        
+        _indexOffset = 100 - _maxRange;
     }
     
     public void StartInteraction()
@@ -242,7 +348,7 @@ public class DialogueSystem : MonoBehaviour
         Debug.Log("대화 종료 로직");
         TalkCamOff();
         RemoveTarget();
-        _textPresenter.EndDialogue();
+        _presenter.EndDialogue();
         OnTalkStart.RemoveAllListeners();
         OnTalkEnd.RemoveAllListeners();
         isTalking = false;
@@ -271,7 +377,6 @@ public class DialogueSystem : MonoBehaviour
 
     public void NPCLooksPlayer()
     {
-        // 지금 이것도 왜이닞 모르게 
         _player.NPC.transform.rotation = Quaternion.Lerp(
             _player.NPC.transform.rotation, 
             Quaternion.LookRotation(_player.gameObject.transform.position - _player.NPC.transform.position),

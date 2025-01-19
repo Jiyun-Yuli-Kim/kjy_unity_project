@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ITalkable
 {
-    public void Talk(string[,] data);
+    public void Talk();
 }

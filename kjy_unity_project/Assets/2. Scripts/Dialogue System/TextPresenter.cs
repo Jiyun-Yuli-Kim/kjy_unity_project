@@ -12,175 +12,151 @@ using UnityEngine.InputSystem;
 
 public class TextPresenter : MonoBehaviour
 {
-    [SerializeField] private PlayerController _player;
-    [SerializeField] private DialogueSystem _dialogueSystem;
-    private PlayerInput _input;
+    public PlayerController player;
+    public DialogueSystem dialogueSystem;
+    public PlayerInput input;
 
-    [SerializeField] private GameObject _uICanvas;
-    [SerializeField] private GameObject _2opsPopup;
-    [SerializeField] private GameObject _3opsPopup;
+    public GameObject uICanvas;
+    public GameObject twoOpsPopup;
+    public GameObject threeOpsPopup;
 
-    [SerializeField] private TextMeshProUGUI _npcName;
-    [SerializeField] private TextMeshProUGUI _dialogueText;
-    [SerializeField] private TextMeshProUGUI _choice1;
-    [SerializeField] private TextMeshProUGUI _choice2;
-    [SerializeField] private TextMeshProUGUI _choiceA;
-    [SerializeField] private TextMeshProUGUI _choiceB;
-    [SerializeField] private TextMeshProUGUI _choiceC;
-    
-    [SerializeField] private GameObject _highlighter1;
-    [SerializeField] private GameObject _highlighter2;
-    [SerializeField] private GameObject _highlighterA;
-    [SerializeField] private GameObject _highlighterB;
-    [SerializeField] private GameObject _highlighterC;
-    
-    [SerializeField] private GameObject _blinker;
-    
-    public int choice = 0;
+    public TextMeshProUGUI npcName;
+    public TextMeshProUGUI dialogueText;
+    public TextMeshProUGUI choice1;
+    public TextMeshProUGUI choice2;
+    public TextMeshProUGUI choiceA;
+    public TextMeshProUGUI choiceB;
+    public TextMeshProUGUI choiceC;
+
+    public GameObject highlighter1;
+    public GameObject highlighter2;
+    public GameObject highlighterA;
+    public GameObject highlighterB;
+    public GameObject highlighterC;
+
+    public GameObject blinker;
+
 
     // Start is called before the first frame update
     void Awake()
     {
-        _input = _player.GetComponent<PlayerInput>();
+        input = player.GetComponent<PlayerInput>();
     }
 
     void Start()
     {
-        _uICanvas.SetActive(false);
-        _2opsPopup.SetActive(false);
-        _3opsPopup.SetActive(false);
-        _highlighter1.SetActive(false);
-        _highlighter2.SetActive(false);
-        _highlighterA.SetActive(false);
-        _highlighterB.SetActive(false);
-        _highlighterC.SetActive(false);
-        _blinker.SetActive(false);
+        uICanvas.SetActive(false);
+        twoOpsPopup.SetActive(false);
+        threeOpsPopup.SetActive(false);
+        highlighter1.SetActive(false);
+        highlighter2.SetActive(false);
+        highlighterA.SetActive(false);
+        highlighterB.SetActive(false);
+        highlighterC.SetActive(false);
+        blinker.SetActive(false);
+    }
+
+    public void TwoOpsPopupOn()
+    {
+        highlighter1.SetActive(true);
+        twoOpsPopup.SetActive(true);
     }
     
-    // 요녀석이 활성화됐을 때 플레이어의 상대방을 확인해서 해당 데이터를 로드하자
-
-    public IEnumerator StartDialogue()
+    public void TwoOpsPopupOff()
     {
-        yield return new WaitForSeconds(1f);
-        _npcName.text = _player.partnerName;
-        _dialogueText.text = _dialogueSystem.textToPrint.Replace("!CP!", _player.partnerCp);
-        _uICanvas.SetActive(true);
-        
-        yield return new WaitForSeconds(0.7f);
-        _blinker.SetActive(true);
-        
-        yield return new WaitUntil(() => _input.actions["Trigger"].WasPressedThisFrame());
-        _blinker.SetActive(false);
+        highlighter1.SetActive(false);
+        highlighter2.SetActive(false);
+        twoOpsPopup.SetActive(false);
+    }
+
+    public void ThreeOpsPopupOn()
+    {
+        highlighterA.SetActive(true);
+        threeOpsPopup.SetActive(true);
+    }
+    
+    public void ThreeOpsPopupOff()
+    {
+        highlighterA.SetActive(false);
+        highlighterB.SetActive(false);
+        highlighterC.SetActive(false);
+        threeOpsPopup.SetActive(false);
+    }
+
+    public void Select1()
+    {
+        highlighter2.SetActive(false);
+        highlighter1.SetActive(true);
+    }
+
+    public void Select2()
+    {
+        highlighter1.SetActive(false);
+        highlighter2.SetActive(true);
+    }
+
+    public void SelectA()
+    {
+        highlighterA.SetActive(true);
+        highlighterB.SetActive(false);
+        highlighterC.SetActive(false);
+    }
+    
+    public void SelectB()
+    {
+        highlighterA.SetActive(false);
+        highlighterB.SetActive(true);
+        highlighterC.SetActive(false);
+    }
+    
+    public void SelectC()
+    {
+        highlighterA.SetActive(false);
+        highlighterB.SetActive(false);
+        highlighterC.SetActive(true);
+    }
+
+    public void SetNPCName(string s)
+    {
+        npcName.text = s;
+    }
+
+    public void SetDialogueText(string s)
+    {
+        dialogueText.text = s.Replace("!CP!", player.partnerCp);
+    }
+
+    public void SetChoice1(string s)
+    {
+        choice1.text = s;
+    }
+    
+    public void SetChoice2(string s)
+    {
+        choice2.text = s;
+    }
+    
+    public void SetChoiceA(string s)
+    {
+        choiceA.text = s;
+    }
+    
+    public void SetChoiceB(string s)
+    {
+        choiceB.text = s;
+    }
+    
+    public void SetChoiceC(string s)
+    {
+        choiceC.text = s;
     }
 
     public void EndDialogue()
     {
-        _uICanvas.SetActive(false);
+        uICanvas.SetActive(false);
     }
 
-    public IEnumerator LoadNextLine()
-    {
-        _dialogueText.text = _dialogueSystem.textToPrint.Replace("!CP!", _player.partnerCp);
-        yield return new WaitForSeconds(0.7f);
-        _blinker.SetActive(true);
-        
-        yield return new WaitUntil(() => _input.actions["Trigger"].WasPressedThisFrame());
-        _blinker.SetActive(false);
-    }
 
-    public void SetChoices(string[] choices)
-    {
-        if (choices.Length == 2)
-        {
-            _choice1.text = choices[0];
-            _choice2.text = choices[1];
-            _highlighter1.SetActive(true);
-            _2opsPopup.SetActive(true);
-        }
-        if (choices.Length == 3)
-        {
-            _choiceA.text = choices[0];
-            _choiceB.text = choices[1];
-            _choiceC.text = choices[2];
-            _highlighterA.SetActive(true);
-            _3opsPopup.SetActive(true);
-        }
-    }
+
     
-    public IEnumerator GetChoice(string[] choices)
-    {
-        SetChoices(choices);
-        yield return null;
-        
-        if (choices.Length == 2)
-        {
-            choice = 0;
-            while (!_input.actions["Trigger"].WasPressedThisFrame())
-            {
-                if (choice == 0 && _input.actions["South"].WasPressedThisFrame())
-                {
-                    _highlighter1.SetActive(false);
-                    _highlighter2.SetActive(true);
-                    choice = 1;
-                }
-
-                if (choice == 1 && _input.actions["North"].WasPressedThisFrame())
-                {
-                    _highlighter2.SetActive(false);
-                    _highlighter1.SetActive(true);
-                    choice = 0;
-                }
-
-                yield return null;
-            }
-            _highlighter1.SetActive(false);
-            _highlighter2.SetActive(false);
-            _2opsPopup.SetActive(false);
-        }
-        
-        if (choices.Length == 3)
-        {
-            choice = 0;
-            while (!_input.actions["Trigger"].WasPressedThisFrame())
-            {
-                if (choice == 0 && _input.actions["South"].WasPressedThisFrame())
-                {
-                    _highlighterA.SetActive(false);
-                    _highlighterB.SetActive(true);
-                    _highlighterC.SetActive(false);
-                    choice = 1;
-                }
-
-                else if (choice == 1 && _input.actions["North"].WasPressedThisFrame())
-                {
-                    _highlighterA.SetActive(true);
-                    _highlighterB.SetActive(false);
-                    _highlighterC.SetActive(false);
-                    choice = 0;
-                }
-                
-                else if (choice == 1 && _input.actions["South"].WasPressedThisFrame())
-                {
-                    _highlighterA.SetActive(false);
-                    _highlighterB.SetActive(false);
-                    _highlighterC.SetActive(true);
-                    choice = 2;
-                }
-                
-                else if (choice == 2 && _input.actions["North"].WasPressedThisFrame())
-                {
-                    _highlighterA.SetActive(false);
-                    _highlighterB.SetActive(true);
-                    _highlighterC.SetActive(false);
-                    choice = 1;
-                }
-
-                yield return null;
-            }
-            _highlighterA.SetActive(false);
-            _highlighterB.SetActive(false);
-            _highlighterC.SetActive(false);
-            _3opsPopup.SetActive(false);
-        }
-    }
 }

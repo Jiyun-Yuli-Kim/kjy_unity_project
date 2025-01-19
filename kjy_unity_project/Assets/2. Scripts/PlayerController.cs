@@ -1,10 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 // 플레이어의 기본적인 이동을 관리합니다.
@@ -18,7 +12,7 @@ public class PlayerController : MonoBehaviour
     // [SerializeField] private DialogueSystem _dialogueSystem;
     
     private StateMachine _stateMachine;
-    public PlayerInput Input;
+    public PlayerInput input;
     
     private IInteractable _interactable;
     private Item _item;
@@ -43,7 +37,7 @@ public class PlayerController : MonoBehaviour
     public void Awake()
     {
         _stateMachine = GetComponent<StateMachine>();
-        Input = GetComponent<PlayerInput>();
+        input = GetComponent<PlayerInput>();
     }
 
     public void Update()
@@ -145,12 +139,12 @@ public class PlayerController : MonoBehaviour
 
     public void GetInputBool()
     {
-        if (Input.actions["Move"].IsPressed()) // WASD, 십자방향키, 좌측 조이스틱
+        if (input.actions["Move"].IsPressed()) // WASD, 십자방향키, 좌측 조이스틱
         {
             isMoving = true;
         }
 
-        if (Input.actions["Dash"].IsPressed())
+        if (input.actions["Dash"].IsPressed())
         {
             isDashing = true;
         }
@@ -158,12 +152,12 @@ public class PlayerController : MonoBehaviour
 
     public void ResetInputBool()
     {
-        if (Input.actions["Dash"].WasReleasedThisFrame())
+        if (input.actions["Dash"].WasReleasedThisFrame())
         {
             isDashing = false;
         }
 
-        if (Input.actions["Move"].WasReleasedThisFrame())
+        if (input.actions["Move"].WasReleasedThisFrame())
         {
             isMoving = false;
             isDashing = false;
@@ -174,7 +168,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 dir;
 
-        Vector2 move = Input.actions["Move"].ReadValue<Vector2>();
+        Vector2 move = input.actions["Move"].ReadValue<Vector2>();
 
         dir = new Vector3(move.x, 0, move.y);
         _rb.velocity = dir * playerMoveSpeed;
@@ -196,7 +190,7 @@ public class PlayerController : MonoBehaviour
 
     public void CheckInventory()
     {
-        if (invenOpened && Input.actions["Revert"].WasPressedThisFrame())
+        if (invenOpened && input.actions["Revert"].WasPressedThisFrame())
         {
             if (Inventory.Instance.GetComponent<InventoryUI>().popupOpen)
             {
@@ -212,7 +206,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (Input.actions["Inventory"].WasPressedThisFrame())
+        if (input.actions["Inventory"].WasPressedThisFrame())
         {
             isInteracting = true;
             if (invenOpened)
@@ -232,14 +226,14 @@ public class PlayerController : MonoBehaviour
             return;
         }
         
-        if (_interactable != null && Input.actions["Trigger"].WasPressedThisFrame())
+        if (_interactable != null && input.actions["Trigger"].WasPressedThisFrame())
         {
             isInteracting = true;
             _interactable.Interact();
         }
         
         // 일단 인풋을 다르게 받을거라 괜찮을 것 같긴 하지만... 
-        if (_item != null && Input.actions["Revert"].WasPressedThisFrame())
+        if (_item != null && input.actions["Revert"].WasPressedThisFrame())
         {
             isInteracting = true;
             _item.BeingPickedUp();
