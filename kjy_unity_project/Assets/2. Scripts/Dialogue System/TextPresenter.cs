@@ -109,6 +109,7 @@ public class TextPresenter : MonoBehaviour
 
     public void SetNPCName(string s)
     {
+        Debug.Log(npcName);
         npcName.text = s;
     }
 

@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/1. Scenes/01.TitleScene.unity
     guid: dc095e72656b7424297ef00105c3c126
   - enabled: 1
+    path: Assets/1. Scenes/02. TownScene.unity
+    guid: e989a7f37e56b044ba210535e786645f
+  - enabled: 0
     path: Assets/1. Scenes/00.DialogueTestScene.unity
     guid: cd49b75b40285ac4a9cd38afc1a0fe0e
   - enabled: 0

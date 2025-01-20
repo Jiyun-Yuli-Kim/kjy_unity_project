@@ -77,17 +77,18 @@ public class DialogueSystem : MonoBehaviour
         }
     }
 
+    // ITalkable의 Talk 매서드에 의해 발동되는 코루틴
     public IEnumerator TalkToVillager()
     {
-        // 대화가 진행중이면 더이상 trigger되지 않음
-        if (isTalking)
-        {
-            yield break;
-        }
-        
         // 캐릭터 성격에 따른 데이터 세팅
         var data = SetData();
         Debug.Log($"data loaded : {data[1,1]}");
+        
+        // 대화가 진행중이거나 데이터가 없으면 더이상 진행되지 않음
+        if (isTalking || data == null)
+        {
+            yield break;
+        }
         
         isTalking = true;
         
@@ -101,15 +102,11 @@ public class DialogueSystem : MonoBehaviour
         
         // 대화 시작에 따른 각종 초기화. 줌인 + 팝업활성화 + interacting 
         OnTalkStart.Invoke();
-
-        // maxRange 범위 안에서 첫 대사를 랜덤으로 불러온다.
-        _randIndex = Random.Range(1, _maxRange + 1);
-        Debug.Log($"최대값 : {_maxRange} , 랜덤값 : {_randIndex}, 오프셋 : {_indexOffset}");
-        _presenter.SetDialogueText(data[_randIndex, 1]);
         
         // UI를 활성화하고, 첫 대사를 제시하고, 인풋을 받는다
-        yield return StartCoroutine(StartDialogue());
+        yield return StartCoroutine(StartDialogue(data));
         
+        // 사용자에게 가능한 선택지를 제시하고 이후 대화 로직을 진행한다.
         string[] firstchoices = data[_randIndex, 2].Split("|");
         yield return StartCoroutine(CheckChoicesCount(data, firstchoices, _randIndex));
         
@@ -118,10 +115,15 @@ public class DialogueSystem : MonoBehaviour
         _player.isInteracting = false;
     }
     
-    private IEnumerator StartDialogue()
+    private IEnumerator StartDialogue(string[,] data)
     {
+        // maxRange 범위 안에서 첫 대사를 랜덤으로 불러온다.
+        _randIndex = Random.Range(1, _maxRange + 1);
+        Debug.Log($"최대값 : {_maxRange} , 랜덤값 : {_randIndex}, 오프셋 : {_indexOffset}");
+        Debug.Log(_presenter.dialogueText);
+        _presenter.SetDialogueText(data[_randIndex, 1]);
+        
         yield return new WaitForSeconds(1f);
-        _presenter.SetNPCName(_player.partnerName);
         // _presenter.dialogueText.text = textToPrint.Replace("!CP!", _player.partnerCp);
         _presenter.uICanvas.SetActive(true);
 
@@ -339,6 +341,7 @@ public class DialogueSystem : MonoBehaviour
     public void StartInteraction()
     {
         _presenter.DialogueCanvasOn();
+        _presenter.SetNPCName(_player.partnerName);
         AddTarget();
         TalkCamOn();
         NPCLooksPlayer();
