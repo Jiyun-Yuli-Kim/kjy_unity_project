@@ -15,8 +15,9 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private DialogueLoader _dialogueLoader;
     [SerializeField] private TextPresenter _presenter;
     
-    [SerializeField] private CinemachineVirtualCamera[] _cameras;
-    [SerializeField] private CinemachineTargetGroup _targetGroup;
+    [SerializeField] DialogueCameraController _dialogueCam;
+    // [SerializeField] private CinemachineVirtualCamera[] _cameras;
+    // [SerializeField] private CinemachineTargetGroup _targetGroup;
     
     private int _maxRange;
     public string[,] kindData;
@@ -231,8 +232,7 @@ public class DialogueSystem : MonoBehaviour
     
     public IEnumerator LoadNextLine()
     {
-        // _presenter.dialogueText.text = textToPrint.Replace("!CP!", _player.partnerCp);
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.5f);
         _presenter.blinker.SetActive(true);
 
         yield return new WaitUntil(() => _player.input.actions["Trigger"].WasPressedThisFrame());
@@ -342,8 +342,8 @@ public class DialogueSystem : MonoBehaviour
     {
         _presenter.DialogueCanvasOn();
         _presenter.SetNPCName(_player.partnerName);
-        AddTarget();
-        TalkCamOn();
+        _dialogueCam.AddTarget(_player.NPC.transform);
+        _dialogueCam.TalkCamOn();
         NPCLooksPlayer();
         _player.isInteracting = true;
     }
@@ -351,35 +351,14 @@ public class DialogueSystem : MonoBehaviour
     public void ResetInteraction()
     {
         Debug.Log("대화 종료 로직");
-        TalkCamOff();
-        RemoveTarget();
+        _dialogueCam.TalkCamOff();
+        _dialogueCam.RemoveTarget(_player.NPC.transform);
         _presenter.DialogueCanvasOff();
         OnTalkStart.RemoveAllListeners();
         OnTalkEnd.RemoveAllListeners();
         isTalking = false;
     }
-
-    public void TalkCamOn()
-    {
-        _cameras[1].Priority = 11;
-    }
     
-    public void TalkCamOff()
-    {
-        _cameras[1].Priority = 9;
-    }
-
-    public void AddTarget()
-    {   
-        Debug.Log(_player.NPC.name);
-        _targetGroup.AddMember(_player.NPC.transform, 1, 0.5f);
-    }
-
-    public void RemoveTarget()
-    {
-        _targetGroup.RemoveMember(_player.NPC.transform);
-    }
-
     public void NPCLooksPlayer()
     {
         _player.NPC.transform.rotation = Quaternion.Lerp(
