@@ -13,8 +13,6 @@ using UnityEngine.InputSystem;
 public class TextPresenter : MonoBehaviour
 {
     public PlayerController player;
-    public DialogueSystem dialogueSystem;
-    public PlayerInput input;
 
     public GameObject uICanvas;
     public GameObject twoOpsPopup;
@@ -35,14 +33,7 @@ public class TextPresenter : MonoBehaviour
     public GameObject highlighterC;
 
     public GameObject blinker;
-
-
-    // Start is called before the first frame update
-    void Awake()
-    {
-        input = player.GetComponent<PlayerInput>();
-    }
-
+    
     void Start()
     {
         uICanvas.SetActive(false);
@@ -151,7 +142,12 @@ public class TextPresenter : MonoBehaviour
         choiceC.text = s;
     }
 
-    public void EndDialogue()
+    public void DialogueCanvasOn()
+    {
+        uICanvas.SetActive(true);
+    }
+    
+    public void DialogueCanvasOff()
     {
         uICanvas.SetActive(false);
     }

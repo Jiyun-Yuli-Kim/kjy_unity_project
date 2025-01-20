@@ -71,9 +71,19 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
 
     public void Talk()
     {
-        // DialogueSystem.Instance.OnTalkStart.AddListener(DialogueSystem.Instance.StartInteraction);
-        // DialogueSystem.Instance.OnTalkStart.AddListener(DialogueSystem.Instance.ResetInteraction);
+        DialogueSystem.Instance.OnTalkStart.AddListener(StopMoving);
+        DialogueSystem.Instance.OnTalkEnd.AddListener(ResumeMoving);
         StartCoroutine(DialogueSystem.Instance.TalkToVillager());
     }
-    
+
+    public void StopMoving()
+    {
+        agent.isStopped = true;
+    }
+
+    public void ResumeMoving()
+    {
+        agent.isStopped = false;
+    }
+
 }

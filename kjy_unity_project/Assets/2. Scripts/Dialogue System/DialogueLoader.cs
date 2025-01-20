@@ -41,6 +41,7 @@ public class DialogueLoader : MonoBehaviour
     {
         yield return StartCoroutine(DownLoadRoutine(dialogueURL));
         onComplete(DialogueData);
+        Debug.Log("Dialogue load complete");
         DialogueSystem.Instance.OnDataLoaded.Invoke();
     }
 

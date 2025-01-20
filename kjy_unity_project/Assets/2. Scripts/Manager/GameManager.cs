@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour
 
     void CheckSchedule()
     {
-        Debug.Log("CheckSchedule Invoked");
         for (int i=0; i < NPCs.Count; i++)
         {
             GameObject NPC = NPCs[i];

@@ -37,7 +37,7 @@ public class DialogueSystem : MonoBehaviour
 
     public int choice = 0;
     
-    private void Awake()
+    private void Start()
     {
         Debug.Log(_player);
         if (_player == null)
@@ -79,15 +79,16 @@ public class DialogueSystem : MonoBehaviour
 
     public IEnumerator TalkToVillager()
     {
-        // 캐릭터 성격에 따른 데이터 세팅
-        var data = SetData();
-        
         // 대화가 진행중이면 더이상 trigger되지 않음
         if (isTalking)
         {
             yield break;
         }
-
+        
+        // 캐릭터 성격에 따른 데이터 세팅
+        var data = SetData();
+        Debug.Log($"data loaded : {data[1,1]}");
+        
         isTalking = true;
         
         OnTalkStart.AddListener(StartInteraction);
@@ -120,7 +121,7 @@ public class DialogueSystem : MonoBehaviour
     private IEnumerator StartDialogue()
     {
         yield return new WaitForSeconds(1f);
-        _presenter.npcName.text = _player.partnerName;
+        _presenter.SetNPCName(_player.partnerName);
         // _presenter.dialogueText.text = textToPrint.Replace("!CP!", _player.partnerCp);
         _presenter.uICanvas.SetActive(true);
 
@@ -337,6 +338,7 @@ public class DialogueSystem : MonoBehaviour
     
     public void StartInteraction()
     {
+        _presenter.DialogueCanvasOn();
         AddTarget();
         TalkCamOn();
         NPCLooksPlayer();
@@ -348,7 +350,7 @@ public class DialogueSystem : MonoBehaviour
         Debug.Log("대화 종료 로직");
         TalkCamOff();
         RemoveTarget();
-        _presenter.EndDialogue();
+        _presenter.DialogueCanvasOff();
         OnTalkStart.RemoveAllListeners();
         OnTalkEnd.RemoveAllListeners();
         isTalking = false;
@@ -367,7 +369,7 @@ public class DialogueSystem : MonoBehaviour
     public void AddTarget()
     {   
         Debug.Log(_player.NPC.name);
-        _targetGroup.AddMember(_player.NPC.transform, 1, 0);
+        _targetGroup.AddMember(_player.NPC.transform, 1, 0.5f);
     }
 
     public void RemoveTarget()
