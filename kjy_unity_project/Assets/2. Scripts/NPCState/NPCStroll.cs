@@ -24,13 +24,13 @@ public class NPCStroll : NPCStateBase
 
     public override void OnStateUpdate()
     {
+        _animator.SetFloat("speed", _controller.agent.velocity.magnitude);
         // NavMesh를 통한 랜덤 이동 구현
         _curTime += Time.deltaTime;
         if (_curTime >= UpdateInterval)
         {
             Vector3 randpos = GetRandPosOnNavMesh(); 
             _controller.agent.SetDestination(randpos);
-            _animator.SetFloat("speed", _controller.agent.velocity.magnitude);
             _curTime = 0;
         }
     }

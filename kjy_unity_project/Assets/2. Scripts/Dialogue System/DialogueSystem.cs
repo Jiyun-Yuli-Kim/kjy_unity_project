@@ -121,7 +121,6 @@ public class DialogueSystem : MonoBehaviour
         // maxRange 범위 안에서 첫 대사를 랜덤으로 불러온다.
         _randIndex = Random.Range(1, _maxRange + 1);
         Debug.Log($"최대값 : {_maxRange} , 랜덤값 : {_randIndex}, 오프셋 : {_indexOffset}");
-        Debug.Log(_presenter.dialogueText);
         _presenter.SetDialogueText(data[_randIndex, 1]);
         
         yield return new WaitForSeconds(1f);

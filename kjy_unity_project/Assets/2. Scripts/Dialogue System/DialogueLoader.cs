@@ -14,8 +14,8 @@ public class DialogueLoader : MonoBehaviour
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=0&single=true&output=csv";
     public const string IdolDialogue =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=565515136&single=true&output=csv";
-    // public const string CrankyDialogue =
-    //     "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=104577247&single=true&output=csv";
+     public const string CrankyDialogue =
+         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=104577247&single=true&output=csv";
     
     public string[,] DialogueData { get; private set; }
 
@@ -31,10 +31,10 @@ public class DialogueLoader : MonoBehaviour
             DialogueSystem.Instance.idolData = data;
         }));
 
-        // StartCoroutine(StartLoad(DialogueLoader.CrankyDialogue, data => 
-        // {
-        //     DialogueSystem.Instance.crankyData = data;
-        // }));    
+        StartCoroutine(StartLoad(DialogueLoader.CrankyDialogue, data => 
+        {
+            DialogueSystem.Instance.crankyData = data;
+        }));    
     }
 
     public IEnumerator StartLoad(string dialogueURL, System.Action<string[,]> onComplete)

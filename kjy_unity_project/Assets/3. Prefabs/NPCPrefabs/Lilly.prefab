@@ -2454,6 +2454,7 @@ GameObject:
   - component: {fileID: 5589278830522412816}
   - component: {fileID: 5589278830522412829}
   - component: {fileID: 3630639613795550835}
+  - component: {fileID: 7754029567508059617}
   m_Layer: 0
   m_Name: Lilly
   m_TagString: Villager
@@ -2468,7 +2469,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8114143240381219047}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 10.594775, y: 1, z: 35.585682}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
@@ -2527,6 +2528,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcData: {fileID: 11400000, guid: c33bc63c3a6ba474190ac8d15dab8e5b, type: 2}
   NPCHead: {fileID: 8113258802996947277}
+  agent: {fileID: 3630639613795550835}
+  animator: {fileID: 0}
+  isStrolling: 0
 --- !u!195 &3630639613795550835
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2537,7 +2541,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 0.5
+  m_Speed: 0.4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -2549,6 +2553,18 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7754029567508059617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8114143240381219047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1094d4e24687e8747ab43dfebcee0410, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8114147200696380317
 GameObject:
   m_ObjectHideFlags: 0
