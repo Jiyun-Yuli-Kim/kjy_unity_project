@@ -13,18 +13,9 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
     [SerializeField] public NavMeshAgent agent;
     [SerializeField] public Animator animator;
     
-    // 랜덤이동 구현용
-    // [SerializeField] public float UpdateInterval;
-    // private float _curTime;
-    // [SerializeField] NavMeshAgent _agent;
-    // 테스트용 목적지
-    // [SerializeField] float _speed;
-    
     public event UnityAction OnInteract;
     public event UnityAction OnInteractEnd;
-
-    public string[,] _dialogueData;
-
+    
     public bool isStrolling;
     
     public void Start()
