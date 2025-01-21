@@ -9,6 +9,8 @@ TagManager:
   - Villager
   - GroundBase
   - Item
+  - Kind
+  - Sand
   layers:
   - Default
   - TransparentFX

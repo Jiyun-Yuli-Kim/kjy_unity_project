@@ -15,8 +15,8 @@ public class DialogueLoader : MonoBehaviour
     public const string IdolDialogue =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=565515136&single=true&output=csv";
 
-    public const string CrankyDialogue =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pubhtml?gid=104577247&single=true";    
+    // public const string CrankyDialogue =
+    //     "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pubhtml?gid=104577247&single=true";    
     public string[,] DialogueData { get; private set; }
 
     private void Awake()
@@ -33,11 +33,11 @@ public class DialogueLoader : MonoBehaviour
             Debug.Log("Idol dialogue load complete");
         }));
 
-        StartCoroutine(StartLoad(DialogueLoader.CrankyDialogue, data => 
-        {
-            DialogueSystem.Instance.crankyData = data;
-            Debug.Log("Cranky dialogue load complete");
-        }));    
+        // StartCoroutine(StartLoad(DialogueLoader.CrankyDialogue, data => 
+        // {
+        //     DialogueSystem.Instance.crankyData = data;
+        //     Debug.Log("Cranky dialogue load complete");
+        // }));    
     }
 
     public IEnumerator StartLoad(string dialogueURL, System.Action<string[,]> onComplete)

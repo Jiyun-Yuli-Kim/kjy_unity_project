@@ -5,15 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour
 {
-    public void Load(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-    }
+    // public void Load(string sceneName)
+    // {
+    //     SceneManager.LoadScene(sceneName);
+    // }
 
     public void Load(int sceneIndex)
     {
         SceneManager.LoadScene(sceneIndex);
     }
-
-
 }

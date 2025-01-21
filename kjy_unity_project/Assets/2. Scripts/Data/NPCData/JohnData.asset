@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: JohnData
   m_EditorClassIdentifier: 
   NPCName: "\uC874"
-  personality: 2
-  CatchPhrase: "\uC544\uB2C8"
+  personality: 0
+  CatchPhrase: "\uAE61\uCD1D"
   StrollStartHour: 13
   StrollEndHour: 21
+  curScene: 0
+  HomeSpawnPos: {x: 0, y: 0, z: 0}
+  HomeSpawnRot: {x: 0, y: 0, z: 0, w: 0}
+  TownSpawnPos: {x: 0, y: 0, z: 0}
+  TownSpawnRot: {x: 0, y: 0, z: 0, w: 0}

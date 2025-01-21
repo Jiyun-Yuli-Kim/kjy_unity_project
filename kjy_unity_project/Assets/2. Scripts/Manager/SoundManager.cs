@@ -6,6 +6,22 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
     
+    public enum EBGM
+    {
+        BGM_Title=0,
+        BGM_Main
+    }
+
+    public enum ESFX
+    {
+        SFX_Walk,
+        SFX_Run,
+        SFX_Shake,
+    }
+
+    [SerializeField] private AudioClip[] bgms;
+    [SerializeField] private AudioClip[] sfxs;
+    
     [SerializeField] AudioSource bgm;
     [SerializeField] AudioSource sfx;
 
@@ -14,7 +30,6 @@ public class SoundManager : MonoBehaviour
         if (Instance != null)
         {
             Destroy(gameObject);
-            Instance = this;
         }
 
         else
@@ -24,9 +39,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlayBGM(AudioClip clip)
+    public void PlayBGM(EBGM clip)
     {
-        bgm.clip = clip;
+        bgm.clip = bgms[(int)clip];
         bgm.Play();
     }
 
@@ -56,13 +71,13 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlaySFX(AudioClip clip)
+    public void PlaySFX(ESFX clip)
     {		
         //동시에 플레이가 가능해야하는데 이방식으로 하면 끊겨버림
         // sfx.clip = clip;
         // sfx.Play();
 		
         // 여러 음원 겹칠 수 있음
-        sfx.PlayOneShot(clip);
+        sfx.PlayOneShot(sfxs[(int)clip]);
     }
 }
