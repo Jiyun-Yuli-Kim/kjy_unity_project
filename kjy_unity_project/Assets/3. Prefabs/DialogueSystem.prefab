@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
-  dialogueURL: 
 --- !u!114 &2305912805948145314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,11 +60,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   _dialogueLoader: {fileID: 2305912805948145324}
-  _textPresenter: {fileID: 0}
-  _cameras:
-  - {fileID: 0}
-  - {fileID: 0}
-  _targetGroup: {fileID: 0}
+  _presenter: {fileID: 0}
+  _dialogueCam: {fileID: 0}
   OnDataLoaded:
     m_PersistentCalls:
       m_Calls: []
@@ -75,4 +71,4 @@ MonoBehaviour:
   OnTalkEnd:
     m_PersistentCalls:
       m_Calls: []
-  textToPrint: 
+  choice: 0

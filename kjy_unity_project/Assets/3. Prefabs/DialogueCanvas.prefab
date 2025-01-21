@@ -178,7 +178,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5.200012, y: 127.19998}
+  m_AnchoredPosition: {x: 5.200012, y: 156.62}
   m_SizeDelta: {x: 253.22, y: 202.3142}
   m_Pivot: {x: 1, y: 1}
 --- !u!223 &7478606745108079999
@@ -358,25 +358,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 484ed8de71b2a6f42a61d0823f17e842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
-  _dialogueSystem: {fileID: 0}
-  _uICanvas: {fileID: 2268724145258853432}
-  _2opsPopup: {fileID: 2268724145755230599}
-  _3opsPopup: {fileID: 2118294459212084918}
-  _npcName: {fileID: 2268724146333337225}
-  _dialogueText: {fileID: 2268724147127920111}
-  _choice1: {fileID: 2268724146818897807}
-  _choice2: {fileID: 2268724145617115892}
-  _choiceA: {fileID: 2013738177014169941}
-  _choiceB: {fileID: 695241038983892923}
-  _choiceC: {fileID: 6688306366202586148}
-  _highlighter1: {fileID: 2268724145761169904}
-  _highlighter2: {fileID: 2268724146667073680}
-  _highlighterA: {fileID: 6903864237850257369}
-  _highlighterB: {fileID: 7103245021464144823}
-  _highlighterC: {fileID: 5124841480094443774}
-  _blinker: {fileID: 2268724146561961890}
-  choice: 0
+  player: {fileID: 0}
+  uICanvas: {fileID: 2268724145258853432}
+  twoOpsPopup: {fileID: 2268724145755230599}
+  threeOpsPopup: {fileID: 2118294459212084918}
+  npcName: {fileID: 2268724146333337225}
+  dialogueText: {fileID: 2268724147127920111}
+  choice1: {fileID: 2268724146818897807}
+  choice2: {fileID: 2268724145617115892}
+  choiceA: {fileID: 2013738177014169941}
+  choiceB: {fileID: 695241038983892923}
+  choiceC: {fileID: 6688306366202586148}
+  highlighter1: {fileID: 2268724145761169904}
+  highlighter2: {fileID: 2268724146667073680}
+  highlighterA: {fileID: 6903864237850257369}
+  highlighterB: {fileID: 7103245021464144823}
+  highlighterC: {fileID: 5124841480094443774}
+  blinker: {fileID: 2268724146561961890}
 --- !u!1 &2268724145547712890
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,7 +402,7 @@ RectTransform:
   m_GameObject: {fileID: 2268724145547712890}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.925, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2268724146333337230}
@@ -630,7 +628,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 74.74286, y: 115.35}
+  m_AnchoredPosition: {x: 74.74286, y: 133.9}
   m_SizeDelta: {x: 253.2198, y: 171.5063}
   m_Pivot: {x: 1, y: 1}
 --- !u!223 &2268724145755230595
@@ -1017,8 +1015,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.59
-  m_fontSizeBase: 34.59
+  m_fontSize: 30.35
+  m_fontSizeBase: 30.35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

@@ -36,7 +36,6 @@ public class InventoryUI : MonoBehaviour
     void Update()
     {
         CheckPointer();
-        Debug.Log(pointer);
     }
 
     void LateUpdate()

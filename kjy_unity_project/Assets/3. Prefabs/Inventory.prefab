@@ -46,4 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: []
   _curItemCount: 0
-  _inventoryUI: {fileID: 0}
+  OnInventoryOpen:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInventoryClose:
+    m_PersistentCalls:
+      m_Calls: []
+  inventoryUI: {fileID: 0}
