@@ -8,8 +8,8 @@ public class DialogueCameraController : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera[] _cameras;
     [SerializeField] private CinemachineTargetGroup _targetGroup;
     
-    [SerializeField] private float distanceFromCenter = 3.0f; // 타겟 그룹 중심에서의 거리
-    [SerializeField] private float heightOffset = 1.5f; // 카메라의 높이 오프셋
+    [SerializeField] private float distanceFromCenter = 3f; // 타겟 그룹 중심에서의 거리
+    [SerializeField] private float heightOffset = 1f; // 카메라의 높이 오프셋
     
     public void AddTarget(Transform target)
     {   
@@ -24,11 +24,13 @@ public class DialogueCameraController : MonoBehaviour
     public void TalkCamOn()
     {
         Vector3 groupCenter = _targetGroup.transform.position;
-        Vector3 rightOffset = _targetGroup.m_Targets[0].target.transform.right * distanceFromCenter; 
-        Vector3 cameraPosition = groupCenter + rightOffset + Vector3.up * heightOffset;        
-        
+        Vector3 rotation = Quaternion.Euler(0, 30, 0) * _targetGroup.m_Targets[0].target.transform.right;
+        Vector3 rightOffset =  rotation * distanceFromCenter;
+
+        Vector3 cameraPosition = groupCenter + rightOffset + Vector3.up * heightOffset;
         _cameras[1].transform.position = cameraPosition;
         _cameras[1].transform.LookAt(groupCenter);
+        
         _cameras[1].Priority = 11;
     }
     
