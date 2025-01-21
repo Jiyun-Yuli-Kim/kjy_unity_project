@@ -17,38 +17,6 @@ public class NPCController : MonoBehaviour, IInteractable, ITalkable
     public event UnityAction OnInteractEnd;
     
     public bool isStrolling;
-    
-    public void Start()
-    {
-        // _curTime = UpdateInterval;
-        // _agent.speed = _speed;
-    }
-    
-    void Update()
-    {
-        // _curTime += Time.deltaTime;
-        // if (_curTime >= UpdateInterval)
-        // {
-        //     Vector3 randpos = GetRandPosOnNavMesh();
-        //     _agent.SetDestination(randpos);
-        //     _curTime = 0;
-        // }
-    }
-
-    // private Vector3 GetRandPosOnNavMesh()
-    // {
-    //     Vector3 randomPos = Random.insideUnitSphere*40;
-    //     randomPos += transform.position;
-    //     NavMeshHit navHit;
-    //     if (NavMesh.SamplePosition(randomPos, out navHit, 20f, NavMesh.AllAreas))
-    //     {
-    //         return navHit.position;
-    //     }
-    //     else
-    //     {
-    //         return transform.position;
-    //     }
-    // }
 
     public void Interact()
     {

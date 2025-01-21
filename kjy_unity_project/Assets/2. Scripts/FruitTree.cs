@@ -62,11 +62,15 @@ public class FruitTree : MonoBehaviour, IInteractable
     {
         _animator.SetBool("isShaking", true);
         yield return new WaitForSeconds(0.3f);
-        
-        foreach (Fruit fruit in fruits)
+
+        if (fruits[0] != null)
         {
-            fruit.FruitFall();
+            foreach (Fruit fruit in fruits)
+            {
+                fruit.FruitFall();
+            }
         }
+
         yield return new WaitForSeconds(_fallTime);
         
         _animator.SetBool("isShaking", false);

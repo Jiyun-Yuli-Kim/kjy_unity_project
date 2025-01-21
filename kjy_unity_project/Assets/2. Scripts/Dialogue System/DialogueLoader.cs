@@ -14,9 +14,9 @@ public class DialogueLoader : MonoBehaviour
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=0&single=true&output=csv";
     public const string IdolDialogue =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=565515136&single=true&output=csv";
-     public const string CrankyDialogue =
-         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=104577247&single=true&output=csv";
-    
+
+    public const string CrankyDialogue =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pubhtml?gid=104577247&single=true";    
     public string[,] DialogueData { get; private set; }
 
     private void Awake()
@@ -24,16 +24,19 @@ public class DialogueLoader : MonoBehaviour
         StartCoroutine(StartLoad(DialogueLoader.KindDialogue, data => 
         {
             DialogueSystem.Instance.kindData = data;
+            Debug.Log("Kind dialogue load complete");
         }));
 
         StartCoroutine(StartLoad(DialogueLoader.IdolDialogue, data => 
         {
             DialogueSystem.Instance.idolData = data;
+            Debug.Log("Idol dialogue load complete");
         }));
 
         StartCoroutine(StartLoad(DialogueLoader.CrankyDialogue, data => 
         {
             DialogueSystem.Instance.crankyData = data;
+            Debug.Log("Cranky dialogue load complete");
         }));    
     }
 
@@ -41,7 +44,6 @@ public class DialogueLoader : MonoBehaviour
     {
         yield return StartCoroutine(DownLoadRoutine(dialogueURL));
         onComplete(DialogueData);
-        Debug.Log("Dialogue load complete");
         DialogueSystem.Instance.OnDataLoaded.Invoke();
     }
 

@@ -83,6 +83,8 @@ public class DialogueSystem : MonoBehaviour
     {
         // 캐릭터 성격에 따른 데이터 세팅
         var data = SetData();
+        // 데이터 타입에 해당하는 maxRange를 불러온다. 오프셋 설정때문에 필요
+        SetMaxRange(data);
         Debug.Log($"data loaded : {data[1,1]}");
         
         // 대화가 진행중이거나 데이터가 없으면 더이상 진행되지 않음
@@ -95,14 +97,14 @@ public class DialogueSystem : MonoBehaviour
         
         OnTalkStart.AddListener(StartInteraction);
         OnTalkEnd.AddListener(ResetInteraction);
-
-        yield return new WaitForSeconds(0.5f);
-
-        // 데이터 타입에 해당하는 maxRange를 불러온다. 오프셋 설정때문에 필요
-        SetMaxRange(data);
         
-        // 대화 시작에 따른 각종 초기화. 줌인 + 팝업활성화 + interacting 
+        yield return new WaitForSeconds(1f);
+
+        // 대화 시작에 따른 각종 초기화. 줌인 + interacting 
         OnTalkStart.Invoke();
+        
+        // 카메라 세팅 대기
+        yield return new WaitForSeconds(1.5f);
         
         // UI를 활성화하고, 첫 대사를 제시하고, 인풋을 받는다
         yield return StartCoroutine(StartDialogue(data));
@@ -118,14 +120,13 @@ public class DialogueSystem : MonoBehaviour
     
     private IEnumerator StartDialogue(string[,] data)
     {
+        _presenter.DialogueCanvasOn();
+
         // maxRange 범위 안에서 첫 대사를 랜덤으로 불러온다.
         _randIndex = Random.Range(1, _maxRange + 1);
         Debug.Log($"최대값 : {_maxRange} , 랜덤값 : {_randIndex}, 오프셋 : {_indexOffset}");
         _presenter.SetDialogueText(data[_randIndex, 1]);
-        
-        yield return new WaitForSeconds(1f);
-        // _presenter.dialogueText.text = textToPrint.Replace("!CP!", _player.partnerCp);
-        _presenter.uICanvas.SetActive(true);
+        _presenter.SetNPCName(_player.partnerName);
 
         yield return new WaitForSeconds(0.7f);
         _presenter.blinker.SetActive(true);
@@ -339,8 +340,6 @@ public class DialogueSystem : MonoBehaviour
     
     public void StartInteraction()
     {
-        _presenter.DialogueCanvasOn();
-        _presenter.SetNPCName(_player.partnerName);
         _dialogueCam.AddTarget(_player.NPC.transform);
         _dialogueCam.TalkCamOn();
         NPCLooksPlayer();

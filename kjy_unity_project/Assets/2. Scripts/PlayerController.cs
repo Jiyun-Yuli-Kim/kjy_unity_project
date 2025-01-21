@@ -192,10 +192,6 @@ public class PlayerController : MonoBehaviour
     {
         if (invenOpened && input.actions["Revert"].WasPressedThisFrame())
         {
-            if (Inventory.Instance.GetComponent<InventoryUI>().popupOpen)
-            {
-                return;
-            }
             invenOpened = false;
             Inventory.Instance.OnInventoryClose.Invoke();
             isInteracting = false;
