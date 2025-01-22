@@ -34,33 +34,6 @@ public class Fruit : Item
             FreezeFruit();
         }
     }
-    //
-    // private void OnCollisionExit(Collision other)
-    // {
-    //     if (other.gameObject.tag == "Ground")
-    //     {
-    //         isGrounded = false;
-    //     }
-    // }
-
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.gameObject.CompareTag("Player"))
-    //     {
-    //         Debug.Log($"눈앞에있는 사과: {isGrounded}");
-    //         InteractionManager.Instance.OnPickup.AddListener(PickupFruit);
-    //         InteractionManager.Instance.OnPickupEnd.AddListener(EndPickupFruit);
-    //     }
-    // }
-    //
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if (other.gameObject.CompareTag("Player"))
-    //     {
-    //         InteractionManager.Instance.OnPickup.RemoveListener(PickupFruit);
-    //         InteractionManager.Instance.OnPickupEnd.RemoveListener(EndPickupFruit);
-    //     }
-    // }
 
     public void FruitFall()
     {
@@ -71,45 +44,6 @@ public class Fruit : Item
     {
         _rb.constraints = RigidbodyConstraints.FreezeAll;
     }
-
-    // public void BeingPickedUp()
-    // {
-    //     if (!isGrounded)
-    //     {
-    //         Debug.Log("과일이 바닥에 있지 않아서 리턴");
-    //         InteractionManager.Instance.OnPickupEnd.Invoke();
-    //         return;
-    //     }
-    //     InteractionManager.Instance.OnPickup.Invoke();
-    //     Debug.Log("픽업 이벤트 발동");
-    // }
-    //
-    // public void PickupFruit()
-    // {
-    //     StartCoroutine(PickupCoroutine());
-    // }
-    //
-    // public IEnumerator PickupCoroutine()
-    // {
-    //     // 플레이어 애니메이션 동작시간에 맞춰 대기
-    //     yield return new WaitForSeconds(0.8f);
-    //     
-    //     Inventory.Instance.AddItem(this);
-    //     
-    //     Destroy(this.gameObject);
-    //     
-    //     InteractionManager.Instance.OnPickupEnd.Invoke();
-    //     
-    //     InteractionManager.Instance.OnPickup.RemoveListener(PickupFruit);
-    //     InteractionManager.Instance.OnPickupEnd.RemoveListener(EndPickupFruit);
-    //    
-    //     Debug.Log("픽업종료");
-    // }
-    //
-    // public void EndPickupFruit()
-    // {
-    //     isGrounded = false;
-    // }
 }
 
 
