@@ -14,9 +14,8 @@ public class DialogueLoader : MonoBehaviour
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=0&single=true&output=csv";
     public const string IdolDialogue =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=565515136&single=true&output=csv";
-
-    // public const string CrankyDialogue =
-    //     "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pubhtml?gid=104577247&single=true";    
+    public const string CrankyDialogue =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8uX0llujfHBKqUOCZ92p80anVPJEmy9HNbHRY5buq3ICGfkflCrZvvJMj6yy6etR6dDfayBMg56N1/pub?gid=282377660&single=true&output=csv";  
     public string[,] DialogueData { get; private set; }
 
     private void Awake()
@@ -33,11 +32,11 @@ public class DialogueLoader : MonoBehaviour
             Debug.Log("Idol dialogue load complete");
         }));
 
-        // StartCoroutine(StartLoad(DialogueLoader.CrankyDialogue, data => 
-        // {
-        //     DialogueSystem.Instance.crankyData = data;
-        //     Debug.Log("Cranky dialogue load complete");
-        // }));    
+        StartCoroutine(StartLoad(DialogueLoader.CrankyDialogue, data => 
+        {
+            DialogueSystem.Instance.crankyData = data;
+            Debug.Log("Cranky dialogue load complete");
+        }));    
     }
 
     public IEnumerator StartLoad(string dialogueURL, System.Action<string[,]> onComplete)
@@ -56,8 +55,6 @@ public class DialogueLoader : MonoBehaviour
         {
             // 1단계: recievedData-현재 데이터가 통으로 들어있음 (',','\n'이 있는 raw data)
             string recievedData = request.downloadHandler.text;
-            
-            // Debug.Log(recievedData);
             
             // 2단계: DialogueData-2차원 배열로 가공한 데이터
             yield return DialogueData = ProcessCSV(recievedData);
@@ -87,6 +84,7 @@ public class DialogueLoader : MonoBehaviour
             for (int j = 0; j < values.Length; j++)
             {
                 values[j] = Decode(values[j]);
+                // Debug.Log($"{DialogueTable[1,1]}, {i}, {j}");
                 DialogueTable[i, j] = values[j];
             }
         }

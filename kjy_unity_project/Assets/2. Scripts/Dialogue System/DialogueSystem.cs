@@ -16,8 +16,6 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private TextPresenter _presenter;
     
     [SerializeField] DialogueCameraController _dialogueCam;
-    // [SerializeField] private CinemachineVirtualCamera[] _cameras;
-    // [SerializeField] private CinemachineTargetGroup _targetGroup;
     
     private int _maxRange;
     public string[,] kindData;
@@ -25,7 +23,7 @@ public class DialogueSystem : MonoBehaviour
     public string[,] idolData;
     private int _idolMaxRange = 3;
     public string[,] crankyData;
-    private int _crankyMaxRange = 1;
+    private int _crankyMaxRange = 2;
 
     public UnityEvent OnDataLoaded;
     public UnityEvent OnTalkStart; // 대화시작

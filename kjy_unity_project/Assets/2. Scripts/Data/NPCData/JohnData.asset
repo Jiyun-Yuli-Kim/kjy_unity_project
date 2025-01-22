@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: JohnData
   m_EditorClassIdentifier: 
   NPCName: "\uC874"
-  personality: 0
-  CatchPhrase: "\uAE61\uCD1D"
+  personality: 2
+  CatchPhrase: "\uC544\uB2C8"
   StrollStartHour: 13
   StrollEndHour: 21
   curScene: 0
