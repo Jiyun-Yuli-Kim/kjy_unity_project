@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
             // 마을 배회 시작
             if (DateTime.Now.Hour >= controller.npcData.StrollStartHour && controller.isStrolling==false)
             {
-                Debug.Log($"{NPC.name} starts strolling");
+                // Debug.Log($"{NPC.name} starts strolling");
                 // 이미 마을에 있다면 state만 변경
                 if (controller.npcData.curScene == NPCScenes.Town)
                 {

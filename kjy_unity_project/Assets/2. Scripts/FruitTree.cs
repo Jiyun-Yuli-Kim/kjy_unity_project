@@ -24,7 +24,7 @@ public class FruitTree : MonoBehaviour, IInteractable
     [SerializeField] private Collider _trigger;
 
     [SerializeField] private PlayerInput _input;
-    [SerializeField] private float _fallTime =2f;
+    [SerializeField] private float _fallTime =1.5f;
     
     public event UnityAction OnInteract;
     public event UnityAction OnInteractEnd;
