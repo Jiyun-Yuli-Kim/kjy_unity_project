@@ -1,2 +1,2 @@
 # kjy_unity_project
-동물의 숲 모작 게임
+An Animal Crossing-inspired game focusing on engaging NPC dialogue
